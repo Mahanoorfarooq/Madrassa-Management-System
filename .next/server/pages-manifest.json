@@ -1,0 +1,13 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/login": "pages/login.js",
+  "/api/auth/me": "pages/api/auth/me.js",
+  "/": "pages/index.js",
+  "/api/auth/login": "pages/api/auth/login.js",
+  "/modules/madrassa": "pages/modules/madrassa.js",
+  "/talba": "pages/talba.js",
+  "/api/auth/logout": "pages/api/auth/logout.js",
+  "/login/[role]": "pages/login/[role].js"
+}
