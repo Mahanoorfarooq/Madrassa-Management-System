@@ -12,11 +12,6 @@
   ],
   "rootMainFiles": [],
   "pages": {
-    "/": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/index.js"
-    ],
     "/_app": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -32,35 +27,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/login.js"
     ],
-    "/modules/madrassa": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/modules/madrassa.js"
-    ],
-    "/modules/teacher": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/modules/teacher.js"
-    ],
-    "/talba": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/talba.js"
-    ],
     "/talba/students": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/talba/students.js"
-    ],
-    "/teacher/attendance": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/teacher/attendance.js"
-    ],
-    "/teacher/classes/[classId]/sections/[sectionId]": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/teacher/classes/[classId]/sections/[sectionId].js"
     ]
   },
   "ampFirstPages": []

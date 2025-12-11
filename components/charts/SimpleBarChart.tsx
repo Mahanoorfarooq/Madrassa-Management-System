@@ -59,8 +59,8 @@ export function SimpleBarChart({
       x: {
         grid: {
           display: false,
-          drawBorder: false,
         },
+        border: { display: false },
         ticks: {
           color: "#6b7280",
           font: { size: 11 },
@@ -70,8 +70,8 @@ export function SimpleBarChart({
         beginAtZero: true,
         grid: {
           color: "rgba(148,163,184,0.18)",
-          drawBorder: false,
         },
+        border: { display: false },
         ticks: {
           color: "#9ca3af",
           font: { size: 10 },
