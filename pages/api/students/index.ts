@@ -28,7 +28,11 @@ export default async function handler(
 
     if (q) {
       const regex = new RegExp(q as string, "i");
-      filter.$or = [{ fullName: regex }, { rollNumber: regex }];
+      filter.$or = [
+        { fullName: regex },
+        { rollNumber: regex },
+        { cnic: regex },
+      ];
     }
 
     const docs = await Student.find(filter)

@@ -7,7 +7,7 @@ interface SidebarProps {
 
 const roleLinks: Record<string, { href: string; label: string }[]> = {
   admin: [
-    { href: "/dashboard/admin", label: "ڈیش بورڈ" },
+    { href: "/modules/madrassa", label: "ڈیش بورڈ" },
     { href: "/students", label: "طلبہ" },
     { href: "/teachers", label: "اساتذہ" },
     { href: "/hostel", label: "ہاسٹل" },

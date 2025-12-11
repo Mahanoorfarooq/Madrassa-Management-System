@@ -2,6 +2,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
 import { StatCard } from "@/components/ui/Card";
 import { DataTable } from "@/components/ui/Table";
+import { SimpleBarChart } from "@/components/charts/SimpleBarChart";
 
 const mockTasks = [
   { id: 1, duty: "ہاسٹل صفائی", status: "جاری", shift: "صبح" },
@@ -9,6 +10,14 @@ const mockTasks = [
 ];
 
 export default function StaffDashboard() {
+  const statusCounts = mockTasks.reduce<Record<string, number>>((acc, t) => {
+    acc[t.status] = (acc[t.status] || 0) + 1;
+    return acc;
+  }, {});
+
+  const labels = Object.keys(statusCounts);
+  const values = labels.map((k) => statusCounts[k]);
+
   return (
     <div className="flex min-h-screen bg-lightBg">
       <Sidebar role="staff" />
@@ -23,6 +32,13 @@ export default function StaffDashboard() {
             <StatCard title="مکمل شدہ ڈیوٹیز" value={4} />
             <StatCard title="باقی ڈیوٹیز" value={2} />
           </div>
+          {labels.length > 0 && (
+            <SimpleBarChart
+              title="ڈیوٹیز کی تقسیم"
+              labels={labels}
+              values={values}
+            />
+          )}
           <DataTable
             columns={[
               { key: "duty", header: "ڈیوٹی" },

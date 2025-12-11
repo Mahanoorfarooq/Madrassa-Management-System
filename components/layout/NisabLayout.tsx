@@ -16,7 +16,7 @@ export function NisabLayout({
     if (typeof window === "undefined") return;
     const token = localStorage.getItem("madrassa_token");
     if (!token) {
-      router.replace("/login/nisab");
+      router.replace("/login");
     }
   }, [router]);
 

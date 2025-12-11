@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { TalbaLayout } from "@/components/layout/TalbaLayout";
 import { StatCard } from "@/components/ui/Card";
+import { SimpleBarChart } from "@/components/charts/SimpleBarChart";
 import api from "@/utils/api";
 
 export default function WafaqDashboard() {
@@ -67,14 +68,15 @@ export default function WafaqDashboard() {
             ))}
           </div>
         </div>
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
-          <h2 className="text-base font-semibold text-gray-800 mb-3 text-right">
-            حاضری کا خلاصہ
-          </h2>
-          <p className="text-xs text-gray-500 text-right">
-            حاضری کے گراف اور خلاصے یہاں بعد میں API کے ساتھ منسلک کیے جائیں گے۔
-          </p>
-        </div>
+        <SimpleBarChart
+          title="شعبہ کا خلاصہ"
+          labels={["طلبہ", "اساتذہ", "کلاسز"]}
+          values={[
+            totals.totalStudents || 0,
+            totals.totalTeachers || 0,
+            totals.totalClasses || 0,
+          ]}
+        />
       </div>
     </TalbaLayout>
   );

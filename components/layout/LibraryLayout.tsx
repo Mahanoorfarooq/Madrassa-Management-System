@@ -15,7 +15,7 @@ export function LibraryLayout({ children, title }: LibraryLayoutProps) {
     if (typeof window === "undefined") return;
     const token = localStorage.getItem("madrassa_token");
     if (!token) {
-      router.replace("/login/library");
+      router.replace("/login");
     }
   }, [router]);
 

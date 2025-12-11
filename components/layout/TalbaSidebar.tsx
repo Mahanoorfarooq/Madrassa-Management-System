@@ -10,7 +10,7 @@ const links = [
   { href: "/talba/departments", label: "شعبہ جات" },
   { href: "/talba/classes", label: "کلاس و سیکشن مینجمنٹ" },
   { href: "/talba/sections", label: "سیکشنز" },
-  { href: "/talba/students", label: "طلبہ مینجمنٹ" },
+  { href: "/talba/students", label: "طالب علم سرچ" },
   { href: "/talba/teachers", label: "اساتذہ" },
   { href: "/talba/attendance", label: "حاضری" },
   { href: "/talba/syllabus", label: "نصاب" },

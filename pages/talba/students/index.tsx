@@ -107,7 +107,7 @@ export default function TalbaStudentsList() {
   }, [departmentId, search, classId, sectionId, status]);
 
   return (
-    <TalbaLayout title="طلبہ مینجمنٹ">
+    <TalbaLayout title="طالب علم سرچ">
       {/* Department tabs */}
       <div className="flex justify-end gap-2 mb-3 flex-wrap">
         {DEPT_TABS.map((d) => {
@@ -132,7 +132,7 @@ export default function TalbaStudentsList() {
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 mb-4 grid grid-cols-1 md:grid-cols-4 gap-3 text-right">
         <div className="md:col-span-2">
           <label className="text-xs text-gray-600 mb-1 block">
-            نام / رول نمبر
+            نام / رول نمبر / شناختی کارڈ نمبر
           </label>
           <input
             value={search}

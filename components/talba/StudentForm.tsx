@@ -11,6 +11,7 @@ export interface StudentFormValues {
   fatherName?: string;
   dateOfBirth?: string;
   contactNumber?: string;
+  cnic?: string;
   address?: string;
   photoUrl?: string;
   admissionNumber?: string;
@@ -47,6 +48,7 @@ export default function StudentForm({
     fatherName: initial?.fatherName || "",
     dateOfBirth: initial?.dateOfBirth || "",
     contactNumber: initial?.contactNumber || "",
+    cnic: (initial as any)?.cnic || "",
     address: initial?.address || "",
     photoUrl: initial?.photoUrl || "",
     admissionNumber: initial?.admissionNumber || "",
@@ -188,6 +190,18 @@ export default function StudentForm({
             value={values.contactNumber || ""}
             onChange={onChange}
             className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+        <div>
+          <label className="block text-xs text-gray-700 mb-1">
+            شناختی کارڈ نمبر
+          </label>
+          <input
+            name="cnic"
+            value={values.cnic || ""}
+            onChange={onChange}
+            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            placeholder="مثال: 12345-1234567-1"
           />
         </div>
         <div className="md:col-span-2">

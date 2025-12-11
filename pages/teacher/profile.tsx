@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
 import api from "@/utils/api";
 import { TeacherLayout } from "@/components/layout/TeacherLayout";
+import {
+  User,
+  Mail,
+  Phone,
+  MapPin,
+  Lock,
+  Camera,
+  Save,
+  Shield,
+} from "lucide-react";
 
 export default function TeacherProfile() {
   const [data, setData] = useState<any>(null);
@@ -20,6 +30,7 @@ export default function TeacherProfile() {
     newPassword: string;
   }>({ currentPassword: "", newPassword: "" });
   const [cpOk, setCpOk] = useState<string | null>(null);
+  const [photoError, setPhotoError] = useState<string | null>(null);
 
   const load = async () => {
     setError(null);
@@ -74,177 +85,321 @@ export default function TeacherProfile() {
     }
   };
 
+  const handlePhotoFileChange = (e: any) => {
+    const file = e.target?.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setPhotoError("براہ کرم صرف تصویر فائل منتخب کریں");
+      return;
+    }
+
+    // تقریباً 2MB کی حد
+    if (file.size > 2 * 1024 * 1024) {
+      setPhotoError("تصویر کا سائز 2MB سے کم ہونا چاہئے");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setForm((prev: any) => ({
+        ...prev,
+        photoUrl: reader.result as string,
+      }));
+      setPhotoError(null);
+    };
+    reader.readAsDataURL(file);
+  };
+
   return (
     <TeacherLayout title="میرا پروفائل">
-      {error && (
-        <div className="mb-3 rounded bg-red-100 text-red-700 text-sm px-3 py-2 text-right">
-          {error}
-        </div>
-      )}
-      {ok && (
-        <div className="mb-3 rounded bg-emerald-100 text-emerald-700 text-sm px-3 py-2 text-right">
-          {ok}
-        </div>
-      )}
-      {cpOk && (
-        <div className="mb-3 rounded bg-emerald-100 text-emerald-700 text-sm px-3 py-2 text-right">
-          {cpOk}
-        </div>
-      )}
-
-      {!t ? (
-        <div className="text-sm text-gray-600">لوڈ ہو رہا ہے…</div>
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {/* View card */}
-          <div className="bg-white border rounded p-4 text-right lg:col-span-1">
-            <div className="flex items-center justify-end gap-3 mb-3">
-              {form.photoUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={form.photoUrl}
-                  alt="Photo"
-                  className="h-16 w-16 rounded-full object-cover border"
-                />
-              ) : (
-                <div className="h-16 w-16 rounded-full bg-gray-100 border" />
-              )}
-              <div>
-                <div className="text-sm font-semibold">{t.fullName}</div>
-                <div className="text-xs text-gray-600">
-                  {t.designation || "—"}
+      <div className="max-w-7xl mx-auto" dir="rtl">
+        {/* Alerts */}
+        {error && (
+          <div className="mb-6 rounded-xl bg-red-50 border border-red-200 text-red-700 px-4 py-3 text-right flex items-center gap-3 shadow-sm">
+            <span className="text-2xl">⚠️</span>
+            <span className="flex-1">{error}</span>
+          </div>
+        )}
+        {ok && (
+          <div className="mb-6 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 text-right flex items-center gap-3 shadow-sm">
+            <span className="text-2xl">✅</span>
+            <span className="flex-1">{ok}</span>
+          </div>
+        )}
+        {cpOk && (
+          <div className="mb-6 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 text-right flex items-center gap-3 shadow-sm">
+            <span className="text-2xl">🔐</span>
+            <span className="flex-1">{cpOk}</span>
+          </div>
+        )}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Profile Card */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-lg">
+              {/* Header with gradient */}
+              <div className="h-32 bg-gradient-to-br from-blue-500 to-purple-600 relative">
+                <div className="absolute -bottom-16 right-1/2 transform translate-x-1/2">
+                  <div className="relative">
+                    {form.photoUrl ? (
+                      <img
+                        src={form.photoUrl}
+                        alt="Photo"
+                        className="h-32 w-32 rounded-full object-cover border-4 border-white shadow-xl"
+                      />
+                    ) : (
+                      <div className="h-32 w-32 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 border-4 border-white shadow-xl flex items-center justify-center">
+                        <User className="w-16 h-16 text-gray-400" />
+                      </div>
+                    )}
+                    <div className="absolute bottom-2 right-2 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center shadow-lg">
+                      <Camera className="w-4 h-4 text-white" />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="text-xs text-gray-500">تخصص</div>
-            <div className="text-sm font-medium mb-2">
-              {t.specialization || "—"}
-            </div>
-            <div className="text-xs text-gray-500">مضامین</div>
-            <div className="text-sm font-medium">
-              {(t.subjects || []).join(", ") || "—"}
+
+              {/* Profile Info */}
+              <div className="pt-20 px-6 pb-6 text-center">
+                <h2 className="text-2xl font-bold text-gray-800 mb-1">
+                  {t?.fullName || "—"}
+                </h2>
+                <p className="text-sm text-gray-500 mb-4">
+                  {t?.designation || "استاد"}
+                </p>
+
+                {/* Stats */}
+                <div className="grid grid-cols-2 gap-3 mb-6">
+                  <div className="bg-blue-50 rounded-xl p-3">
+                    <div className="text-xs text-gray-600 mb-1">تخصص</div>
+                    <div className="text-sm font-semibold text-gray-800">
+                      {t?.specialization || "—"}
+                    </div>
+                  </div>
+                  <div className="bg-purple-50 rounded-xl p-3">
+                    <div className="text-xs text-gray-600 mb-1">مضامین</div>
+                    <div className="text-sm font-semibold text-gray-800">
+                      {(t?.subjects || []).length || 0}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Subjects */}
+                {t?.subjects && t.subjects.length > 0 && (
+                  <div className="bg-gray-50 rounded-xl p-4 text-right">
+                    <div className="text-xs text-gray-600 mb-2">
+                      تدریسی مضامین
+                    </div>
+                    <div className="flex flex-wrap gap-2 justify-end">
+                      {t.subjects.map((subject: string, idx: number) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium text-gray-700"
+                        >
+                          {subject}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* Edit card */}
-          <form
-            onSubmit={onSave}
-            className="bg-white border rounded p-4 text-right lg:col-span-2 space-y-3"
-          >
-            <h2 className="text-sm font-semibold text-gray-700">
-              ذاتی معلومات میں ترمیم
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label className="block text-xs text-gray-600 mb-1">فون</label>
-                <input
-                  value={form.phone}
-                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  className="w-full rounded border px-3 py-2 text-sm"
-                />
+          {/* Edit Form */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                  <User className="w-5 h-5 text-white" />
+                </div>
+                <h2 className="text-xl font-bold text-gray-800">
+                  ذاتی معلومات میں ترمیم
+                </h2>
               </div>
-              <div>
-                <label className="block text-xs text-gray-600 mb-1">
-                  رابطہ نمبر
-                </label>
-                <input
-                  value={form.contactNumber}
-                  onChange={(e) =>
-                    setForm({ ...form, contactNumber: e.target.value })
-                  }
-                  className="w-full rounded border px-3 py-2 text-sm"
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-gray-600 mb-1">
-                  ای میل
-                </label>
-                <input
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="w-full rounded border px-3 py-2 text-sm"
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-gray-600 mb-1">پتا</label>
-                <input
-                  value={form.address}
-                  onChange={(e) =>
-                    setForm({ ...form, address: e.target.value })
-                  }
-                  className="w-full rounded border px-3 py-2 text-sm"
-                />
-              </div>
-              <div className="md:col-span-2">
-                <label className="block text-xs text-gray-600 mb-1">
-                  تصویر (URL)
-                </label>
-                <input
-                  value={form.photoUrl}
-                  onChange={(e) =>
-                    setForm({ ...form, photoUrl: e.target.value })
-                  }
-                  className="w-full rounded border px-3 py-2 text-sm"
-                />
-              </div>
-            </div>
-            <div className="flex justify-end">
-              <button
-                disabled={saving}
-                className="rounded bg-primary text-white px-5 py-2 text-sm disabled:opacity-60"
-              >
-                {saving ? "محفوظ ہو رہا ہے" : "محفوظ کریں"}
-              </button>
-            </div>
-          </form>
 
-          {/* Change password */}
-          <form
-            onSubmit={onChangePassword}
-            className="bg-white border rounded p-4 text-right lg:col-span-3 space-y-3"
-          >
-            <h2 className="text-sm font-semibold text-gray-700">
-              پاس ورڈ تبدیل کریں
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label className="block text-xs text-gray-600 mb-1">
-                  موجودہ پاس ورڈ
-                </label>
-                <input
-                  type="password"
-                  value={cp.currentPassword}
-                  onChange={(e) =>
-                    setCp({ ...cp, currentPassword: e.target.value })
-                  }
-                  required
-                  className="w-full rounded border px-3 py-2 text-sm"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Phone */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <span>فون</span>
+                      <Phone className="w-4 h-4" />
+                    </div>
+                  </label>
+                  <input
+                    value={form.phone}
+                    onChange={(e) =>
+                      setForm({ ...form, phone: e.target.value })
+                    }
+                    className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-right"
+                    placeholder="03XX XXXXXXX"
+                  />
+                </div>
+
+                {/* Contact Number */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <span>رابطہ نمبر</span>
+                      <Phone className="w-4 h-4" />
+                    </div>
+                  </label>
+                  <input
+                    value={form.contactNumber}
+                    onChange={(e) =>
+                      setForm({ ...form, contactNumber: e.target.value })
+                    }
+                    className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-right"
+                    placeholder="متبادل نمبر"
+                  />
+                </div>
+
+                {/* Email */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <span>ای میل</span>
+                      <Mail className="w-4 h-4" />
+                    </div>
+                  </label>
+                  <input
+                    type="email"
+                    value={form.email}
+                    onChange={(e) =>
+                      setForm({ ...form, email: e.target.value })
+                    }
+                    className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-right"
+                    placeholder="example@email.com"
+                  />
+                </div>
+
+                {/* Address */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <span>پتا</span>
+                      <MapPin className="w-4 h-4" />
+                    </div>
+                  </label>
+                  <input
+                    value={form.address}
+                    onChange={(e) =>
+                      setForm({ ...form, address: e.target.value })
+                    }
+                    className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-right"
+                    placeholder="مکمل پتا"
+                  />
+                </div>
+
+                {/* Photo URL */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <span>تصویر اپ لوڈ / لنک</span>
+                      <Camera className="w-4 h-4" />
+                    </div>
+                  </label>
+                  <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center">
+                    <input
+                      value={form.photoUrl}
+                      onChange={(e) =>
+                        setForm({ ...form, photoUrl: e.target.value })
+                      }
+                      className="w-full md:w-1/2 rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-right"
+                      placeholder="https://example.com/photo.jpg یا اپ لوڈ کی گئی تصویر"
+                    />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePhotoFileChange}
+                      className="w-full md:w-1/2 rounded-xl border border-dashed border-gray-300 px-4 py-2 text-sm cursor-pointer bg-gray-50 text-right"
+                    />
+                  </div>
+                  {photoError && (
+                    <p className="mt-2 text-xs text-red-600 text-right">
+                      {photoError}
+                    </p>
+                  )}
+                </div>
               </div>
-              <div>
-                <label className="block text-xs text-gray-600 mb-1">
-                  نیا پاس ورڈ
-                </label>
-                <input
-                  type="password"
-                  value={cp.newPassword}
-                  onChange={(e) =>
-                    setCp({ ...cp, newPassword: e.target.value })
-                  }
-                  required
-                  className="w-full rounded border px-3 py-2 text-sm"
-                />
+
+              <div className="flex justify-end mt-6">
+                <button
+                  onClick={onSave}
+                  disabled={saving}
+                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 font-semibold shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed transition-all"
+                >
+                  <Save className="w-5 h-5" />
+                  <span>{saving ? "محفوظ ہو رہا ہے..." : "محفوظ کریں"}</span>
+                </button>
               </div>
             </div>
-            <div className="flex justify-end">
-              <button className="rounded bg-accent text-white px-5 py-2 text-sm">
-                تبدیل کریں
-              </button>
+
+            {/* Change Password */}
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-pink-600 flex items-center justify-center">
+                  <Shield className="w-5 h-5 text-white" />
+                </div>
+                <h2 className="text-xl font-bold text-gray-800">
+                  پاس ورڈ تبدیل کریں
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* New Password */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <span>نیا پاس ورڈ</span>
+                      <Lock className="w-4 h-4" />
+                    </div>
+                  </label>
+                  <input
+                    type="password"
+                    value={cp.newPassword}
+                    onChange={(e) =>
+                      setCp({ ...cp, newPassword: e.target.value })
+                    }
+                    className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all text-right"
+                    placeholder="••••••••"
+                  />
+                </div>
+
+                {/* Current Password */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <span>موجودہ پاس ورڈ</span>
+                      <Lock className="w-4 h-4" />
+                    </div>
+                  </label>
+                  <input
+                    type="password"
+                    value={cp.currentPassword}
+                    onChange={(e) =>
+                      setCp({ ...cp, currentPassword: e.target.value })
+                    }
+                    className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all text-right"
+                    placeholder="••••••••"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end mt-6">
+                <button
+                  onClick={onChangePassword}
+                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-red-500 to-pink-600 text-white px-8 py-3 font-semibold shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all"
+                >
+                  <Shield className="w-5 h-5" />
+                  <span>تبدیل کریں</span>
+                </button>
+              </div>
             </div>
-          </form>
+          </div>
         </div>
-      )}
+      </div>
     </TeacherLayout>
   );
 }

@@ -3,6 +3,7 @@ import Link from "next/link";
 import api from "@/utils/api";
 import { FinanceLayout } from "@/components/layout/FinanceLayout";
 import { StatCard } from "@/components/ui/Card";
+import { SimpleBarChart } from "@/components/charts/SimpleBarChart";
 
 const INCOME_TYPES = [
   "student_fee",
@@ -51,6 +52,14 @@ export default function FinanceDashboard() {
         />
         <StatCard title="بیلنس" value={`₨ ${stats.balance.toLocaleString()}`} />
         <StatCard title="کل معاملات" value={stats.total} />
+      </div>
+
+      <div className="mb-4">
+        <SimpleBarChart
+          title="آمدنی بمقابلہ اخراجات"
+          labels={["کل آمدنی", "کل اخراجات"]}
+          values={[stats.income, stats.expense]}
+        />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

@@ -15,7 +15,7 @@ export function FinanceLayout({ children, title }: FinanceLayoutProps) {
     if (typeof window === "undefined") return;
     const token = localStorage.getItem("madrassa_token");
     if (!token) {
-      router.replace("/login/finance");
+      router.replace("/login");
     }
   }, [router]);
 

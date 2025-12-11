@@ -7,9 +7,9 @@ const PUBLIC_PATHS = ["/", "/_next", "/favicon.ico", "/login", "/login/"];
 // Map of protected prefixes to their login routes
 const PROTECTED: Array<{ prefix: string; login: string }> = [
   { prefix: "/dashboard", login: "/login" },
-  { prefix: "/teacher", login: "/login/usataza" },
+  { prefix: "/teacher", login: "/login" },
   { prefix: "/admin", login: "/login" },
-  { prefix: "/modules/teacher", login: "/login/usataza" },
+  { prefix: "/modules/teacher", login: "/login" },
   { prefix: "/modules/madrassa", login: "/login" },
   // Add more modules here if you want global enforcement
   // { prefix: "/finance", login: "/login/finance" },

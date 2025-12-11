@@ -59,6 +59,14 @@ export default function TeacherSectionStudents() {
     () => Object.values(attendance).filter((x) => x === "Present").length,
     [attendance]
   );
+  const absentCount = useMemo(
+    () => Object.values(attendance).filter((x) => x === "Absent").length,
+    [attendance]
+  );
+  const leaveCount = useMemo(
+    () => Object.values(attendance).filter((x) => x === "Leave").length,
+    [attendance]
+  );
 
   const setMark = (id: string, status: "Present" | "Absent" | "Leave" | "") => {
     setAttendance((m) => ({ ...m, [id]: status }));
@@ -123,9 +131,57 @@ export default function TeacherSectionStudents() {
       )}
 
       <div className="bg-white border rounded">
+        <div className="flex items-center justify-between p-3 border-b bg-gray-50">
+          <div className="flex items-center gap-2 text-xs text-gray-700">
+            <span className="rounded-full bg-emerald-100 text-emerald-700 px-2 py-1">
+              حاضر: {presentCount}
+            </span>
+            <span className="rounded-full bg-red-100 text-red-700 px-2 py-1">
+              غائب: {absentCount}
+            </span>
+            <span className="rounded-full bg-yellow-100 text-yellow-700 px-2 py-1">
+              رخصت: {leaveCount}
+            </span>
+            <span className="rounded-full bg-gray-100 text-gray-700 px-2 py-1">
+              کل: {students.length}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                const next: Record<string, any> = {};
+                students.forEach((s: any) => (next[s._id] = "Present"));
+                setAttendance(next);
+              }}
+              className="rounded bg-emerald-600 text-white px-3 py-1.5 text-xs hover:bg-emerald-700"
+            >
+              سب کو حاضر کریں
+            </button>
+            <button
+              onClick={() => {
+                const next: Record<string, any> = {};
+                students.forEach((s: any) => (next[s._id] = "Absent"));
+                setAttendance(next);
+              }}
+              className="rounded bg-red-600 text-white px-3 py-1.5 text-xs hover:bg-red-700"
+            >
+              سب کو غائب کریں
+            </button>
+            <button
+              onClick={() => {
+                const next: Record<string, any> = {};
+                students.forEach((s: any) => (next[s._id] = ""));
+                setAttendance(next);
+              }}
+              className="rounded bg-gray-600 text-white px-3 py-1.5 text-xs hover:bg-gray-700"
+            >
+              صفحہ صاف کریں
+            </button>
+          </div>
+        </div>
         <table className="w-full text-right text-sm">
-          <thead>
-            <tr className="border-b bg-gray-50">
+          <thead className="sticky top-0 z-10">
+            <tr className="border-b bg-white">
               <th className="px-3 py-2">نام</th>
               <th className="px-3 py-2">رول نمبر</th>
               <th className="px-3 py-2">حاضری</th>
@@ -134,7 +190,20 @@ export default function TeacherSectionStudents() {
           <tbody>
             {students.map((s: any) => (
               <tr key={s._id} className="border-b">
-                <td className="px-3 py-2">{s.fullName}</td>
+                <td className="px-3 py-2">
+                  <div className="flex items-center justify-end gap-2">
+                    {s.photoUrl ? (
+                      <img
+                        src={s.photoUrl}
+                        alt={s.fullName}
+                        className="w-8 h-8 rounded-full object-cover border"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-gray-200 border" />
+                    )}
+                    <span>{s.fullName}</span>
+                  </div>
+                </td>
                 <td className="px-3 py-2">{s.rollNumber}</td>
                 <td className="px-3 py-2">
                   <div className="flex items-center justify-end gap-2">
@@ -185,7 +254,8 @@ export default function TeacherSectionStudents() {
 
       <div className="flex items-center justify-between mt-3">
         <div className="text-xs text-gray-600">
-          کل حاضر: {presentCount} / {students.length}
+          کل حاضر: {presentCount} / {students.length} — غائب: {absentCount} —
+          رخصت: {leaveCount}
         </div>
         <button
           onClick={submit}

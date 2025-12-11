@@ -2,12 +2,19 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/login": "pages/login.js",
+  "/modules/teacher": "pages/modules/teacher.js",
+  "/teacher/classes/[classId]/sections/[sectionId]": "pages/teacher/classes/[classId]/sections/[sectionId].js",
+  "/teacher/attendance": "pages/teacher/attendance.js",
+  "/api/teacher/classes": "pages/api/teacher/classes.js",
+  "/api/teacher/attendance": "pages/api/teacher/attendance.js",
   "/api/auth/me": "pages/api/auth/me.js",
-  "/": "pages/index.js",
+  "/login": "pages/login.js",
   "/api/auth/login": "pages/api/auth/login.js",
   "/modules/madrassa": "pages/modules/madrassa.js",
   "/talba": "pages/talba.js",
-  "/api/auth/logout": "pages/api/auth/logout.js",
-  "/login/[role]": "pages/login/[role].js"
+  "/talba/students": "pages/talba/students.js",
+  "/api/departments": "pages/api/departments.js",
+  "/api/classes": "pages/api/classes.js",
+  "/api/students": "pages/api/students.js",
+  "/": "pages/index.js"
 }

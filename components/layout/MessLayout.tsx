@@ -16,7 +16,7 @@ export function MessLayout({
     if (typeof window === "undefined") return;
     const token = localStorage.getItem("madrassa_token");
     if (!token) {
-      router.replace("/login/mess");
+      router.replace("/login");
     }
   }, [router]);
 

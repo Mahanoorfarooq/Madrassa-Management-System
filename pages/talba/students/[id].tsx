@@ -29,6 +29,7 @@ export default function TalbaStudentDetail() {
             fatherName: s.fatherName,
             dateOfBirth: s.dateOfBirth ? s.dateOfBirth.substring(0, 10) : "",
             contactNumber: s.contactNumber,
+            cnic: s.cnic || "",
             address: s.address,
             photoUrl: s.photoUrl,
             admissionNumber: s.admissionNumber,

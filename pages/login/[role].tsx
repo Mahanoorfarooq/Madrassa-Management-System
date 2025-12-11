@@ -47,7 +47,7 @@ export default function RoleLoginPage() {
 
   // Hard-disable the /login/admin path and use the shared /login page instead
   useEffect(() => {
-    if (typeof role === "string" && role === "admin") {
+    if (typeof role === "string") {
       router.replace("/login");
     }
   }, [role, router]);

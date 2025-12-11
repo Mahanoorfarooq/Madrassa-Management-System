@@ -16,7 +16,7 @@ export function TeacherLayout({
     if (typeof window === "undefined") return;
     const token = localStorage.getItem("madrassa_token");
     if (!token) {
-      router.replace("/login/usataza"); // reuse teacher login if separate not present
+      router.replace("/login"); // reuse teacher login if separate not present
     }
   }, [router]);
 
@@ -27,20 +27,29 @@ export function TeacherLayout({
     router.push("/");
   };
 
-  const NavLink = ({ href, label }: { href: string; label: string }) => (
-    <Link
-      href={href}
-      className="block rounded px-3 py-2 text-sm text-right hover:bg-gray-100"
-    >
-      {label}
-    </Link>
-  );
+  const NavLink = ({ href, label }: { href: string; label: string }) => {
+    const active = router.pathname === href;
+    return (
+      <Link
+        href={href}
+        className={`block rounded-xl px-3 py-2.5 text-sm text-right transition-colors duration-200 text-slate-200 ${
+          active
+            ? "bg-primary/90 text-white shadow-md"
+            : "hover:bg-slate-800/80"
+        }`}
+      >
+        {label}
+      </Link>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-lightBg">
-      <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-white border-l">
-        <div className="p-4 text-right text-primary font-bold">استاد پورٹل</div>
-        <nav className="px-2 space-y-1 text-right">
+      <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white px-4 py-6">
+        <div className="mb-6 text-xl font-semibold text-secondary text-right">
+          استاد پورٹل
+        </div>
+        <nav className="space-y-1 text-right text-sm">
           <NavLink href="/teacher" label="ڈیش بورڈ" />
           <NavLink href="/teacher/profile" label="میرا پروفائل" />
           <NavLink href="/teacher/classes" label="میری کلاسز اور سیکشنز" />

@@ -16,7 +16,7 @@ export function HostelLayout({
     if (typeof window === "undefined") return;
     const token = localStorage.getItem("madrassa_token");
     if (!token) {
-      router.replace("/login/hostel");
+      router.replace("/login");
     }
   }, [router]);
 

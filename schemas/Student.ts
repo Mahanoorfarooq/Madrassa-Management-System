@@ -54,7 +54,7 @@ const StudentSchema = new Schema<IStudent>(
     fullName: { type: String, required: true },
     urduName: { type: String },
     rollNumber: { type: String, required: true, unique: true, index: true },
-    cnic: { type: String },
+    cnic: { type: String, unique: true, sparse: true, index: true }, // اردو: طالب علم کا شناختی کارڈ نمبر (اگر ہو)
     dateOfBirth: { type: Date },
     gender: {
       type: String,

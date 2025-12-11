@@ -15,7 +15,7 @@ export function UsatazaLayout({ children, title }: UsatazaLayoutProps) {
     if (typeof window === "undefined") return;
     const token = localStorage.getItem("madrassa_token");
     if (!token) {
-      router.replace("/login/usataza");
+      router.replace("/login");
     }
   }, [router]);
 

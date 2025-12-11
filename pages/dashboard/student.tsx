@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
 import { StatCard } from "@/components/ui/Card";
+import { SimpleBarChart } from "@/components/charts/SimpleBarChart";
 import api from "@/utils/api";
 
 interface Teacher {
@@ -51,6 +52,14 @@ export default function StudentDashboard() {
             <div className="rounded bg-red-100 text-red-700 text-xs px-3 py-2 text-right">
               {error}
             </div>
+          )}
+
+          {teachers.length > 0 && (
+            <SimpleBarChart
+              title="اساتذہ کی تعداد"
+              labels={["اساتذہ"]}
+              values={[teachers.length]}
+            />
           )}
 
           {student && (

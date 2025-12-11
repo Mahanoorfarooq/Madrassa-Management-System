@@ -16,7 +16,7 @@ export function HazriLayout({
     if (typeof window === "undefined") return;
     const token = localStorage.getItem("madrassa_token");
     if (!token) {
-      router.replace("/login/hazri");
+      router.replace("/login");
     }
   }, [router]);
 
