@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import api from "@/utils/api";
 import { HazriLayout } from "@/components/layout/HazriLayout";
+import { StatCard } from "@/components/ui/Card";
+import { SimpleBarChart } from "@/components/charts/SimpleBarChart";
+import { Users, GraduationCap, ClipboardCheck, BookOpen } from "lucide-react";
 
 export default function HazriDashboard() {
   const [today, setToday] = useState<string>(
@@ -26,27 +29,50 @@ export default function HazriDashboard() {
 
   return (
     <HazriLayout title="حاضری ڈیش بورڈ">
-      <div className="flex items-center justify-end mb-4">
-        <input
-          type="date"
-          value={today}
-          onChange={(e) => setToday(e.target.value)}
-          className="rounded border px-3 py-2 text-sm bg-white"
+      <div className="space-y-4" dir="rtl">
+        <div className="flex items-center justify-between gap-3">
+          <div className="text-[11px] text-gray-600 text-right">
+            <div>
+              آج یا کسی بھی منتخب تاریخ کے لیے طلبہ، اساتذہ اور عملہ کی حاضری کا
+              خلاصہ۔
+            </div>
+          </div>
+          <input
+            type="date"
+            value={today}
+            onChange={(e) => setToday(e.target.value)}
+            className="rounded-xl border border-gray-300 px-3 py-2 text-sm bg-white shadow-sm focus:ring-2 focus:ring-primary/60 focus:border-primary/50 outline-none"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <StatCard
+            title="طلبہ (آج نشان زد)"
+            value={studentCount}
+            icon={<Users className="w-4 h-4" />}
+          />
+          <StatCard
+            title="اساتذہ (آج نشان زد)"
+            value={teacherCount}
+            icon={<GraduationCap className="w-4 h-4" />}
+          />
+          <StatCard
+            title="عملہ (آج نشان زد)"
+            value={staffCount}
+            icon={<ClipboardCheck className="w-4 h-4" />}
+          />
+          <StatCard
+            title="کل ریکارڈ (آج)"
+            value={studentCount + teacherCount + staffCount}
+            icon={<BookOpen className="w-4 h-4" />}
+          />
+        </div>
+
+        <SimpleBarChart
+          title="گروپ وار حاضری کا خلاصہ (آج)"
+          labels={["طلبہ", "اساتذہ", "عملہ"]}
+          values={[studentCount, teacherCount, staffCount]}
         />
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="p-4 rounded border bg-white">
-          <div className="text-xs text-gray-500">طلبہ (آج نشان زد)</div>
-          <div className="text-2xl font-bold">{studentCount}</div>
-        </div>
-        <div className="p-4 rounded border bg-white">
-          <div className="text-xs text-gray-500">اساتذہ (آج نشان زد)</div>
-          <div className="text-2xl font-bold">{teacherCount}</div>
-        </div>
-        <div className="p-4 rounded border bg-white">
-          <div className="text-xs text-gray-500">عملہ (آج نشان زد)</div>
-          <div className="text-2xl font-bold">{staffCount}</div>
-        </div>
       </div>
     </HazriLayout>
   );

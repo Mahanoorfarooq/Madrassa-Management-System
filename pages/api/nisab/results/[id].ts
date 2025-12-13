@@ -15,7 +15,7 @@ export default async function handler(
 
   if (req.method === "GET") {
     const doc = await Result.findById(id)
-      .populate({ path: "student", select: "name regNo fatherName" })
+      .populate({ path: "student", select: "fullName rollNumber fatherName" })
       .populate({ path: "exam", select: "title term className examDate" });
     if (!doc) return res.status(404).json({ message: "ریکارڈ نہیں ملا" });
     return res.status(200).json({ result: doc });

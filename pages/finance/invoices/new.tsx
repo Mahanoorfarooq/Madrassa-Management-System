@@ -92,7 +92,7 @@ export default function NewInvoicePage() {
               <option value="">انتخاب کریں</option>
               {students.map((s: any) => (
                 <option key={s._id} value={s._id}>
-                  {s.name} - {s.regNo}
+                  {s.fullName} - {s.rollNumber}
                 </option>
               ))}
             </select>

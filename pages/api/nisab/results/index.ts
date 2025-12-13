@@ -18,7 +18,7 @@ export default async function handler(
     if (exam) filter.exam = exam;
     if (q) filter.grade = { $regex: new RegExp(q, "i") };
     const list = await Result.find(filter)
-      .populate({ path: "student", select: "name regNo" })
+      .populate({ path: "student", select: "fullName rollNumber" })
       .populate({ path: "exam", select: "title term className examDate" })
       .sort({ createdAt: -1 })
       .limit(500);

@@ -33,85 +33,95 @@ export default function LibraryBooksList() {
 
   return (
     <LibraryLayout title="کتب">
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 mb-4 grid grid-cols-1 md:grid-cols-4 gap-3 text-right">
-        <div className="md:col-span-2">
-          <label className="text-xs text-gray-600 mb-1 block">تلاش</label>
-          <input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && load()}
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            placeholder="عنوان / مصنف / کیٹیگری / ISBN"
-          />
-        </div>
-        <div className="flex items-end justify-end gap-2">
-          <button
-            onClick={load}
-            className="inline-flex items-center rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-emerald-700"
-          >
-            تازہ کریں
-          </button>
-          <Link
-            href="/library/books/new"
-            className="inline-flex items-center rounded-full bg-secondary px-4 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90"
-          >
-            نئی کتاب
-          </Link>
-        </div>
-      </div>
+      <div className="space-y-4" dir="rtl">
+        <p className="text-sm text-gray-600 text-right max-w-2xl ml-auto">
+          یہاں سے آپ لائبریری کی تمام کتب کو تلاش، فلٹر اور منظم کر سکتے ہیں،
+          نئی کتاب شامل کریں یا موجودہ ریکارڈ میں ترمیم اور حذف کی کارروائی
+          انجام دیں۔
+        </p>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <table className="min-w-full text-xs text-right">
-          <thead className="bg-gray-50 border-b">
-            <tr>
-              <th className="px-3 py-2 font-semibold text-gray-700">عنوان</th>
-              <th className="px-3 py-2 font-semibold text-gray-700">مصنف</th>
-              <th className="px-3 py-2 font-semibold text-gray-700">کیٹیگری</th>
-              <th className="px-3 py-2 font-semibold text-gray-700">ISBN</th>
-              <th className="px-3 py-2 font-semibold text-gray-700">
-                کاپیاں (دستیاب/کل)
-              </th>
-              <th className="px-3 py-2 font-semibold text-gray-700">عمل</th>
-            </tr>
-          </thead>
-          <tbody>
-            {books.map((b) => (
-              <tr key={b._id} className="border-t hover:bg-gray-50">
-                <td className="px-3 py-2">{b.title}</td>
-                <td className="px-3 py-2">{b.author || "-"}</td>
-                <td className="px-3 py-2">{b.category || "-"}</td>
-                <td className="px-3 py-2">{b.isbn || "-"}</td>
-                <td className="px-3 py-2">
-                  {b.availableCopies}/{b.totalCopies}
-                </td>
-                <td className="px-3 py-2 flex gap-2 justify-end">
-                  <Link
-                    href={`/library/books/${b._id}`}
-                    className="text-xs text-primary hover:underline"
-                  >
-                    ترمیم
-                  </Link>
-                  <button
-                    onClick={() => remove(b._id)}
-                    className="text-xs text-red-600 hover:underline"
-                  >
-                    حذف
-                  </button>
-                </td>
-              </tr>
-            ))}
-            {!loading && books.length === 0 && (
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 mb-4 grid grid-cols-1 md:grid-cols-4 gap-3 text-right">
+          <div className="md:col-span-2">
+            <label className="text-xs text-gray-600 mb-1 block">تلاش</label>
+            <input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && load()}
+              className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder="عنوان / مصنف / کیٹیگری / ISBN"
+            />
+          </div>
+          <div className="flex items-end justify-end gap-2">
+            <button
+              onClick={load}
+              className="inline-flex items-center rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-emerald-700"
+            >
+              تازہ کریں
+            </button>
+            <Link
+              href="/library/books/new"
+              className="inline-flex.items-center rounded-full bg-secondary px-4 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90"
+            >
+              نئی کتاب
+            </Link>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <table className="min-w-full text-xs text-right">
+            <thead className="bg-gray-50 border-b">
               <tr>
-                <td
-                  className="px-3 py-4 text-center text-gray-400 text-xs"
-                  colSpan={6}
-                >
-                  کوئی ریکارڈ موجود نہیں۔
-                </td>
+                <th className="px-3 py-2 font-semibold text-gray-700">عنوان</th>
+                <th className="px-3 py-2 font-semibold text-gray-700">مصنف</th>
+                <th className="px-3 py-2 font-semibold text-gray-700">
+                  کیٹیگری
+                </th>
+                <th className="px-3 py-2 font-semibold text-gray-700">ISBN</th>
+                <th className="px-3 py-2 font-semibold text-gray-700">
+                  کاپیاں (دستیاب/کل)
+                </th>
+                <th className="px-3 py-2 font-semibold text-gray-700">عمل</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {books.map((b) => (
+                <tr key={b._id} className="border-t hover:bg-gray-50">
+                  <td className="px-3 py-2">{b.title}</td>
+                  <td className="px-3 py-2">{b.author || "-"}</td>
+                  <td className="px-3 py-2">{b.category || "-"}</td>
+                  <td className="px-3 py-2">{b.isbn || "-"}</td>
+                  <td className="px-3 py-2">
+                    {b.availableCopies}/{b.totalCopies}
+                  </td>
+                  <td className="px-3 py-2 flex gap-2 justify-end">
+                    <Link
+                      href={`/library/books/${b._id}`}
+                      className="text-xs text-primary hover:underline"
+                    >
+                      ترمیم
+                    </Link>
+                    <button
+                      onClick={() => remove(b._id)}
+                      className="text-xs text-red-600 hover:underline"
+                    >
+                      حذف
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              {!loading && books.length === 0 && (
+                <tr>
+                  <td
+                    className="px-3 py-4 text-center text-gray-400 text-xs"
+                    colSpan={6}
+                  >
+                    کوئی ریکارڈ موجود نہیں۔
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </LibraryLayout>
   );

@@ -78,7 +78,8 @@ export default function NewReceiptPage() {
               <option value="">انتخاب کریں</option>
               {students.map((s: any) => (
                 <option key={s._id} value={s._id}>
-                  {s.name} - {s.regNo}
+                  {(s.fullName || s.name) ?? ""} -{" "}
+                  {(s.rollNumber || s.regNo) ?? ""}
                 </option>
               ))}
             </select>

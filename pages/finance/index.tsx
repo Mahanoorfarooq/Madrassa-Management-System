@@ -4,6 +4,12 @@ import api from "@/utils/api";
 import { FinanceLayout } from "@/components/layout/FinanceLayout";
 import { StatCard } from "@/components/ui/Card";
 import { SimpleBarChart } from "@/components/charts/SimpleBarChart";
+import {
+  DollarSign,
+  TrendingUp,
+  TrendingDown,
+  ClipboardCheck,
+} from "lucide-react";
 
 const INCOME_TYPES = [
   "student_fee",
@@ -45,13 +51,23 @@ export default function FinanceDashboard() {
         <StatCard
           title="کل آمدنی"
           value={`₨ ${stats.income.toLocaleString()}`}
+          icon={<TrendingUp className="w-4 h-4" />}
         />
         <StatCard
           title="کل اخراجات"
           value={`₨ ${stats.expense.toLocaleString()}`}
+          icon={<TrendingDown className="w-4 h-4" />}
         />
-        <StatCard title="بیلنس" value={`₨ ${stats.balance.toLocaleString()}`} />
-        <StatCard title="کل معاملات" value={stats.total} />
+        <StatCard
+          title="بیلنس"
+          value={`₨ ${stats.balance.toLocaleString()}`}
+          icon={<DollarSign className="w-4 h-4" />}
+        />
+        <StatCard
+          title="کل معاملات"
+          value={stats.total}
+          icon={<ClipboardCheck className="w-4 h-4" />}
+        />
       </div>
 
       <div className="mb-4">

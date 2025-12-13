@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 interface TopbarProps {
   userName?: string;
   roleLabel?: string;
@@ -36,6 +38,15 @@ export function Topbar({
         </div>
       </div>
       <div className="flex items-center gap-4 text-xs md:text-sm">
+        <Link
+          href="/modules/madrassa"
+          className="hidden sm:inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1.5 text-[11px] font-medium text-emerald-700 border border-emerald-200 hover:bg-emerald-100 hover:border-emerald-300 hover:shadow-sm transition-all duration-200"
+        >
+          <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-white text-[11px]">
+            🏠
+          </span>
+          <span>ہوم</span>
+        </Link>
         {onLogout && (
           <button
             type="button"

@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import api from "@/utils/api";
 import { NisabLayout } from "@/components/layout/NisabLayout";
+import { StatCard } from "@/components/ui/Card";
+import { SimpleBarChart } from "@/components/charts/SimpleBarChart";
+import { BookOpen, ClipboardCheck, GraduationCap } from "lucide-react";
 
 export default function NisabDashboard() {
   const [syCount, setSyCount] = useState(0);
@@ -23,19 +26,35 @@ export default function NisabDashboard() {
 
   return (
     <NisabLayout title="نصاب ڈیش بورڈ">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="p-4 rounded border bg-white">
-          <div className="text-xs text-gray-500">کل سلیبس</div>
-          <div className="text-2xl font-bold">{syCount}</div>
+      <div className="space-y-4" dir="rtl">
+        <p className="text-sm text-gray-600 text-right max-w-2xl ml-auto">
+          یہاں سے آپ سلیبس، امتحانات اور نتائج کا مجموعی خلاصہ دیکھ سکتے ہیں،
+          نیچے دیا گیا گراف بھی ایک نظر میں صورتحال واضح کرتا ہے۔
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <StatCard
+            title="کل سلیبس"
+            value={syCount}
+            icon={<BookOpen className="w-4 h-4" />}
+          />
+          <StatCard
+            title="کل امتحانات"
+            value={exCount}
+            icon={<ClipboardCheck className="w-4 h-4" />}
+          />
+          <StatCard
+            title="کل نتائج"
+            value={reCount}
+            icon={<GraduationCap className="w-4 h-4" />}
+          />
         </div>
-        <div className="p-4 rounded border bg-white">
-          <div className="text-xs text-gray-500">کل امتحانات</div>
-          <div className="text-2xl font-bold">{exCount}</div>
-        </div>
-        <div className="p-4 rounded border bg-white">
-          <div className="text-xs text-gray-500">کل نتائج</div>
-          <div className="text-2xl font-bold">{reCount}</div>
-        </div>
+
+        <SimpleBarChart
+          title="نصاب ماڈیول کا خلاصہ"
+          labels={["سلیبس", "امتحانات", "نتائج"]}
+          values={[syCount, exCount, reCount]}
+        />
       </div>
     </NisabLayout>
   );

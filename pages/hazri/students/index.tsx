@@ -171,8 +171,8 @@ export default function StudentsHazriPage() {
           <tbody>
             {students.map((s: any) => (
               <tr key={s._id} className="border-t">
-                <td className="px-3 py-2">{s.name}</td>
-                <td className="px-3 py-2">{s.regNo}</td>
+                <td className="px-3 py-2">{s.fullName || s.name}</td>
+                <td className="px-3 py-2">{s.rollNumber || s.regNo}</td>
                 <td className="px-3 py-2">{attendance[s._id] || "-"}</td>
                 <td className="px-3 py-2">
                   <div className="flex gap-2 justify-end">

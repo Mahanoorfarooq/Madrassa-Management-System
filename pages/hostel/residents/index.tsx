@@ -99,7 +99,16 @@ export default function ResidentsPage() {
           <tbody>
             {items.map((it: any) => (
               <tr key={it._id} className="border-t hover:bg-gray-50">
-                <td className="px-3 py-2">{it.studentId?.name || "-"}</td>
+                <td className="px-3 py-2">
+                  {it.studentId
+                    ? [
+                        it.studentId.fullName || it.studentId.name,
+                        it.studentId.rollNumber,
+                      ]
+                        .filter(Boolean)
+                        .join(" - ") || "-"
+                    : "-"}
+                </td>
                 <td className="px-3 py-2">{it.hostelId?.name || "-"}</td>
                 <td className="px-3 py-2">{it.roomId?.roomNo || "-"}</td>
                 <td className="px-3 py-2">{it.bedNo}</td>
