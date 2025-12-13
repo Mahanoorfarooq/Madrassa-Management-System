@@ -1,12 +1,41 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import api from "@/utils/api";
 import { TalbaLayout } from "@/components/layout/TalbaLayout";
+import {
+  BookOpen,
+  Plus,
+  Trash2,
+  BarChart3,
+  Filter,
+  Layers,
+} from "lucide-react";
+
+const DEPT_TABS = [
+  {
+    code: "HIFZ",
+    title: "حفظ القرآن",
+    color: "bg-emerald-500 hover:bg-emerald-600",
+  },
+  {
+    code: "NIZAMI",
+    title: "درس نظامی",
+    color: "bg-indigo-500 hover:bg-indigo-600",
+  },
+  { code: "TAJWEED", title: "تجوید", color: "bg-cyan-500 hover:bg-cyan-600" },
+  {
+    code: "WAFAQ",
+    title: "وفاق المدارس",
+    color: "bg-amber-500 hover:bg-amber-600",
+  },
+] as const;
+
+type DeptCode = (typeof DEPT_TABS)[number]["code"];
 
 export default function SyllabusPage() {
   const router = useRouter();
-  const deptCode =
-    (router.query.dept as "HIFZ" | "NIZAMI" | "TAJWEED" | "WAFAQ") || "HIFZ";
+  const deptCode = (router.query.dept as DeptCode) || ("HIFZ" as DeptCode);
 
   const [departmentId, setDepartmentId] = useState<string>("");
   const [classes, setClasses] = useState<{ _id: string; label: string }[]>([]);
@@ -14,6 +43,9 @@ export default function SyllabusPage() {
   const [items, setItems] = useState<any[]>([]);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+
+  const currentTab = DEPT_TABS.find((d) => d.code === deptCode);
 
   useEffect(() => {
     const init = async () => {
@@ -50,99 +82,258 @@ export default function SyllabusPage() {
   const addItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!departmentId || !title) return;
-    await api.post("/api/syllabus", {
-      departmentId,
-      classId,
-      title,
-      description,
-    });
-    setTitle("");
-    setDescription("");
-    loadItems(departmentId, classId);
+    setLoading(true);
+    try {
+      await api.post("/api/syllabus", {
+        departmentId,
+        classId,
+        title,
+        description,
+      });
+      setTitle("");
+      setDescription("");
+      await loadItems(departmentId, classId);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const updateProgress = async (id: string, progress: number) => {
     await api.put(`/api/syllabus/${id}`, { progress });
-    loadItems(departmentId, classId);
+    await loadItems(departmentId, classId);
   };
 
-  return (
-    <TalbaLayout title="نصاب">
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-4 text-right">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div>
-            <label className="text-xs text-gray-600 mb-1 block">
-              کلاس منتخب کریں
-            </label>
-            <select
-              value={classId}
-              onChange={(e) => setClassId(e.target.value)}
-              className="w-full rounded border px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            >
-              <option value="">تمام</option>
-              {classes.map((c) => (
-                <option key={c._id} value={c._id}>
-                  {c.label}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="md:col-span-2">
-            <label className="text-xs text-gray-600 mb-1 block">نیا آئٹم</label>
-            <form
-              onSubmit={addItem}
-              className="grid grid-cols-1 md:grid-cols-3 gap-2"
-            >
-              <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="عنوان"
-                className="rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <input
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="تفصیل"
-                className="rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary md:col-span-2"
-              />
-              <button className="inline-flex items-center rounded bg-primary text-white px-6 py-2 text-sm font-semibold hover:bg-emerald-700">
-                شامل کریں
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
+  const deleteItem = async (id: string) => {
+    if (!confirm("کیا آپ واقعی اس آئٹم کو حذف کرنا چاہتے ہیں؟")) return;
+    await api.delete(`/api/syllabus/${id}`);
+    await loadItems(departmentId, classId);
+  };
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-right">
-        <h2 className="text-sm font-semibold mb-3">نصاب کی فہرست</h2>
-        <div className="divide-y">
-          {items.map((i) => (
-            <div key={i._id} className="py-3 flex items-center justify-between">
-              <div>
-                <div className="text-sm text-gray-800">{i.title}</div>
-                {i.description && (
-                  <div className="text-xs text-gray-500">{i.description}</div>
-                )}
+  const avgProgress =
+    items.length > 0
+      ? Math.round(
+          items.reduce((sum, i) => sum + (i.progress || 0), 0) / items.length
+        )
+      : 0;
+
+  return (
+    <TalbaLayout>
+      <div className="space-y-4" dir="rtl">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl shadow-md p-5 text-white">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
+                <BookOpen className="w-7 h-7" />
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-600">ترقی:</span>
-                <input
-                  type="range"
-                  min={0}
-                  max={100}
-                  value={i.progress || 0}
-                  onChange={(e) =>
-                    updateProgress(i._id, Number(e.target.value))
-                  }
-                />
-                <span className="text-xs text-gray-800 w-8 text-center">
-                  {i.progress || 0}%
-                </span>
+              <div>
+                <h1 className="text-xl font-bold">نصاب کا انتظام</h1>
+                <p className="text-purple-100 text-xs">
+                  نصاب کی تفصیلات اور پیشرفت
+                </p>
               </div>
             </div>
-          ))}
-          {items.length === 0 && (
-            <p className="text-xs text-gray-500">کوئی ریکارڈ موجود نہیں۔</p>
+            {items.length > 0 && (
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
+                <div className="flex items-center gap-2">
+                  <BarChart3 className="w-5 h-5" />
+                  <div>
+                    <p className="text-[10px] text-purple-100">اوسط پیشرفت</p>
+                    <p className="text-lg font-bold">{avgProgress}%</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Department Tabs */}
+        <div className="bg-white rounded-xl shadow-md border border-gray-100 p-3">
+          <div className="flex items-center gap-2 mb-3">
+            <Layers className="w-4 h-4 text-purple-600" />
+            <h2 className="text-sm font-bold text-gray-800">شعبہ منتخب کریں</h2>
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            {DEPT_TABS.map((d) => {
+              const active = d.code === deptCode;
+              return (
+                <Link
+                  key={d.code}
+                  href={{
+                    pathname: "/talba/syllabus",
+                    query: { dept: d.code },
+                  }}
+                  className={`text-xs font-semibold rounded-lg px-4 py-2 transition-all ${
+                    active
+                      ? `${d.color} text-white shadow-md`
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  {d.title}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Filter & Add Form */}
+        <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <Filter className="w-4 h-4 text-gray-600" />
+            <h2 className="text-sm font-bold text-gray-800">
+              کلاس منتخب کریں اور نیا آئٹم شامل کریں
+            </h2>
+          </div>
+          <form onSubmit={addItem} className="space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                  کلاس
+                </label>
+                <select
+                  value={classId}
+                  onChange={(e) => setClassId(e.target.value)}
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                >
+                  <option value="">تمام کلاسز</option>
+                  {classes.map((c) => (
+                    <option key={c._id} value={c._id}>
+                      {c.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                  عنوان
+                </label>
+                <input
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="مثلاً: سورۃ البقرہ"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                  تفصیل
+                </label>
+                <input
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="اختیاری تفصیل"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                />
+              </div>
+              <div className="flex items-end">
+                <button
+                  type="submit"
+                  disabled={loading || !title}
+                  className={`w-full inline-flex items-center justify-center gap-2 rounded-lg ${currentTab?.color} text-white px-4 py-2.5 text-sm font-semibold shadow-md hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all`}
+                >
+                  {loading ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <span>شامل ہو رہا ہے...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="w-4 h-4" />
+                      <span>شامل کریں</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        {/* Syllabus Items */}
+        <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+          {items.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="bg-gray-100 rounded-full p-5 w-20 h-20 mx-auto mb-3 flex items-center justify-center">
+                <BookOpen className="w-10 h-10 text-gray-400" />
+              </div>
+              <p className="text-gray-500 font-medium text-sm mb-1">
+                کوئی نصاب آئٹم نہیں
+              </p>
+              <p className="text-xs text-gray-400">
+                اوپر فارم استعمال کرکے نیا آئٹم شامل کریں
+              </p>
+            </div>
+          ) : (
+            <div className="divide-y divide-gray-100">
+              {items.map((item, index) => (
+                <div
+                  key={item._id}
+                  className={`p-4 hover:bg-purple-50 transition-colors ${
+                    index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                          <BookOpen className="w-4 h-4 text-purple-600" />
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-bold text-gray-800">
+                            {item.title}
+                          </h3>
+                          {item.description && (
+                            <p className="text-xs text-gray-500">
+                              {item.description}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="mr-11">
+                        <div className="flex items-center gap-3">
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-xs text-gray-600">
+                                پیشرفت
+                              </span>
+                              <span className="text-xs font-bold text-gray-800">
+                                {item.progress || 0}%
+                              </span>
+                            </div>
+                            <div className="relative">
+                              <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300"
+                                  style={{
+                                    width: `${item.progress || 0}%`,
+                                  }}
+                                ></div>
+                              </div>
+                            </div>
+                          </div>
+                          <input
+                            type="range"
+                            min={0}
+                            max={100}
+                            value={item.progress || 0}
+                            onChange={(e) =>
+                              updateProgress(item._id, Number(e.target.value))
+                            }
+                            className="w-32 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => deleteItem(item._id)}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      حذف
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       </div>

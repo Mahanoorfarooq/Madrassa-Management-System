@@ -3,7 +3,14 @@ import api from "@/utils/api";
 import { HostelLayout } from "@/components/layout/HostelLayout";
 import { StatCard } from "@/components/ui/Card";
 import { SimpleBarChart } from "@/components/charts/SimpleBarChart";
-import { Home, ClipboardCheck, Users } from "lucide-react";
+import {
+  Home,
+  ClipboardCheck,
+  Users,
+  Building2,
+  Bed,
+  Filter,
+} from "lucide-react";
 
 export default function HostelDashboard() {
   const [hostels, setHostels] = useState<any[]>([]);
@@ -71,99 +78,161 @@ export default function HostelDashboard() {
   return (
     <HostelLayout title="ہاسٹل ڈیش بورڈ">
       <div className="space-y-4" dir="rtl">
-        <p className="text-sm text-gray-600 text-right max-w-2xl ml-auto">
-          یہاں سے آپ ہاسٹل، کمروں اور بیڈ الوکیشن کی مجموعی صورتحال دیکھ سکتے
-          ہیں، ساتھ ہی ہر ہاسٹل میں مصروف بیڈز کا خلاصہ بھی گراف کی صورت میں
-          موجود ہے۔
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard
-            title="کل ہاسٹل"
-            value={hostels.length}
-            icon={<Home className="w-4 h-4" />}
-          />
-          <StatCard
-            title="کل کمرے"
-            value={rooms.length}
-            icon={<ClipboardCheck className="w-4 h-4" />}
-          />
-          <StatCard
-            title="فعال الوکیشنز"
-            value={allocs.length}
-            icon={<Users className="w-4 h-4" />}
-          />
-        </div>
-
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 mb-4 grid grid-cols-1 md:grid-cols-4 gap-3 text-right">
-          <div>
-            <label className="text-xs text-gray-600 mb-1 block">ہاسٹل</label>
-            <select
-              value={selectedHostelId}
-              onChange={(e) => setSelectedHostelId(e.target.value)}
-              className="w-full rounded border px-2 py-2 text-sm"
-            >
-              <option value="">تمام</option>
-              {hostels.map((h: any) => (
-                <option key={h._id} value={h._id}>
-                  {h.name}
-                </option>
-              ))}
-            </select>
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-md p-5 text-white">
+          <div className="flex items-center gap-3">
+            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
+              <Building2 className="w-7 h-7" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold">ہاسٹل ڈیش بورڈ</h1>
+              <p className="text-blue-100 text-xs">
+                ہاسٹل، کمروں اور بیڈ الوکیشن کی مجموعی صورتحال
+              </p>
+            </div>
           </div>
-          <div className="flex items-end justify-end gap-2 md:col-span-3 text-xs">
-            <button
-              onClick={() => setStatusFilter("all")}
-              className={`px-3 py-1.5 rounded-full border ${
-                statusFilter === "all"
-                  ? "bg-primary text-white border-primary"
-                  : "bg-gray-50 text-gray-700 border-gray-200"
-              }`}
-            >
-              سب بیڈز
-            </button>
-            <button
-              onClick={() => setStatusFilter("free")}
-              className={`px-3 py-1.5 rounded-full border ${
-                statusFilter === "free"
-                  ? "bg-emerald-500 text-white border-emerald-500"
-                  : "bg-gray-50 text-gray-700 border-gray-200"
-              }`}
-            >
-              خالی ({freeBeds})
-            </button>
-            <button
-              onClick={() => setStatusFilter("occupied")}
-              className={`px-3 py-1.5 rounded-full border ${
-                statusFilter === "occupied"
-                  ? "bg-red-500 text-white border-red-500"
-                  : "bg-gray-50 text-gray-700 border-gray-200"
-              }`}
-            >
-              مصروف ({occupiedBeds})
-            </button>
+
+          {/* Stats */}
+          <div className="grid grid-cols-5 gap-3 mt-4">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2">
+              <div className="flex items-center gap-2">
+                <Building2 className="w-4 h-4" />
+                <div>
+                  <p className="text-[10px] text-blue-100">کل ہاسٹل</p>
+                  <p className="text-sm font-bold">{hostels.length}</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2">
+              <div className="flex items-center gap-2">
+                <Home className="w-4 h-4" />
+                <div>
+                  <p className="text-[10px] text-blue-100">کل کمرے</p>
+                  <p className="text-sm font-bold">{rooms.length}</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2">
+              <div className="flex items-center gap-2">
+                <Bed className="w-4 h-4" />
+                <div>
+                  <p className="text-[10px] text-blue-100">کل بیڈز</p>
+                  <p className="text-sm font-bold">{totalBeds}</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2">
+              <div className="flex items-center gap-2">
+                <ClipboardCheck className="w-4 h-4 text-emerald-300" />
+                <div>
+                  <p className="text-[10px] text-blue-100">خالی بیڈز</p>
+                  <p className="text-sm font-bold">{freeBeds}</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2">
+              <div className="flex items-center gap-2">
+                <Users className="w-4 h-4 text-red-300" />
+                <div>
+                  <p className="text-[10px] text-blue-100">مصروف بیڈز</p>
+                  <p className="text-sm font-bold">{occupiedBeds}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {hostelStats.labels.length > 0 && (
-          <SimpleBarChart
-            title="ہر ہاسٹل میں مصروف بیڈز"
-            labels={hostelStats.labels}
-            values={hostelStats.values}
-          />
-        )}
+        {/* Filters */}
+        <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <Filter className="w-4 h-4 text-gray-600" />
+            <h2 className="text-sm font-bold text-gray-800">فلٹرز</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                ہاسٹل
+              </label>
+              <select
+                value={selectedHostelId}
+                onChange={(e) => setSelectedHostelId(e.target.value)}
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              >
+                <option value="">تمام ہاسٹلز</option>
+                {hostels.map((h: any) => (
+                  <option key={h._id} value={h._id}>
+                    {h.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                بیڈ کی حیثیت
+              </label>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setStatusFilter("all")}
+                  className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                    statusFilter === "all"
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  سب بیڈز
+                </button>
+                <button
+                  onClick={() => setStatusFilter("free")}
+                  className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                    statusFilter === "free"
+                      ? "bg-emerald-600 text-white shadow-md"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  خالی ({freeBeds})
+                </button>
+                <button
+                  onClick={() => setStatusFilter("occupied")}
+                  className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                    statusFilter === "occupied"
+                      ? "bg-red-600 text-white shadow-md"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  مصروف ({occupiedBeds})
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
 
+        {/* Hostels & Rooms */}
         {filteredHostels.map((h: any) => {
           const hostelRooms = rooms.filter(
             (r: any) => String(r.hostelId) === String(h._id)
           );
           if (!hostelRooms.length) return null;
+
           return (
-            <div key={h._id} className="mb-6">
-              <h2 className="text-base font-semibold text-gray-800 mb-2 text-right">
-                {h.name}
-              </h2>
-              <div className="space-y-4">
+            <div
+              key={h._id}
+              className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden"
+            >
+              {/* Hostel Header */}
+              <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200 px-5 py-3">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-base font-bold text-gray-800 flex items-center gap-2">
+                    <Building2 className="w-4 h-4" />
+                    {h.name}
+                  </h2>
+                  <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium">
+                    {hostelRooms.length} کمرے
+                  </span>
+                </div>
+              </div>
+
+              {/* Rooms */}
+              <div className="p-5 space-y-4">
                 {hostelRooms.map((room: any) => {
                   const roomAllocs = allocs.filter(
                     (a: any) =>
@@ -184,17 +253,28 @@ export default function HostelDashboard() {
                   return (
                     <div
                       key={room._id}
-                      className="border rounded-lg bg-white p-3"
+                      className="border border-gray-200 rounded-lg bg-gray-50/50 p-4"
                     >
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="text-sm font-semibold text-gray-800">
+                      {/* Room Header */}
+                      <div className="flex items-center justify-between mb-3 pb-3 border-b border-gray-200">
+                        <div className="text-sm font-bold text-gray-800">
                           کمرہ {room.roomNo}
                         </div>
-                        <div className="text-[11px] text-gray-500">
-                          کل بیڈز: {total}، مصروف: {roomAllocs.length}
+                        <div className="flex gap-2 text-[11px]">
+                          <span className="bg-emerald-100 text-emerald-700 px-2 py-1 rounded font-medium">
+                            خالی: {total - roomAllocs.length}
+                          </span>
+                          <span className="bg-red-100 text-red-700 px-2 py-1 rounded font-medium">
+                            مصروف: {roomAllocs.length}
+                          </span>
+                          <span className="bg-gray-200 text-gray-700 px-2 py-1 rounded font-medium">
+                            کل: {total}
+                          </span>
                         </div>
                       </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+
+                      {/* Beds Grid */}
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
                         {bedNumbers.map((bedNo) => {
                           const alloc = roomAllocs.find(
                             (a: any) => a.bedNo === bedNo
@@ -212,20 +292,44 @@ export default function HostelDashboard() {
                                 .filter(Boolean)
                                 .join(" - ")
                             : "خالی";
+
                           return (
                             <div
                               key={bedNo}
-                              className={`rounded-lg border px-3 py-2 text-right text-xs ${
+                              className={`rounded-lg border-2 p-3 text-right transition-all hover:shadow-md ${
                                 isOccupied
-                                  ? "bg-red-50 border-red-200 text-red-700"
-                                  : "bg-emerald-50 border-emerald-200 text-emerald-700"
+                                  ? "bg-red-50 border-red-300"
+                                  : "bg-emerald-50 border-emerald-300"
                               }`}
                             >
-                              <div className="font-bold mb-1">بیڈ {bedNo}</div>
-                              <div className="mb-1">
+                              <div className="flex items-center justify-between mb-2">
+                                <Bed
+                                  className={`w-4 h-4 ${
+                                    isOccupied
+                                      ? "text-red-600"
+                                      : "text-emerald-600"
+                                  }`}
+                                />
+                                <div
+                                  className={`text-base font-bold ${
+                                    isOccupied
+                                      ? "text-red-700"
+                                      : "text-emerald-700"
+                                  }`}
+                                >
+                                  {bedNo}
+                                </div>
+                              </div>
+                              <div
+                                className={`text-xs font-semibold mb-1 ${
+                                  isOccupied
+                                    ? "text-red-600"
+                                    : "text-emerald-600"
+                                }`}
+                              >
                                 {isOccupied ? "مصروف" : "خالی"}
                               </div>
-                              <div className="text-[11px] truncate">
+                              <div className="text-[11px] text-gray-600 truncate">
                                 {studentLabel}
                               </div>
                             </div>

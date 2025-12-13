@@ -14,7 +14,7 @@ export default function NewTeacherPage() {
   };
 
   return (
-    <TalbaLayout title="نیا استاد شامل کریں">
+    <TalbaLayout>
       <TeacherForm
         deptCode={dept}
         onSubmit={onSubmit}

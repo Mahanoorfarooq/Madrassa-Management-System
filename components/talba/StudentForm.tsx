@@ -1,5 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "@/utils/api";
+import {
+  User,
+  Phone,
+  Calendar,
+  CreditCard,
+  MapPin,
+  Image,
+  Hash,
+  GraduationCap,
+  Users,
+  AlertCircle,
+} from "lucide-react";
 
 interface Option {
   _id: string;
@@ -63,7 +75,6 @@ export default function StudentForm({
     const bootstrap = async () => {
       try {
         setError(null);
-        // Resolve department by code, ensure it exists
         const deptRes = await api.get("/api/departments", {
           params: { code: deptCode, ensure: "true" },
         });
@@ -71,7 +82,6 @@ export default function StudentForm({
         if (dept?._id) {
           setDepartmentId(dept._id);
           setValues((v) => ({ ...v, departmentId: dept._id }));
-          // Load classes for this department
           const classesRes = await api.get("/api/classes", {
             params: { departmentId: dept._id },
           });
@@ -80,7 +90,6 @@ export default function StudentForm({
             label: c.className || c.title,
           }));
           setClasses(cls);
-          // If initial classId given, load sections
           const classId = initial?.classId || values.classId;
           if (classId) {
             const sectionsRes = await api.get("/api/sections", {
@@ -98,7 +107,6 @@ export default function StudentForm({
       }
     };
     bootstrap();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deptCode]);
 
   const onChange = (
@@ -127,7 +135,7 @@ export default function StudentForm({
     }
   };
 
-  const submit = async (e: React.FormEvent) => {
+  const submit = async (e: React.MouseEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -140,166 +148,247 @@ export default function StudentForm({
     }
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      submit(e as any);
+    }
+  };
+
+  const InputField = ({
+    icon: Icon,
+    label,
+    name,
+    type = "text",
+    placeholder = "",
+    required = false,
+    value,
+    onChange,
+  }: any) => (
+    <div className="group">
+      <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+        <Icon className="w-4 h-4 text-emerald-600" />
+        {label}
+      </label>
+      <input
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        required={required}
+        placeholder={placeholder}
+        onKeyPress={handleKeyPress}
+        className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 hover:border-gray-300"
+      />
+    </div>
+  );
+
+  const SelectField = ({
+    icon: Icon,
+    label,
+    name,
+    value,
+    onChange,
+    options,
+    placeholder = "منتخب کریں",
+  }: any) => (
+    <div className="group">
+      <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+        <Icon className="w-4 h-4 text-emerald-600" />
+        {label}
+      </label>
+      <select
+        name={name}
+        value={value}
+        onChange={onChange}
+        className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 hover:border-gray-300 bg-white"
+      >
+        <option value="">{placeholder}</option>
+        {options.map((opt: any) => (
+          <option key={opt._id || opt.value} value={opt._id || opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+
   return (
-    <form onSubmit={submit} className="space-y-4 text-right">
-      {error && (
-        <div className="rounded bg-red-100 text-red-700 text-xs px-3 py-2">
-          {error}
+    <div className="max-w-5xl mx-auto">
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-emerald-600 to-teal-600 px-8 py-6">
+          <h2 className="text-2xl font-bold text-white text-right">
+            معلومات طالب علم
+          </h2>
+          <p className="text-emerald-50 text-sm mt-1 text-right">
+            براہ کرم تمام ضروری معلومات درج کریں
+          </p>
         </div>
-      )}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">
-            نام طالب علم
-          </label>
-          <input
-            name="fullName"
-            value={values.fullName}
-            onChange={onChange}
-            required
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          />
+
+        {/* Error Message */}
+        {error && (
+          <div className="mx-8 mt-6 rounded-lg bg-red-50 border-l-4 border-red-500 p-4 flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+            <p className="text-sm text-red-700">{error}</p>
+          </div>
+        )}
+
+        {/* Form Content */}
+        <div className="p-8 space-y-8">
+          {/* Personal Information Section */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b-2 border-emerald-100 text-right">
+              ذاتی معلومات
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <InputField
+                icon={User}
+                label="نام طالب علم"
+                name="fullName"
+                value={values.fullName}
+                onChange={onChange}
+                required
+              />
+              <InputField
+                icon={User}
+                label="والد کا نام"
+                name="fatherName"
+                value={values.fatherName || ""}
+                onChange={onChange}
+              />
+              <InputField
+                icon={Calendar}
+                label="تاریخ پیدائش"
+                name="dateOfBirth"
+                type="date"
+                value={values.dateOfBirth || ""}
+                onChange={onChange}
+              />
+              <InputField
+                icon={Phone}
+                label="رابطہ نمبر"
+                name="contactNumber"
+                value={values.contactNumber || ""}
+                onChange={onChange}
+              />
+              <InputField
+                icon={CreditCard}
+                label="شناختی کارڈ نمبر"
+                name="cnic"
+                value={values.cnic || ""}
+                onChange={onChange}
+                placeholder="مثال: 12345-1234567-1"
+              />
+              <div className="group">
+                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-emerald-600" />
+                  پتہ
+                </label>
+                <textarea
+                  name="address"
+                  value={values.address || ""}
+                  onChange={onChange}
+                  rows={3}
+                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 hover:border-gray-300 resize-none"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Academic Information Section */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b-2 border-emerald-100 text-right">
+              تعلیمی معلومات
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <InputField
+                icon={Image}
+                label="طالب علم کی تصویر (URL)"
+                name="photoUrl"
+                value={values.photoUrl || ""}
+                onChange={onChange}
+                placeholder="https://..."
+              />
+              <InputField
+                icon={Hash}
+                label="داخلہ نمبر"
+                name="admissionNumber"
+                value={values.admissionNumber || ""}
+                onChange={onChange}
+              />
+              <InputField
+                icon={Calendar}
+                label="داخلہ کی تاریخ"
+                name="admissionDate"
+                type="date"
+                value={values.admissionDate || ""}
+                onChange={onChange}
+              />
+              <SelectField
+                icon={GraduationCap}
+                label="کلاس"
+                name="classId"
+                value={values.classId || ""}
+                onChange={handleClassChange}
+                options={classes}
+              />
+              <SelectField
+                icon={Users}
+                label="سیکشن"
+                name="sectionId"
+                value={values.sectionId || ""}
+                onChange={onChange}
+                options={sections}
+              />
+              <SelectField
+                icon={AlertCircle}
+                label="حیثیت"
+                name="status"
+                value={values.status || "Active"}
+                onChange={onChange}
+                options={[
+                  { value: "Active", label: "فعال" },
+                  { value: "Left", label: "نکل چکے" },
+                ]}
+              />
+            </div>
+          </div>
         </div>
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">
-            والد کا نام
-          </label>
-          <input
-            name="fatherName"
-            value={values.fatherName || ""}
-            onChange={onChange}
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">
-            تاریخ پیدائش
-          </label>
-          <input
-            type="date"
-            name="dateOfBirth"
-            value={values.dateOfBirth || ""}
-            onChange={onChange}
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">رابطہ نمبر</label>
-          <input
-            name="contactNumber"
-            value={values.contactNumber || ""}
-            onChange={onChange}
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">
-            شناختی کارڈ نمبر
-          </label>
-          <input
-            name="cnic"
-            value={values.cnic || ""}
-            onChange={onChange}
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            placeholder="مثال: 12345-1234567-1"
-          />
-        </div>
-        <div className="md:col-span-2">
-          <label className="block text-xs text-gray-700 mb-1">پتہ</label>
-          <textarea
-            name="address"
-            value={values.address || ""}
-            onChange={onChange}
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">
-            طالب علم کی تصویر (URL)
-          </label>
-          <input
-            name="photoUrl"
-            value={values.photoUrl || ""}
-            onChange={onChange}
-            placeholder="https://..."
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">داخلہ نمبر</label>
-          <input
-            name="admissionNumber"
-            value={values.admissionNumber || ""}
-            onChange={onChange}
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">
-            داخلہ کی تاریخ
-          </label>
-          <input
-            type="date"
-            name="admissionDate"
-            value={values.admissionDate || ""}
-            onChange={onChange}
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">کلاس</label>
-          <select
-            name="classId"
-            value={values.classId || ""}
-            onChange={handleClassChange}
-            className="w-full rounded border px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+
+        {/* Footer */}
+        <div className="bg-gray-50 px-8 py-6 flex justify-end border-t border-gray-200">
+          <button
+            onClick={submit}
+            disabled={loading}
+            className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-8 py-3.5 text-sm font-semibold shadow-lg hover:shadow-xl hover:from-emerald-700 hover:to-teal-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 active:scale-95"
           >
-            <option value="">منتخب کریں</option>
-            {classes.map((c) => (
-              <option key={c._id} value={c._id}>
-                {c.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">سیکشن</label>
-          <select
-            name="sectionId"
-            value={values.sectionId || ""}
-            onChange={onChange}
-            className="w-full rounded border px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          >
-            <option value="">منتخب کریں</option>
-            {sections.map((s) => (
-              <option key={s._id} value={s._id}>
-                {s.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">حیثیت</label>
-          <select
-            name="status"
-            value={values.status || "Active"}
-            onChange={onChange}
-            className="w-full rounded border px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          >
-            <option value="Active">فعال</option>
-            <option value="Left">نکل چکے</option>
-          </select>
+            {loading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span>محفوظ ہو رہا ہے...</span>
+              </>
+            ) : (
+              <>
+                <span>{submitLabel}</span>
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </>
+            )}
+          </button>
         </div>
       </div>
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          disabled={loading}
-          className="inline-flex items-center rounded bg-primary text-white px-6 py-2 text-sm font-semibold hover:bg-emerald-700 disabled:opacity-60"
-        >
-          {submitLabel}
-        </button>
-      </div>
-    </form>
+    </div>
   );
 }

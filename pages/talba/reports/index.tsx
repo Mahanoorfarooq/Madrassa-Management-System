@@ -3,7 +3,14 @@ import api from "@/utils/api";
 import { TalbaLayout } from "@/components/layout/TalbaLayout";
 import { SimpleBarChart } from "@/components/charts/SimpleBarChart";
 import { StatCard } from "@/components/ui/Card";
-import { Users, GraduationCap, ClipboardCheck } from "lucide-react";
+import {
+  Users,
+  GraduationCap,
+  ClipboardCheck,
+  TrendingUp,
+  BarChart3,
+  FileText,
+} from "lucide-react";
 
 interface DeptStat {
   _id: string;
@@ -68,83 +75,170 @@ export default function TalbaReportsPage() {
   );
 
   return (
-    <TalbaLayout title="طلبہ رپورٹس">
-      <div className="space-y-4">
-        <p className="text-sm text-gray-600 max-w-3xl ml-auto text-right">
-          یہاں آپ کو ہر شعبہ میں رجسٹرڈ طلبہ اور کلاسز کا خلاصہ نظر آئے گا، ساتھ
-          ہی گراف کی صورت میں موازنہ بھی۔
-        </p>
+    <TalbaLayout >
+      <div className="space-y-6" dir="rtl">
+        {/* Header Section */}
+        <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl shadow-lg p-6 text-white">
+          <div className="flex items-center justify-start gap-3">
+            <BarChart3 className="w-8 h-8" />
+            <div>
+              <h1 className="text-2xl font-bold mb-2">رپورٹس اور تجزیہ</h1>
+              <p className="text-purple-100 text-sm max-w-2xl">
+                یہاں آپ کو ہر شعبہ میں رجسٹرڈ طلبہ اور کلاسز کا خلاصہ نظر آئے
+                گا، ساتھ ہی گراف کی صورت میں موازنہ بھی۔
+              </p>
+            </div>
+          </div>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard
-            title="کل شعبہ جات"
-            value={stats.length}
-            icon={<ClipboardCheck className="w-4 h-4" />}
-          />
-          <StatCard
-            title="کل طلبہ"
-            value={totalStudents}
-            icon={<Users className="w-4 h-4" />}
-          />
-          <StatCard
-            title="کل کلاسز"
-            value={totalClasses}
-            icon={<GraduationCap className="w-4 h-4" />}
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white rounded-xl shadow-md border-2 border-blue-100 p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-center justify-between">
+              <div className="bg-blue-100 rounded-full p-4">
+                <ClipboardCheck className="w-8 h-8 text-blue-600" />
+              </div>
+              <div className="text-right flex-1">
+                <p className="text-sm text-gray-600 mb-1">کل شعبہ جات</p>
+                <p className="text-3xl font-bold text-blue-600">
+                  {stats.length}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-md border-2 border-green-100 p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-center justify-between">
+              <div className="bg-green-100 rounded-full p-4">
+                <Users className="w-8 h-8 text-green-600" />
+              </div>
+              <div className="text-right flex-1">
+                <p className="text-sm text-gray-600 mb-1">کل طلبہ</p>
+                <p className="text-3xl font-bold text-green-600">
+                  {totalStudents}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-md border-2 border-orange-100 p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-center justify-between">
+              <div className="bg-orange-100 rounded-full p-4">
+                <GraduationCap className="w-8 h-8 text-orange-600" />
+              </div>
+              <div className="text-right flex-1">
+                <p className="text-sm text-gray-600 mb-1">کل کلاسز</p>
+                <p className="text-3xl font-bold text-orange-600">
+                  {totalClasses}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Chart Section */}
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="bg-purple-100 rounded-full p-2">
+              <TrendingUp className="w-5 h-5 text-purple-600" />
+            </div>
+            <h2 className="text-lg font-bold text-gray-800">
+              شعبہ وار طلبہ کی تعداد
+            </h2>
+          </div>
+          <SimpleBarChart
+            title=""
+            labels={stats.map((s) => s.name)}
+            values={stats.map((s) => s.studentCount || 0)}
           />
         </div>
 
-        <SimpleBarChart
-          title="شعبہ وار طلبہ کی تعداد"
-          labels={stats.map((s) => s.name)}
-          values={stats.map((s) => s.studentCount || 0)}
-        />
-
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="px-4 py-3 border-b flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-gray-800 text-right">
-              تفصیلی رپورٹ (شعبہ وار)
-            </h2>
-            {loading && (
-              <span className="text-[11px] text-gray-500">
-                لوڈ ہو رہا ہے...
-              </span>
-            )}
+        {/* Detailed Table */}
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="bg-purple-100 rounded-full p-2">
+                <FileText className="w-5 h-5 text-purple-600" />
+              </div>
+              <h2 className="text-lg font-bold text-gray-800">
+                تفصیلی رپورٹ (شعبہ وار)
+              </h2>
+            </div>
+            <div className="flex items-center gap-2">
+              {loading && (
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-gray-600">
+                    لوڈ ہو رہا ہے...
+                  </span>
+                  <div className="w-4 h-4 border-2 border-purple-600 border-t-transparent rounded-full animate-spin" />
+                </div>
+              )}
+            </div>
           </div>
+
           {error && (
-            <div className="px-4 py-2 text-xs text-red-600 bg-red-50 text-right">
-              {error}
+            <div className="px-6 py-4 bg-red-50 border-r-4 border-red-500 flex items-start gap-3">
+              <p className="text-sm text-red-700 flex-1 text-right">{error}</p>
+              <div className="bg-red-100 rounded-full p-1">
+                <ClipboardCheck className="w-4 h-4 text-red-600" />
+              </div>
             </div>
           )}
+
           <div className="overflow-x-auto">
-            <table className="min-w-full text-xs text-right">
-              <thead className="bg-gray-50 border-b">
+            <table className="min-w-full text-sm">
+              <thead className="bg-gradient-to-r from-purple-50 to-pink-50">
                 <tr>
-                  <th className="px-3 py-2 font-semibold text-gray-700">
+                  <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-purple-200">
                     شعبہ
                   </th>
-                  <th className="px-3 py-2 font-semibold text-gray-700">
+                  <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-purple-200">
                     کل طلبہ
                   </th>
-                  <th className="px-3 py-2 font-semibold text-gray-700">
+                  <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-purple-200">
                     کل کلاسز
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {stats.map((d) => (
-                  <tr key={d._id} className="border-t hover:bg-gray-50">
-                    <td className="px-3 py-2">{d.name}</td>
-                    <td className="px-3 py-2">{d.studentCount}</td>
-                    <td className="px-3 py-2">{d.classCount}</td>
+                {stats.map((d, index) => (
+                  <tr
+                    key={d._id}
+                    className={`border-b hover:bg-purple-50 transition-colors ${
+                      index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                    }`}
+                  >
+                    <td className="px-6 py-4 text-right font-medium text-gray-800">
+                      {d.name}
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <span className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                        <span>{d.studentCount}</span>
+                        <Users className="w-3 h-3" />
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <span className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-semibold">
+                        <span>{d.classCount}</span>
+                        <GraduationCap className="w-3 h-3" />
+                      </span>
+                    </td>
                   </tr>
                 ))}
                 {!loading && stats.length === 0 && (
                   <tr>
-                    <td
-                      colSpan={3}
-                      className="px-3 py-4 text-center text-gray-400"
-                    >
-                      کوئی ڈیٹا دستیاب نہیں۔
+                    <td colSpan={3} className="px-6 py-12 text-center">
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="bg-gray-100 rounded-full p-4">
+                          <FileText className="w-12 h-12 text-gray-400" />
+                        </div>
+                        <p className="text-gray-500 font-medium">
+                          کوئی ڈیٹا دستیاب نہیں۔
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          ابھی تک کوئی رپورٹ موجود نہیں ہے
+                        </p>
+                      </div>
                     </td>
                   </tr>
                 )}

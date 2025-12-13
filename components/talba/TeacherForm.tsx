@@ -1,5 +1,16 @@
 import { useEffect, useState } from "react";
 import api from "@/utils/api";
+import {
+  User,
+  Award,
+  Phone,
+  UserCircle,
+  Lock,
+  GraduationCap,
+  Plus,
+  X,
+  AlertCircle,
+} from "lucide-react";
 
 export interface TeacherFormValues {
   fullName: string;
@@ -7,7 +18,6 @@ export interface TeacherFormValues {
   contactNumber?: string;
   departmentId: string;
   assignedClasses: string[];
-  // Optional login fields so Talba module can also create teacher logins
   username?: string;
   password?: string;
 }
@@ -70,7 +80,6 @@ export default function TeacherForm({
       }
     };
     bootstrap();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deptCode]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,7 +114,7 @@ export default function TeacherForm({
     }));
   };
 
-  const submit = async (e: React.FormEvent) => {
+  const submit = async (e: React.MouseEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -118,137 +127,255 @@ export default function TeacherForm({
     }
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+    }
+  };
+
+  const InputField = ({
+    icon: Icon,
+    label,
+    name,
+    type = "text",
+    placeholder = "",
+    required = false,
+    value,
+    onChange,
+  }: any) => (
+    <div className="group">
+      <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+        <Icon className="w-4 h-4 text-blue-600" />
+        {label}
+      </label>
+      <input
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        required={required}
+        placeholder={placeholder}
+        onKeyPress={handleKeyPress}
+        className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 hover:border-gray-300"
+      />
+    </div>
+  );
+
   return (
-    <form onSubmit={submit} className="space-y-4 text-right">
-      {error && (
-        <div className="rounded bg-red-100 text-red-700 text-xs px-3 py-2">
-          {error}
+    <div className="max-w-5xl mx-auto">
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-6">
+          <h2 className="text-2xl font-bold text-white text-right flex items-center justify-end gap-3">
+            <span>معلومات استاد</span>
+            <Award className="w-7 h-7" />
+          </h2>
+          <p className="text-blue-50 text-sm mt-1 text-right">
+            براہ کرم تمام ضروری معلومات درج کریں
+          </p>
         </div>
-      )}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">نام استاد</label>
-          <input
-            name="fullName"
-            value={values.fullName}
-            onChange={onChange}
-            required
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">عہدہ</label>
-          <input
-            name="designation"
-            value={values.designation || ""}
-            onChange={onChange}
-            placeholder="استاد / قاری / معلم"
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">رابطہ نمبر</label>
-          <input
-            name="contactNumber"
-            value={values.contactNumber || ""}
-            onChange={onChange}
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">
-            لاگ اِن یوزر نام (اختیاری)
-          </label>
-          <input
-            name="username"
-            value={values.username || ""}
-            onChange={onChange}
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            placeholder="مثال: ustad.ahmad"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">
-            لاگ اِن پاس ورڈ (نیا / ری سیٹ)
-          </label>
-          <input
-            type="password"
-            name="password"
-            value={values.password || ""}
-            onChange={onChange}
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            placeholder="اگر خالی چھوڑیں تو پرانا پاس ورڈ برقرار رہے گا"
-          />
-        </div>
-        <div className="md:col-span-2">
-          <label className="block text-xs text-gray-700 mb-1">
-            تفویض شدہ کلاسز
-          </label>
-          <div className="flex gap-2 mb-2 flex-col md:flex-row">
-            <div className="flex gap-2">
-              <select
-                value={selectClassId}
-                onChange={(e) => setSelectClassId(e.target.value)}
-                className="rounded border px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-              >
-                <option value="">کلاس منتخب کریں</option>
-                {classOptions.map((c) => (
-                  <option key={c._id} value={c._id}>
-                    {c.label}
-                  </option>
-                ))}
-              </select>
-              <button
-                type="button"
-                onClick={addAssignedClassFromSelect}
-                className="inline-flex items-center rounded bg-gray-800 text-white px-4 py-2 text-sm font-semibold hover:bg-gray-900"
-              >
-                شامل کریں
-              </button>
-            </div>
-            <input
-              value={newClassInput}
-              onChange={(e) => setNewClassInput(e.target.value)}
-              placeholder="مثلاً: ح ف ز - کلاس A"
-              className="flex-1 rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-            <button
-              type="button"
-              onClick={addAssignedClass}
-              className="inline-flex items-center rounded bg-gray-800 text-white px-4 py-2 text-sm font-semibold hover:bg-gray-900"
-            >
-              شامل کریں
-            </button>
+
+        {/* Error Message */}
+        {error && (
+          <div className="mx-8 mt-6 rounded-lg bg-red-50 border-l-4 border-red-500 p-4 flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+            <p className="text-sm text-red-700">{error}</p>
           </div>
-          {/* Pills */}
-          <div className="flex gap-2 flex-wrap justify-end">
-            {values.assignedClasses.map((c, idx) => (
-              <span
-                key={`${c}-${idx}`}
-                className="inline-flex items-center gap-2 rounded-full bg-gray-100 text-gray-700 px-3 py-1 text-xs"
-              >
-                {c}
+        )}
+
+        {/* Form Content */}
+        <div className="p-8 space-y-8">
+          {/* Personal Information Section */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b-2 border-blue-100 text-right">
+              ذاتی معلومات
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <InputField
+                icon={User}
+                label="نام استاد"
+                name="fullName"
+                value={values.fullName}
+                onChange={onChange}
+                required
+              />
+              <InputField
+                icon={Award}
+                label="عہدہ"
+                name="designation"
+                value={values.designation || ""}
+                onChange={onChange}
+                placeholder="استاد / قاری / معلم"
+              />
+              <InputField
+                icon={Phone}
+                label="رابطہ نمبر"
+                name="contactNumber"
+                value={values.contactNumber || ""}
+                onChange={onChange}
+              />
+            </div>
+          </div>
+
+          {/* Login Credentials Section */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b-2 border-blue-100 text-right">
+              لاگ اِن کی معلومات (اختیاری)
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <InputField
+                icon={UserCircle}
+                label="یوزر نام"
+                name="username"
+                value={values.username || ""}
+                onChange={onChange}
+                placeholder="مثال: ustad.ahmad"
+              />
+              <InputField
+                icon={Lock}
+                label="پاس ورڈ (نیا / ری سیٹ)"
+                name="password"
+                type="password"
+                value={values.password || ""}
+                onChange={onChange}
+                placeholder="اگر خالی چھوڑیں تو پرانا برقرار رہے گا"
+              />
+            </div>
+          </div>
+
+          {/* Assigned Classes Section */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b-2 border-blue-100 text-right flex items-center justify-end gap-2">
+              <span>تفویض شدہ کلاسز</span>
+              <GraduationCap className="w-5 h-5 text-blue-600" />
+            </h3>
+
+            {/* Add from Dropdown */}
+            <div className="bg-gray-50 rounded-lg p-4 mb-4 border-2 border-gray-200">
+              <p className="text-xs text-gray-600 mb-3 text-right">
+                موجودہ کلاس سے منتخب کریں
+              </p>
+              <div className="flex gap-3 flex-col sm:flex-row">
+                <select
+                  value={selectClassId}
+                  onChange={(e) => setSelectClassId(e.target.value)}
+                  className="flex-1 rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 bg-white"
+                >
+                  <option value="">کلاس منتخب کریں</option>
+                  {classOptions.map((c) => (
+                    <option key={c._id} value={c._id}>
+                      {c.label}
+                    </option>
+                  ))}
+                </select>
                 <button
                   type="button"
-                  onClick={() => removeAssignedClass(idx)}
-                  className="text-gray-500 hover:text-red-600"
+                  onClick={addAssignedClassFromSelect}
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 text-white px-6 py-3 text-sm font-semibold hover:bg-blue-700 transition-all duration-200 hover:shadow-md"
                 >
-                  ×
+                  <Plus className="w-4 h-4" />
+                  <span>شامل کریں</span>
                 </button>
-              </span>
-            ))}
+              </div>
+            </div>
+
+            {/* Add Custom Class */}
+            <div className="bg-gray-50 rounded-lg p-4 mb-4 border-2 border-gray-200">
+              <p className="text-xs text-gray-600 mb-3 text-right">
+                یا نئی کلاس کا نام لکھیں
+              </p>
+              <div className="flex gap-3 flex-col sm:flex-row">
+                <input
+                  value={newClassInput}
+                  onChange={(e) => setNewClassInput(e.target.value)}
+                  placeholder="مثلاً: حفظ - کلاس A"
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      addAssignedClass();
+                    }
+                  }}
+                  className="flex-1 rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                />
+                <button
+                  type="button"
+                  onClick={addAssignedClass}
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-gray-700 text-white px-6 py-3 text-sm font-semibold hover:bg-gray-800 transition-all duration-200 hover:shadow-md"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>شامل کریں</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Display Assigned Classes */}
+            {values.assignedClasses.length > 0 ? (
+              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-200">
+                <p className="text-xs text-blue-700 font-medium mb-3 text-right">
+                  منتخب شدہ کلاسز ({values.assignedClasses.length})
+                </p>
+                <div className="flex gap-2 flex-wrap justify-end">
+                  {values.assignedClasses.map((c, idx) => (
+                    <span
+                      key={`${c}-${idx}`}
+                      className="inline-flex items-center gap-2 rounded-full bg-white border-2 border-blue-200 text-gray-700 px-4 py-2 text-sm font-medium shadow-sm hover:shadow-md transition-all"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => removeAssignedClass(idx)}
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50 rounded-full p-0.5 transition-colors"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                      <span>{c}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="bg-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-300 text-center">
+                <GraduationCap className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                <p className="text-sm text-gray-500">
+                  ابھی تک کوئی کلاس منتخب نہیں کی گئی
+                </p>
+              </div>
+            )}
           </div>
         </div>
+
+        {/* Footer */}
+        <div className="bg-gray-50 px-8 py-6 flex justify-end border-t border-gray-200">
+          <button
+            onClick={submit}
+            disabled={loading}
+            className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3.5 text-sm font-semibold shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 active:scale-95"
+          >
+            {loading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span>محفوظ ہو رہا ہے...</span>
+              </>
+            ) : (
+              <>
+                <span>{submitLabel}</span>
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </>
+            )}
+          </button>
+        </div>
       </div>
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          disabled={loading}
-          className="inline-flex items-center rounded bg-primary text-white px-6 py-2 text-sm font-semibold hover:bg-emerald-700 disabled:opacity-60"
-        >
-          {submitLabel}
-        </button>
-      </div>
-    </form>
+    </div>
   );
 }

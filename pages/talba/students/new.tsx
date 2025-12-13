@@ -17,7 +17,7 @@ export default function NewStudentPage() {
   };
 
   return (
-    <TalbaLayout title="نیا طالب علم شامل کریں">
+    <TalbaLayout>
       <StudentForm
         deptCode={dept}
         onSubmit={onSubmit}

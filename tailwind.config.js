@@ -22,6 +22,7 @@ module.exports = {
       },
       fontFamily: {
         urdu: [
+          "AlQalam Taj Nastaleeq",
           "Noto Nastaliq Urdu",
           "Jameel Noori Nastaleeq",
           "system-ui",
