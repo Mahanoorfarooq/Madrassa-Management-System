@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import "@/lib/models";
 
 const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/madrassa_management";
+  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/madrassa_management";
 
 if (!MONGODB_URI) {
   throw new Error("براہ کرم MONGODB_URI ماحولی متغیر سیٹ کریں۔");
