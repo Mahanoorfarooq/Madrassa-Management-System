@@ -18,18 +18,13 @@ export default function ReceiptsListPage() {
   const [departments, setDepartments] = useState<any[]>([]);
   const [departmentId, setDepartmentId] = useState<string>("");
   const [q, setQ] = useState<string>("");
-  const [loading, setLoading] = useState(false);
+  // loader removed per request
 
   const load = async () => {
-    setLoading(true);
-    try {
-      const res = await api.get("/api/finance/receipts", {
-        params: { departmentId: departmentId || undefined, q: q || undefined },
-      });
-      setItems(res.data?.receipts || []);
-    } finally {
-      setLoading(false);
-    }
+    const res = await api.get("/api/finance/receipts", {
+      params: { departmentId: departmentId || undefined, q: q || undefined },
+    });
+    setItems(res.data?.receipts || []);
   };
 
   useEffect(() => {
@@ -137,14 +132,9 @@ export default function ReceiptsListPage() {
             <div className="md:col-span-2 flex items-end gap-2">
               <button
                 onClick={load}
-                disabled={loading}
-                className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md disabled:opacity-60 transition-all"
+                className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
               >
-                {loading ? (
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  <RefreshCw className="w-4 h-4" />
-                )}
+                <RefreshCw className="w-4 h-4" />
                 <span>تازہ کریں</span>
               </button>
             </div>
@@ -153,11 +143,7 @@ export default function ReceiptsListPage() {
 
         {/* Receipts Table */}
         <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
-          {loading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="w-8 h-8 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-          ) : items.length === 0 ? (
+          {items.length === 0 ? (
             <div className="text-center py-12">
               <div className="bg-gray-100 rounded-full p-5 w-20 h-20 mx-auto mb-3 flex items-center justify-center">
                 <Receipt className="w-10 h-10 text-gray-400" />

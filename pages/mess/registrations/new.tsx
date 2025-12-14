@@ -2,6 +2,15 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import api from "@/utils/api";
 import { MessLayout } from "@/components/layout/MessLayout";
+import {
+  UserCheck,
+  Save,
+  AlertCircle,
+  User,
+  ChefHat,
+  Calendar,
+  CheckCircle,
+} from "lucide-react";
 
 export default function NewRegistrationPage() {
   const router = useRouter();
@@ -73,96 +82,167 @@ export default function NewRegistrationPage() {
 
   return (
     <MessLayout title="نئی رجسٹریشن">
-      <form
-        onSubmit={onSubmit}
-        className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 max-w-2xl ml-auto text-right space-y-4"
-      >
-        {error && (
-          <div className="rounded bg-red-100 text-red-700 text-xs px-3 py-2">
-            {error}
+      <div className="space-y-4" dir="rtl">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-emerald-500 to-green-500 rounded-xl shadow-md p-5 text-white">
+          <div className="flex items-center gap-3">
+            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
+              <UserCheck className="w-7 h-7" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold">نئی رجسٹریشن شامل کریں</h1>
+              <p className="text-emerald-100 text-xs">
+                طالب علم کی میس میں رجسٹریشن کریں
+              </p>
+            </div>
           </div>
-        )}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div>
-            <label className="block text-xs text-gray-700 mb-1">طالب علم</label>
-            <select
-              value={form.studentId || ""}
-              onChange={(e) => set({ studentId: e.target.value })}
-              className="w-full rounded border px-2 py-2 text-sm"
+        </div>
+
+        {/* Form */}
+        <form onSubmit={onSubmit}>
+          <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6">
+            {error && (
+              <div className="mb-5 rounded-lg bg-red-50 border-2 border-red-200 p-4 flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-red-700">{error}</div>
+              </div>
+            )}
+
+            <div className="space-y-5">
+              {/* Student and Kitchen Row */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                    <User className="w-4 h-4 text-gray-500" />
+                    طالب علم منتخب کریں
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={form.studentId || ""}
+                    onChange={(e) => set({ studentId: e.target.value })}
+                    required
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all"
+                  >
+                    <option value="">طالب علم منتخب کریں</option>
+                    {students.map((s: any) => {
+                      const base = [s.fullName, s.rollNumber]
+                        .filter(Boolean)
+                        .join(" - ");
+                      const hostelInfo = [
+                        s.hostelName && `ہاسٹل ${s.hostelName}`,
+                        s.roomNo && `کمرہ ${s.roomNo}`,
+                        s.bedNo && `بیڈ ${s.bedNo}`,
+                      ]
+                        .filter(Boolean)
+                        .join(" / ");
+                      const label = hostelInfo
+                        ? `${base} (${hostelInfo})`
+                        : base;
+                      return (
+                        <option key={s._id} value={s._id}>
+                          {label}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                    <ChefHat className="w-4 h-4 text-gray-500" />
+                    کچن منتخب کریں
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={form.kitchenId || ""}
+                    onChange={(e) => set({ kitchenId: e.target.value })}
+                    required
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all"
+                  >
+                    <option value="">کچن منتخب کریں</option>
+                    {kitchens.map((h: any) => (
+                      <option key={h._id} value={h._id}>
+                        {h.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Dates Row */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-gray-500" />
+                    شروع کی تاریخ
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    value={form.fromDate}
+                    onChange={(e) => set({ fromDate: e.target.value })}
+                    required
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-gray-500" />
+                    اختتام کی تاریخ
+                    <span className="text-xs text-gray-500 font-normal">
+                      (اختیاری)
+                    </span>
+                  </label>
+                  <input
+                    type="date"
+                    value={form.toDate || ""}
+                    onChange={(e) => set({ toDate: e.target.value })}
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all"
+                  />
+                </div>
+              </div>
+
+              {/* Active Status */}
+              <div className="bg-emerald-50 border-2 border-emerald-200 rounded-lg p-4">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={!!form.isActive}
+                    onChange={(e) => set({ isActive: e.target.checked })}
+                    className="w-5 h-5 text-emerald-600 border-2 border-gray-300 rounded focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+                  />
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold text-gray-700">
+                      رجسٹریشن فعال ہے
+                    </span>
+                  </div>
+                </label>
+                <p className="text-xs text-gray-600 mt-2 mr-8">
+                  اگر یہ آپشن منتخب ہے تو طالب علم فوری طور پر میس سے کھانا لے
+                  سکتا ہے
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center justify-end gap-3 mt-4">
+            <button
+              type="button"
+              onClick={() => router.push("/mess/registrations")}
+              className="inline-flex items-center gap-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2.5 text-sm font-medium transition-all"
             >
-              <option value="">انتخاب کریں</option>
-              {students.map((s: any) => {
-                const base = [s.fullName, s.rollNumber]
-                  .filter(Boolean)
-                  .join(" - ");
-                const hostelInfo = [
-                  s.hostelName && `ہاسٹل ${s.hostelName}`,
-                  s.roomNo && `کمرہ ${s.roomNo}`,
-                  s.bedNo && `بیڈ ${s.bedNo}`,
-                ]
-                  .filter(Boolean)
-                  .join(" / ");
-                const label = hostelInfo ? `${base} (${hostelInfo})` : base;
-                return (
-                  <option key={s._id} value={s._id}>
-                    {label}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-          <div>
-            <label className="block text-xs text-gray-700 mb-1">کچن</label>
-            <select
-              value={form.kitchenId || ""}
-              onChange={(e) => set({ kitchenId: e.target.value })}
-              className="w-full rounded border px-2 py-2 text-sm"
+              منسوخ کریں
+            </button>
+            <button
+              type="submit"
+              className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 text-sm font-medium shadow-sm transition-all"
             >
-              <option value="">انتخاب کریں</option>
-              {kitchens.map((h: any) => (
-                <option key={h._id} value={h._id}>
-                  {h.name}
-                </option>
-              ))}
-            </select>
+              <Save className="w-4 h-4" />
+              محفوظ کریں
+            </button>
           </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div>
-            <label className="block text-xs text-gray-700 mb-1">از</label>
-            <input
-              type="date"
-              value={form.fromDate}
-              onChange={(e) => set({ fromDate: e.target.value })}
-              className="w-full rounded border px-3 py-2 text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-xs text-gray-700 mb-1">
-              تک (اختیاری)
-            </label>
-            <input
-              type="date"
-              value={form.toDate || ""}
-              onChange={(e) => set({ toDate: e.target.value })}
-              className="w-full rounded border px-3 py-2 text-sm"
-            />
-          </div>
-          <div className="flex items-end justify-end gap-2">
-            <label className="text-xs text-gray-700">فعال</label>
-            <input
-              type="checkbox"
-              checked={!!form.isActive}
-              onChange={(e) => set({ isActive: e.target.checked })}
-            />
-          </div>
-        </div>
-        <div className="flex justify-end">
-          <button className="inline-flex items-center rounded bg-primary text-white px-6 py-2 text-sm font-semibold">
-            محفوظ کریں
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </MessLayout>
   );
 }

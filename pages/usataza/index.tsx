@@ -13,23 +13,18 @@ import {
 
 export default function UsatazaDashboard() {
   const [counts, setCounts] = useState({ teachers: 0, assignments: 0 });
-  const [loading, setLoading] = useState(true);
+  // loader removed per request
 
   useEffect(() => {
     const load = async () => {
-      setLoading(true);
-      try {
-        const tRes = await api.get("/api/teachers");
-        const teachers = tRes.data?.teachers || [];
-        const aRes = await api.get("/api/teaching-assignments");
-        const assignments = aRes.data?.assignments || [];
-        setCounts({
-          teachers: teachers.length,
-          assignments: assignments.length,
-        });
-      } finally {
-        setLoading(false);
-      }
+      const tRes = await api.get("/api/teachers");
+      const teachers = tRes.data?.teachers || [];
+      const aRes = await api.get("/api/teaching-assignments");
+      const assignments = aRes.data?.assignments || [];
+      setCounts({
+        teachers: teachers.length,
+        assignments: assignments.length,
+      });
     };
     load();
   }, []);
@@ -82,13 +77,9 @@ export default function UsatazaDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-gray-600 mb-1">کل اساتذہ</p>
-                {loading ? (
-                  <div className="w-12 h-8 bg-gray-200 rounded animate-pulse"></div>
-                ) : (
-                  <p className="text-3xl font-bold text-gray-800">
-                    {counts.teachers}
-                  </p>
-                )}
+                <p className="text-3xl font-bold text-gray-800">
+                  {counts.teachers}
+                </p>
               </div>
               <div className="bg-blue-100 rounded-lg p-3">
                 <Users className="w-8 h-8 text-blue-600" />
@@ -100,13 +91,9 @@ export default function UsatazaDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-gray-600 mb-1">کل تفویضات</p>
-                {loading ? (
-                  <div className="w-12 h-8 bg-gray-200 rounded animate-pulse"></div>
-                ) : (
-                  <p className="text-3xl font-bold text-gray-800">
-                    {counts.assignments}
-                  </p>
-                )}
+                <p className="text-3xl font-bold text-gray-800">
+                  {counts.assignments}
+                </p>
               </div>
               <div className="bg-purple-100 rounded-lg p-3">
                 <ClipboardList className="w-8 h-8 text-purple-600" />

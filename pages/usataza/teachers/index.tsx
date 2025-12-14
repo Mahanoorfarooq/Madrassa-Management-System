@@ -29,7 +29,7 @@ export default function UsatazaTeachersList() {
   const [departments, setDepartments] = useState<Dept[]>([]);
   const [teachers, setTeachers] = useState<TeacherItem[]>([]);
   const [search, setSearch] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+  // loader removed per request
 
   useEffect(() => {
     const loadDepts = async () => {
@@ -41,16 +41,11 @@ export default function UsatazaTeachersList() {
 
   useEffect(() => {
     const loadTeachers = async () => {
-      setLoading(true);
-      try {
-        const params: any = {};
-        if (departmentId) params.departmentId = departmentId;
-        if (search) params.q = search;
-        const res = await api.get("/api/teachers", { params });
-        setTeachers(res.data?.teachers || []);
-      } finally {
-        setLoading(false);
-      }
+      const params: any = {};
+      if (departmentId) params.departmentId = departmentId;
+      if (search) params.q = search;
+      const res = await api.get("/api/teachers", { params });
+      setTeachers(res.data?.teachers || []);
     };
     loadTeachers();
   }, [departmentId, search]);
@@ -138,11 +133,7 @@ export default function UsatazaTeachersList() {
 
         {/* Teachers Table */}
         <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
-          {loading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-          ) : teachers.length === 0 ? (
+          {teachers.length === 0 ? (
             <div className="text-center py-12">
               <div className="bg-gray-100 rounded-full p-5 w-20 h-20 mx-auto mb-3 flex items-center justify-center">
                 <BookOpen className="w-10 h-10 text-gray-400" />

@@ -10,6 +10,7 @@ import {
   Camera,
   Save,
   Shield,
+  BookOpen,
 } from "lucide-react";
 
 export default function TeacherProfile() {
@@ -94,7 +95,6 @@ export default function TeacherProfile() {
       return;
     }
 
-    // تقریباً 2MB کی حد
     if (file.size > 2 * 1024 * 1024) {
       setPhotoError("تصویر کا سائز 2MB سے کم ہونا چاہئے");
       return;
@@ -112,47 +112,48 @@ export default function TeacherProfile() {
   };
 
   return (
-    <TeacherLayout title="میرا پروفائل">
-      <div className="max-w-7xl mx-auto" dir="rtl">
+    <TeacherLayout>
+      <div className="p-6 max-w-7xl mx-auto" dir="rtl">
         {/* Alerts */}
         {error && (
-          <div className="mb-6 rounded-xl bg-red-50 border border-red-200 text-red-700 px-4 py-3 text-right flex items-center gap-3 shadow-sm">
-            <span className="text-2xl">⚠️</span>
-            <span className="flex-1">{error}</span>
+          <div className="mb-5 rounded-lg bg-red-50 border border-red-200 text-red-700 px-4 py-3 text-sm flex items-center gap-2 shadow-sm">
+            <span>⚠️</span>
+            <span>{error}</span>
           </div>
         )}
         {ok && (
-          <div className="mb-6 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 text-right flex items-center gap-3 shadow-sm">
-            <span className="text-2xl">✅</span>
-            <span className="flex-1">{ok}</span>
+          <div className="mb-5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 text-sm flex items-center gap-2 shadow-sm">
+            <span>✅</span>
+            <span>{ok}</span>
           </div>
         )}
         {cpOk && (
-          <div className="mb-6 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 text-right flex items-center gap-3 shadow-sm">
-            <span className="text-2xl">🔐</span>
-            <span className="flex-1">{cpOk}</span>
+          <div className="mb-5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 text-sm flex items-center gap-2 shadow-sm">
+            <span>🔐</span>
+            <span>{cpOk}</span>
           </div>
         )}
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Profile Card */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-lg">
+            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-md">
               {/* Header with gradient */}
-              <div className="h-32 bg-gradient-to-br from-blue-500 to-purple-600 relative">
-                <div className="absolute -bottom-16 right-1/2 transform translate-x-1/2">
+              <div className="h-28 bg-gradient-to-r from-teal-500 to-cyan-600 relative">
+                <div className="absolute -bottom-14 right-1/2 transform translate-x-1/2">
                   <div className="relative">
                     {form.photoUrl ? (
                       <img
                         src={form.photoUrl}
                         alt="Photo"
-                        className="h-32 w-32 rounded-full object-cover border-4 border-white shadow-xl"
+                        className="h-28 w-28 rounded-full object-cover border-4 border-white shadow-lg"
                       />
                     ) : (
-                      <div className="h-32 w-32 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 border-4 border-white shadow-xl flex items-center justify-center">
-                        <User className="w-16 h-16 text-gray-400" />
+                      <div className="h-28 w-28 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 border-4 border-white shadow-lg flex items-center justify-center">
+                        <User className="w-14 h-14 text-gray-400" />
                       </div>
                     )}
-                    <div className="absolute bottom-2 right-2 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center shadow-lg">
+                    <div className="absolute bottom-1 right-1 w-7 h-7 bg-teal-500 rounded-full flex items-center justify-center shadow-md">
                       <Camera className="w-4 h-4 text-white" />
                     </div>
                   </div>
@@ -160,23 +161,23 @@ export default function TeacherProfile() {
               </div>
 
               {/* Profile Info */}
-              <div className="pt-20 px-6 pb-6 text-center">
-                <h2 className="text-2xl font-bold text-gray-800 mb-1">
+              <div className="pt-16 px-5 pb-5 text-center">
+                <h2 className="text-xl font-bold text-gray-800 mb-1">
                   {t?.fullName || "—"}
                 </h2>
-                <p className="text-sm text-gray-500 mb-4">
+                <p className="text-sm text-gray-600 mb-4">
                   {t?.designation || "استاد"}
                 </p>
 
                 {/* Stats */}
-                <div className="grid grid-cols-2 gap-3 mb-6">
-                  <div className="bg-blue-50 rounded-xl p-3">
+                <div className="grid grid-cols-2 gap-3 mb-5">
+                  <div className="bg-teal-50 rounded-lg p-3 border border-teal-100">
                     <div className="text-xs text-gray-600 mb-1">تخصص</div>
                     <div className="text-sm font-semibold text-gray-800">
                       {t?.specialization || "—"}
                     </div>
                   </div>
-                  <div className="bg-purple-50 rounded-xl p-3">
+                  <div className="bg-cyan-50 rounded-lg p-3 border border-cyan-100">
                     <div className="text-xs text-gray-600 mb-1">مضامین</div>
                     <div className="text-sm font-semibold text-gray-800">
                       {(t?.subjects || []).length || 0}
@@ -186,15 +187,16 @@ export default function TeacherProfile() {
 
                 {/* Subjects */}
                 {t?.subjects && t.subjects.length > 0 && (
-                  <div className="bg-gray-50 rounded-xl p-4 text-right">
-                    <div className="text-xs text-gray-600 mb-2">
-                      تدریسی مضامین
+                  <div className="bg-gray-50 rounded-lg p-4 text-right border border-gray-200">
+                    <div className="flex items-center gap-2 text-xs text-gray-600 mb-2">
+                      <BookOpen className="w-4 h-4" />
+                      <span>تدریسی مضامین</span>
                     </div>
                     <div className="flex flex-wrap gap-2 justify-end">
                       {t.subjects.map((subject: string, idx: number) => (
                         <span
                           key={idx}
-                          className="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium text-gray-700"
+                          className="px-3 py-1 bg-white border border-gray-300 rounded-full text-xs font-medium text-gray-700"
                         >
                           {subject}
                         </span>
@@ -207,13 +209,13 @@ export default function TeacherProfile() {
           </div>
 
           {/* Edit Form */}
-          <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+          <div className="lg:col-span-2 space-y-5">
+            <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-md">
+              <div className="flex items-center gap-3 mb-5 pb-4 border-b border-gray-200">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-teal-500 to-cyan-600 flex items-center justify-center">
                   <User className="w-5 h-5 text-white" />
                 </div>
-                <h2 className="text-xl font-bold text-gray-800">
+                <h2 className="text-lg font-bold text-gray-800">
                   ذاتی معلومات میں ترمیم
                 </h2>
               </div>
@@ -221,47 +223,41 @@ export default function TeacherProfile() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Phone */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <span>فون</span>
-                      <Phone className="w-4 h-4" />
-                    </div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center justify-end gap-2">
+                    <span>فون</span>
+                    <Phone className="w-4 h-4 text-teal-600" />
                   </label>
                   <input
                     value={form.phone}
                     onChange={(e) =>
                       setForm({ ...form, phone: e.target.value })
                     }
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-right"
+                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition-all"
                     placeholder="03XX XXXXXXX"
                   />
                 </div>
 
                 {/* Contact Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <span>رابطہ نمبر</span>
-                      <Phone className="w-4 h-4" />
-                    </div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center justify-end gap-2">
+                    <span>رابطہ نمبر</span>
+                    <Phone className="w-4 h-4 text-blue-600" />
                   </label>
                   <input
                     value={form.contactNumber}
                     onChange={(e) =>
                       setForm({ ...form, contactNumber: e.target.value })
                     }
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-right"
+                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
                     placeholder="متبادل نمبر"
                   />
                 </div>
 
                 {/* Email */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <span>ای میل</span>
-                      <Mail className="w-4 h-4" />
-                    </div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center justify-end gap-2">
+                    <span>ای میل</span>
+                    <Mail className="w-4 h-4 text-purple-600" />
                   </label>
                   <input
                     type="email"
@@ -269,51 +265,47 @@ export default function TeacherProfile() {
                     onChange={(e) =>
                       setForm({ ...form, email: e.target.value })
                     }
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-right"
+                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all"
                     placeholder="example@email.com"
                   />
                 </div>
 
                 {/* Address */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <span>پتا</span>
-                      <MapPin className="w-4 h-4" />
-                    </div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center justify-end gap-2">
+                    <span>پتا</span>
+                    <MapPin className="w-4 h-4 text-orange-600" />
                   </label>
                   <input
                     value={form.address}
                     onChange={(e) =>
                       setForm({ ...form, address: e.target.value })
                     }
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-right"
+                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition-all"
                     placeholder="مکمل پتا"
                   />
                 </div>
 
                 {/* Photo URL */}
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <span>تصویر اپ لوڈ / لنک</span>
-                      <Camera className="w-4 h-4" />
-                    </div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center justify-end gap-2">
+                    <span>تصویر اپ لوڈ / لنک</span>
+                    <Camera className="w-4 h-4 text-emerald-600" />
                   </label>
-                  <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <input
                       value={form.photoUrl}
                       onChange={(e) =>
                         setForm({ ...form, photoUrl: e.target.value })
                       }
-                      className="w-full md:w-1/2 rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-right"
-                      placeholder="https://example.com/photo.jpg یا اپ لوڈ کی گئی تصویر"
+                      className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all"
+                      placeholder="https://example.com/photo.jpg"
                     />
                     <input
                       type="file"
                       accept="image/*"
                       onChange={handlePhotoFileChange}
-                      className="w-full md:w-1/2 rounded-xl border border-dashed border-gray-300 px-4 py-2 text-sm cursor-pointer bg-gray-50 text-right"
+                      className="w-full rounded-lg border-2 border-dashed border-gray-300 px-3 py-2 text-sm cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all"
                     />
                   </div>
                   {photoError && (
@@ -324,56 +316,35 @@ export default function TeacherProfile() {
                 </div>
               </div>
 
-              <div className="flex justify-end mt-6">
+              <div className="flex justify-end mt-5 pt-4 border-t border-gray-200">
                 <button
                   onClick={onSave}
                   disabled={saving}
-                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 font-semibold shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed transition-all"
+                  className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-teal-600 to-cyan-600 text-white px-6 py-2.5 text-sm font-semibold hover:from-teal-700 hover:to-cyan-700 disabled:opacity-50 transition-all shadow-md"
                 >
-                  <Save className="w-5 h-5" />
+                  <Save className="w-4 h-4" />
                   <span>{saving ? "محفوظ ہو رہا ہے..." : "محفوظ کریں"}</span>
                 </button>
               </div>
             </div>
 
             {/* Change Password */}
-            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-pink-600 flex items-center justify-center">
+            <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-md">
+              <div className="flex items-center gap-3 mb-5 pb-4 border-b border-gray-200">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-rose-500 to-pink-600 flex items-center justify-center">
                   <Shield className="w-5 h-5 text-white" />
                 </div>
-                <h2 className="text-xl font-bold text-gray-800">
+                <h2 className="text-lg font-bold text-gray-800">
                   پاس ورڈ تبدیل کریں
                 </h2>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* New Password */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <span>نیا پاس ورڈ</span>
-                      <Lock className="w-4 h-4" />
-                    </div>
-                  </label>
-                  <input
-                    type="password"
-                    value={cp.newPassword}
-                    onChange={(e) =>
-                      setCp({ ...cp, newPassword: e.target.value })
-                    }
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all text-right"
-                    placeholder="••••••••"
-                  />
-                </div>
-
                 {/* Current Password */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <span>موجودہ پاس ورڈ</span>
-                      <Lock className="w-4 h-4" />
-                    </div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center justify-end gap-2">
+                    <span>موجودہ پاس ورڈ</span>
+                    <Lock className="w-4 h-4 text-rose-600" />
                   </label>
                   <input
                     type="password"
@@ -381,18 +352,35 @@ export default function TeacherProfile() {
                     onChange={(e) =>
                       setCp({ ...cp, currentPassword: e.target.value })
                     }
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all text-right"
+                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-rose-500 focus:ring-2 focus:ring-rose-200 outline-none transition-all"
+                    placeholder="••••••••"
+                  />
+                </div>
+
+                {/* New Password */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center justify-end gap-2">
+                    <span>نیا پاس ورڈ</span>
+                    <Lock className="w-4 h-4 text-pink-600" />
+                  </label>
+                  <input
+                    type="password"
+                    value={cp.newPassword}
+                    onChange={(e) =>
+                      setCp({ ...cp, newPassword: e.target.value })
+                    }
+                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-pink-500 focus:ring-2 focus:ring-pink-200 outline-none transition-all"
                     placeholder="••••••••"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end mt-6">
+              <div className="flex justify-end mt-5 pt-4 border-t border-gray-200">
                 <button
                   onClick={onChangePassword}
-                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-red-500 to-pink-600 text-white px-8 py-3 font-semibold shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all"
+                  className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-rose-600 to-pink-600 text-white px-6 py-2.5 text-sm font-semibold hover:from-rose-700 hover:to-pink-700 transition-all shadow-md"
                 >
-                  <Shield className="w-5 h-5" />
+                  <Shield className="w-4 h-4" />
                   <span>تبدیل کریں</span>
                 </button>
               </div>

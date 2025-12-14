@@ -1,6 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import api from "@/utils/api";
 import { LibraryLayout } from "@/components/layout/LibraryLayout";
+import {
+  BookOpen,
+  Users,
+  Calendar,
+  Search,
+  CheckCircle,
+  XCircle,
+  Trash2,
+  ArrowLeft,
+  BookCheck,
+} from "lucide-react";
 
 interface Book {
   _id: string;
@@ -138,38 +149,56 @@ export default function LibraryLoansPage() {
   };
 
   return (
-    <LibraryLayout title="اجراء و واپسی">
-      <div className="space-y-4" dir="rtl">
-        <p className="text-sm text-gray-600 text-right max-w-3xl ml-auto">
-          اس صفحہ سے آپ طلبہ اور اساتذہ کو کتب جاری یا واپس کر سکتے ہیں، ساتھ ہی
-          نیچے دیے گئے ریکارڈ سیکشن میں جاری اور واپس شدہ تمام لین دین کی فہرست
-          دیکھ سکتے ہیں۔
-        </p>
+    <LibraryLayout>
+      <div className="p-6 space-y-5" dir="rtl">
+        {/* Header Card */}
+        <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-6 text-white shadow-lg">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+              <BookCheck className="w-6 h-6" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold">اجراء و واپسی</h2>
+              <p className="text-blue-100 text-sm">
+                طلبہ اور اساتذہ کو کتب جاری یا واپس کریں
+              </p>
+            </div>
+          </div>
+        </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-4 text-right">
-          <h2 className="text-sm font-semibold text-gray-800 mb-3">
-            کتاب جاری کریں
-          </h2>
+        {/* Issue Book Card */}
+        <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
+          <div className="flex items-center gap-2 mb-5">
+            <BookOpen className="w-5 h-5 text-blue-600" />
+            <h3 className="text-lg font-semibold text-gray-800">
+              کتاب جاری کریں
+            </h3>
+          </div>
+
           {issueError && (
-            <div className="rounded bg-red-100 text-red-700 text-xs px-3 py-2 mb-2">
+            <div className="rounded-xl bg-red-100 text-red-700 text-sm px-4 py-3 mb-4 flex items-center gap-2 border border-red-200">
+              <XCircle className="w-4 h-4" />
               {issueError}
             </div>
           )}
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
-            <div className="md:col-span-2">
-              <label className="text-xs text-gray-600 mb-1 block">
-                کتاب (تلاش)
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            {/* Book Search */}
+            <div className="lg:col-span-2">
+              <label className="text-sm font-medium text-gray-700 mb-2 block flex items-center gap-2">
+                <Search className="w-4 h-4" />
+                کتاب تلاش کریں
               </label>
               <input
                 value={bookQ}
                 onChange={(e) => setBookQ(e.target.value)}
                 placeholder="عنوان / مصنف / کیٹیگری / ISBN"
-                className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all mb-2"
               />
               <select
                 value={selectedBookId}
                 onChange={(e) => setSelectedBookId(e.target.value)}
-                className="w-full rounded border px-2 py-2 text-xs mt-2"
+                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all bg-white"
               >
                 <option value="">کتاب منتخب کریں</option>
                 {books.map((b) => (
@@ -184,45 +213,47 @@ export default function LibraryLoansPage() {
                 ))}
               </select>
             </div>
-            <div>
-              <label className="text-xs text-gray-600 mb-1 block">
+
+            {/* Borrower Search */}
+            <div className="lg:col-span-2">
+              <label className="text-sm font-medium text-gray-700 mb-2 block flex items-center gap-2">
+                <Users className="w-4 h-4" />
                 صارف کی قسم
               </label>
-              <div className="flex items-center gap-3 justify-end text-xs">
-                <label className="inline-flex items-center gap-1">
+              <div className="flex items-center gap-4 mb-2 bg-gray-50 rounded-xl p-2">
+                <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="radio"
                     name="bt"
                     checked={borrowerType === "Student"}
                     onChange={() => setBorrowerType("Student")}
+                    className="w-4 h-4 text-blue-600"
                   />
-                  طالب علم
+                  <span className="text-sm text-gray-700">طالب علم</span>
                 </label>
-                <label className="inline-flex items-center gap-1">
+                <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="radio"
                     name="bt"
                     checked={borrowerType === "Teacher"}
                     onChange={() => setBorrowerType("Teacher")}
+                    className="w-4 h-4 text-blue-600"
                   />
-                  استاد
+                  <span className="text-sm text-gray-700">استاد</span>
                 </label>
               </div>
-              <label className="text-xs text-gray-600 mb-1 block mt-2">
-                صارف (تلاش)
-              </label>
               <input
                 value={borrowerQ}
                 onChange={(e) => setBorrowerQ(e.target.value)}
                 placeholder={
                   borrowerType === "Student" ? "نام / رول نمبر" : "نام / عہدہ"
                 }
-                className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all mb-2"
               />
               <select
                 value={selectedBorrowerId}
                 onChange={(e) => setSelectedBorrowerId(e.target.value)}
-                className="w-full rounded border px-2 py-2 text-xs mt-2"
+                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all bg-white"
               >
                 <option value="">صارف منتخب کریں</option>
                 {borrowers.map((p) => (
@@ -237,18 +268,21 @@ export default function LibraryLoansPage() {
                 ))}
               </select>
             </div>
-            <div>
-              <label className="text-xs text-gray-600 mb-1 block">
-                واپسی کی تاریخ (اختیاری)
-              </label>
-              <input
-                type="date"
-                value={dueDate}
-                onChange={(e) => setDueDate(e.target.value)}
-                className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-            <div className="flex items-end justify-end">
+
+            {/* Due Date and Submit */}
+            <div className="flex flex-col justify-between">
+              <div>
+                <label className="text-sm font-medium text-gray-700 mb-2 block flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  واپسی کی تاریخ
+                </label>
+                <input
+                  type="date"
+                  value={dueDate}
+                  onChange={(e) => setDueDate(e.target.value)}
+                  className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                />
+              </div>
               <button
                 onClick={issueBook}
                 disabled={
@@ -256,116 +290,131 @@ export default function LibraryLoansPage() {
                   !selectedBorrowerId ||
                   (selectedBook && selectedBook.availableCopies <= 0)
                 }
-                className="inline-flex items-center rounded bg-primary text-white px-6 py-2 text-sm font-semibold hover:bg-emerald-700 disabled:opacity-60"
+                className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-blue-600 text-white px-4 py-2.5 text-sm font-semibold hover:bg-blue-700 transition-all shadow-md hover:shadow-lg disabled:opacity-50"
               >
+                <CheckCircle className="w-4 h-4" />
                 جاری کریں
               </button>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-right">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-gray-800">ریکارڈ</h2>
-            <div className="flex items-center gap-2 text-xs">
+        {/* Loans Records */}
+        <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
+          <div className="flex items-center justify-between mb-5">
+            <h3 className="text-lg font-semibold text-gray-800">ریکارڈ</h3>
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => setStatusFilter("Issued")}
-                className={`px-3 py-1 rounded ${
+                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                   statusFilter === "Issued"
-                    ? "bg-primary text-white"
-                    : "bg-gray-100 text-gray-700"
+                    ? "bg-amber-600 text-white shadow-md"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
                 جاری
               </button>
               <button
                 onClick={() => setStatusFilter("Returned")}
-                className={`px-3 py-1 rounded ${
+                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                   statusFilter === "Returned"
-                    ? "bg-primary text-white"
-                    : "bg-gray-100 text-gray-700"
+                    ? "bg-emerald-600 text-white shadow-md"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
                 واپس
               </button>
             </div>
           </div>
+
           <div className="overflow-x-auto">
-            <table className="min-w-full text-xs text-right">
-              <thead className="bg-gray-50 border-b">
-                <tr>
-                  <th className="px-3 py-2 font-semibold text-gray-700">
+            <table className="min-w-full">
+              <thead>
+                <tr className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                  <th className="px-6 py-4 text-right text-sm font-bold text-gray-700">
                     کتاب
                   </th>
-                  <th className="px-3 py-2 font-semibold text-gray-700">
+                  <th className="px-6 py-4 text-right text-sm font-bold text-gray-700">
                     صارف
                   </th>
-                  <th className="px-3 py-2 font-semibold text-gray-700">
+                  <th className="px-6 py-4 text-center text-sm font-bold text-gray-700">
                     جاری
                   </th>
-                  <th className="px-3 py-2 font-semibold text-gray-700">
-                    واپسی کی تاریخ
+                  <th className="px-6 py-4 text-center text-sm font-bold text-gray-700">
+                    واپسی
                   </th>
-                  <th className="px-3 py-2 font-semibold text-gray-700">
+                  <th className="px-6 py-4 text-center text-sm font-bold text-gray-700">
                     حالت
                   </th>
-                  <th className="px-3 py-2 font-semibold text-gray-700">عمل</th>
+                  <th className="px-6 py-4 text-center text-sm font-bold text-gray-700">
+                    عمل
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {loans.map((x) => (
-                  <tr key={x._id} className="border-t hover:bg-gray-50">
-                    <td className="px-3 py-2">
+                  <tr
+                    key={x._id}
+                    className="border-b border-gray-100 hover:bg-blue-50/30 transition-colors"
+                  >
+                    <td className="px-6 py-4 text-sm text-gray-800">
                       {x.bookId?.title}
                       {x.bookId?.author ? ` - ${x.bookId.author}` : ""}
                     </td>
-                    <td className="px-3 py-2">{x.borrowerId?.fullName}</td>
-                    <td className="px-3 py-2">
+                    <td className="px-6 py-4 text-sm text-gray-800">
+                      {x.borrowerId?.fullName}
+                    </td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">
                       {x.issueDate
                         ? new Date(x.issueDate).toLocaleDateString()
                         : "-"}
                     </td>
-                    <td className="px-3 py-2">
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">
                       {x.dueDate
                         ? new Date(x.dueDate).toLocaleDateString()
                         : "-"}
                     </td>
-                    <td className="px-3 py-2">
+                    <td className="px-6 py-4 text-center">
                       <span
-                        className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                        className={`inline-flex px-3 py-1 rounded-full text-xs font-semibold ${
                           x.status === "Issued"
-                            ? "bg-amber-50 text-amber-700"
-                            : "bg-emerald-50 text-emerald-700"
+                            ? "bg-amber-100 text-amber-700 border border-amber-200"
+                            : "bg-emerald-100 text-emerald-700 border border-emerald-200"
                         }`}
                       >
                         {x.status === "Issued" ? "جاری" : "واپس"}
                       </span>
                     </td>
-                    <td className="px-3 py-2 flex gap-2 justify-end">
-                      {x.status === "Issued" && (
+                    <td className="px-6 py-4">
+                      <div className="flex gap-2 justify-center">
+                        {x.status === "Issued" && (
+                          <button
+                            onClick={() => returnLoan(x._id)}
+                            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-all shadow-sm hover:shadow-md"
+                          >
+                            <ArrowLeft className="w-3 h-3" />
+                            واپس لیں
+                          </button>
+                        )}
                         <button
-                          onClick={() => returnLoan(x._id)}
-                          className="text-xs text-primary hover:underline"
+                          onClick={() => deleteLoan(x._id)}
+                          className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-600 text-white text-xs font-semibold hover:bg-red-700 transition-all shadow-sm hover:shadow-md"
                         >
-                          واپس لیں
+                          <Trash2 className="w-3 h-3" />
+                          حذف
                         </button>
-                      )}
-                      <button
-                        onClick={() => deleteLoan(x._id)}
-                        className="text-xs text-red-600 hover:underline"
-                      >
-                        حذف
-                      </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
                 {!loadingLoans && loans.length === 0 && (
                   <tr>
                     <td
-                      className="px-3 py-4 text-center text-gray-400 text-xs"
+                      className="px-6 py-12 text-center text-gray-400"
                       colSpan={6}
                     >
-                      کوئی ریکارڈ موجود نہیں۔
+                      <BookOpen className="w-12 h-12 mx-auto mb-2 opacity-30" />
+                      <div className="text-sm">کوئی ریکارڈ موجود نہیں</div>
                     </td>
                   </tr>
                 )}

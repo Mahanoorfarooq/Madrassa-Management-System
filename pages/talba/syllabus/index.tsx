@@ -43,7 +43,7 @@ export default function SyllabusPage() {
   const [items, setItems] = useState<any[]>([]);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [loading, setLoading] = useState(false);
+  // loader removed per request
 
   const currentTab = DEPT_TABS.find((d) => d.code === deptCode);
 
@@ -82,20 +82,15 @@ export default function SyllabusPage() {
   const addItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!departmentId || !title) return;
-    setLoading(true);
-    try {
-      await api.post("/api/syllabus", {
-        departmentId,
-        classId,
-        title,
-        description,
-      });
-      setTitle("");
-      setDescription("");
-      await loadItems(departmentId, classId);
-    } finally {
-      setLoading(false);
-    }
+    await api.post("/api/syllabus", {
+      departmentId,
+      classId,
+      title,
+      description,
+    });
+    setTitle("");
+    setDescription("");
+    await loadItems(departmentId, classId);
   };
 
   const updateProgress = async (id: string, progress: number) => {
@@ -228,20 +223,11 @@ export default function SyllabusPage() {
               <div className="flex items-end">
                 <button
                   type="submit"
-                  disabled={loading || !title}
+                  disabled={!title}
                   className={`w-full inline-flex items-center justify-center gap-2 rounded-lg ${currentTab?.color} text-white px-4 py-2.5 text-sm font-semibold shadow-md hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all`}
                 >
-                  {loading ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      <span>شامل ہو رہا ہے...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Plus className="w-4 h-4" />
-                      <span>شامل کریں</span>
-                    </>
-                  )}
+                  <Plus className="w-4 h-4" />
+                  <span>شامل کریں</span>
                 </button>
               </div>
             </div>

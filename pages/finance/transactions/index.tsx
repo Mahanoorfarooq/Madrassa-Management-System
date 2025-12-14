@@ -29,23 +29,18 @@ export default function FinanceTransactionsList() {
   const [type, setType] = useState<string>("");
   const [from, setFrom] = useState<string>("");
   const [to, setTo] = useState<string>("");
-  const [loading, setLoading] = useState(false);
+  // loader removed per request
 
   const load = async () => {
-    setLoading(true);
-    try {
-      const res = await api.get("/api/finance/transactions", {
-        params: {
-          q: q || undefined,
-          type: type || undefined,
-          from: from || undefined,
-          to: to || undefined,
-        },
-      });
-      setItems(res.data?.transactions || []);
-    } finally {
-      setLoading(false);
-    }
+    const res = await api.get("/api/finance/transactions", {
+      params: {
+        q: q || undefined,
+        type: type || undefined,
+        from: from || undefined,
+        to: to || undefined,
+      },
+    });
+    setItems(res.data?.transactions || []);
   };
 
   useEffect(() => {
@@ -200,14 +195,9 @@ export default function FinanceTransactionsList() {
             <div className="flex items-end">
               <button
                 onClick={load}
-                disabled={loading}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md disabled:opacity-60 transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
               >
-                {loading ? (
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  <RefreshCw className="w-4 h-4" />
-                )}
+                <RefreshCw className="w-4 h-4" />
                 <span>تازہ کریں</span>
               </button>
             </div>
@@ -216,11 +206,7 @@ export default function FinanceTransactionsList() {
 
         {/* Transactions Table */}
         <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
-          {loading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-          ) : items.length === 0 ? (
+          {items.length === 0 ? (
             <div className="text-center py-12">
               <div className="bg-gray-100 rounded-full p-5 w-20 h-20 mx-auto mb-3 flex items-center justify-center">
                 <Receipt className="w-10 h-10 text-gray-400" />

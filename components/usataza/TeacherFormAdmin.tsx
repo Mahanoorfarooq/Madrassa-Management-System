@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "@/utils/api";
+import { User, Briefcase, Phone, Key, Lock, Building, X } from "lucide-react";
 
 export interface TeacherAdminFormValues {
   fullName: string;
@@ -72,79 +73,117 @@ export default function TeacherFormAdmin({
   };
 
   return (
-    <form onSubmit={submit} className="space-y-4 text-right">
+    <form
+      onSubmit={submit}
+      className="bg-white rounded-xl shadow-md border border-gray-200 p-6 max-w-4xl mx-auto"
+      dir="rtl"
+    >
       {error && (
-        <div className="rounded bg-red-100 text-red-700 text-xs px-3 py-2">
+        <div className="rounded-lg bg-red-50 text-red-700 text-sm px-4 py-3 mb-5 flex items-center gap-2 border border-red-200">
+          <X className="w-4 h-4" />
           {error}
         </div>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">نام استاد</label>
-          <input
-            name="fullName"
-            value={values.fullName}
-            onChange={onChange}
-            required
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          />
+
+      <div className="space-y-5">
+        {/* Basic Information */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <User className="w-4 h-4 text-teal-600" />
+              نام استاد <span className="text-red-500">*</span>
+            </label>
+            <input
+              name="fullName"
+              value={values.fullName}
+              onChange={onChange}
+              required
+              placeholder="پورا نام درج کریں"
+              className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition-all"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <Briefcase className="w-4 h-4 text-blue-600" />
+              عہدہ
+            </label>
+            <input
+              name="designation"
+              value={values.designation || ""}
+              onChange={onChange}
+              placeholder="استاد / قاری / معلم"
+              className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+            />
+          </div>
         </div>
+
+        {/* Contact Information */}
         <div>
-          <label className="block text-xs text-gray-700 mb-1">عہدہ</label>
-          <input
-            name="designation"
-            value={values.designation || ""}
-            onChange={onChange}
-            placeholder="استاد / قاری / معلم"
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">رابطہ نمبر</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+            <Phone className="w-4 h-4 text-purple-600" />
+            رابطہ نمبر
+          </label>
           <input
             name="contactNumber"
             value={values.contactNumber || ""}
             onChange={onChange}
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            placeholder="فون نمبر"
+            className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all"
           />
         </div>
+
+        {/* Login Credentials */}
+        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <div className="text-sm font-semibold text-gray-700 mb-3">
+            لاگ اِن کی تفصیلات (اختیاری)
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <Key className="w-4 h-4 text-emerald-600" />
+                یوزر نام
+              </label>
+              <input
+                name="username"
+                value={values.username || ""}
+                onChange={onChange}
+                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all"
+                placeholder="مثال: ustad.ahmad"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <Lock className="w-4 h-4 text-orange-600" />
+                پاس ورڈ (نیا / ری سیٹ)
+              </label>
+              <input
+                type="password"
+                name="password"
+                value={values.password || ""}
+                onChange={onChange}
+                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition-all"
+                placeholder="خالی چھوڑیں تو پرانا برقرار"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Departments */}
         <div>
-          <label className="block text-xs text-gray-700 mb-1">
-            لاگ اِن یوزر نام (اختیاری)
+          <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+            <Building className="w-4 h-4 text-indigo-600" />
+            شعبہ جات
           </label>
-          <input
-            name="username"
-            value={values.username || ""}
-            onChange={onChange}
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            placeholder="مثال: ustad.ahmad"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-gray-700 mb-1">
-            لاگ اِن پاس ورڈ (نیا / ری سیٹ)
-          </label>
-          <input
-            type="password"
-            name="password"
-            value={values.password || ""}
-            onChange={onChange}
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            placeholder="اگر خالی چھوڑیں تو پرانا پاس ورڈ برقرار رہے گا"
-          />
-        </div>
-        <div className="md:col-span-2">
-          <label className="block text-xs text-gray-700 mb-1">شعبہ جات</label>
           <div className="flex flex-wrap gap-2 justify-end">
             {departments.map((d) => {
               const checked = values.departmentIds.includes(d._id);
               return (
                 <label
                   key={d._id}
-                  className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs border cursor-pointer ${
+                  className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm border cursor-pointer transition-all ${
                     checked
-                      ? "bg-primary text-white border-primary"
-                      : "bg-white text-gray-700 border-gray-300"
+                      ? "bg-teal-600 text-white border-teal-600 shadow-md"
+                      : "bg-white text-gray-700 border-gray-300 hover:border-teal-400 hover:bg-teal-50"
                   }`}
                 >
                   <input
@@ -160,13 +199,15 @@ export default function TeacherFormAdmin({
           </div>
         </div>
       </div>
-      <div className="flex justify-end">
+
+      {/* Submit Button */}
+      <div className="flex justify-end mt-6 pt-5 border-t border-gray-200">
         <button
           type="submit"
           disabled={loading}
-          className="inline-flex items-center rounded bg-primary text-white px-6 py-2 text-sm font-semibold hover:bg-emerald-700 disabled:opacity-60"
+          className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-teal-600 to-cyan-600 text-white px-6 py-2.5 text-sm font-semibold hover:from-teal-700 hover:to-cyan-700 transition-all shadow-md disabled:opacity-50"
         >
-          {submitLabel}
+          {loading ? "محفوظ ہو رہا ہے..." : submitLabel}
         </button>
       </div>
     </form>

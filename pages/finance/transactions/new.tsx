@@ -43,7 +43,6 @@ export default function NewFinanceTransactionPage() {
   const [teacher, setTeacher] = useState<string>("");
 
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const load = async () => {
@@ -83,7 +82,6 @@ export default function NewFinanceTransactionPage() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
-    setLoading(true);
     setError(null);
     try {
       await api.post("/api/finance/transactions", {
@@ -98,8 +96,6 @@ export default function NewFinanceTransactionPage() {
       router.push("/finance/transactions");
     } catch (e: any) {
       setError(e?.response?.data?.message || "محفوظ کرنے میں مسئلہ پیش آیا");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -313,20 +309,11 @@ export default function NewFinanceTransactionPage() {
             </button>
             <button
               type="submit"
-              disabled={!canSubmit || loading}
-              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 text-sm font-semibold shadow-md disabled:opacity-60 disabled:cursor-not-allowed transition-all"
+              disabled={!canSubmit}
+              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 text-sm font-semibold shadow-md disabled:opacity-60 transition-all"
             >
-              {loading ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  <span>محفوظ ہو رہا ہے...</span>
-                </>
-              ) : (
-                <>
-                  <Save className="w-4 h-4" />
-                  <span>محفوظ کریں</span>
-                </>
-              )}
+              <Save className="w-4 h-4" />
+              <span>محفوظ کریں</span>
             </button>
           </div>
         </form>

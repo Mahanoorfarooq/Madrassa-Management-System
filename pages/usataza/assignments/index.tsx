@@ -42,8 +42,6 @@ export default function TeachingAssignmentsPage() {
   const [subject, setSubject] = useState<string>("");
 
   const [assignments, setAssignments] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [addLoading, setAddLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const loadDepts = async () => {
@@ -56,27 +54,22 @@ export default function TeachingAssignmentsPage() {
   useEffect(() => {
     const loadClassesAndTeachers = async () => {
       if (!departmentId) return;
-      setLoading(true);
-      try {
-        const clsRes = await api.get("/api/classes", {
-          params: { departmentId },
-        });
-        const cls = (clsRes.data?.classes || []).map((c: any) => ({
-          _id: c._id,
-          label: c.className || c.title,
-        }));
-        setClasses(cls);
-        const tRes = await api.get("/api/teachers", {
-          params: { departmentId },
-        });
-        setTeachers(tRes.data?.teachers || []);
-        const aRes = await api.get("/api/teaching-assignments", {
-          params: { departmentId },
-        });
-        setAssignments(aRes.data?.assignments || []);
-      } finally {
-        setLoading(false);
-      }
+      const clsRes = await api.get("/api/classes", {
+        params: { departmentId },
+      });
+      const cls = (clsRes.data?.classes || []).map((c: any) => ({
+        _id: c._id,
+        label: c.className || c.title,
+      }));
+      setClasses(cls);
+      const tRes = await api.get("/api/teachers", {
+        params: { departmentId },
+      });
+      setTeachers(tRes.data?.teachers || []);
+      const aRes = await api.get("/api/teaching-assignments", {
+        params: { departmentId },
+      });
+      setAssignments(aRes.data?.assignments || []);
     };
     loadClassesAndTeachers();
   }, [departmentId]);
@@ -102,26 +95,21 @@ export default function TeachingAssignmentsPage() {
   const addAssignment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!departmentId || !teacherId) return;
-    setAddLoading(true);
-    try {
-      await api.post("/api/teaching-assignments", {
-        departmentId,
-        teacherId,
-        classId: classId || undefined,
-        sectionId: sectionId || undefined,
-        subject: subject || undefined,
-      });
-      setTeacherId("");
-      setClassId("");
-      setSectionId("");
-      setSubject("");
-      const aRes = await api.get("/api/teaching-assignments", {
-        params: { departmentId },
-      });
-      setAssignments(aRes.data?.assignments || []);
-    } finally {
-      setAddLoading(false);
-    }
+    await api.post("/api/teaching-assignments", {
+      departmentId,
+      teacherId,
+      classId: classId || undefined,
+      sectionId: sectionId || undefined,
+      subject: subject || undefined,
+    });
+    setTeacherId("");
+    setClassId("");
+    setSectionId("");
+    setSubject("");
+    const aRes = await api.get("/api/teaching-assignments", {
+      params: { departmentId },
+    });
+    setAssignments(aRes.data?.assignments || []);
   };
 
   const removeAssignment = async (id: string) => {
@@ -269,20 +257,11 @@ export default function TeachingAssignmentsPage() {
             <div className="flex justify-end">
               <button
                 type="submit"
-                disabled={addLoading || !departmentId || !teacherId}
+                disabled={!departmentId || !teacherId}
                 className="inline-flex items-center gap-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white px-5 py-2.5 text-sm font-semibold shadow-md hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all"
               >
-                {addLoading ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>تفویض ہو رہی ہے...</span>
-                  </>
-                ) : (
-                  <>
-                    <Plus className="w-4 h-4" />
-                    <span>تفویض کریں</span>
-                  </>
-                )}
+                <Plus className="w-4 h-4" />
+                <span>تفویض کریں</span>
               </button>
             </div>
           </form>
@@ -301,10 +280,6 @@ export default function TeachingAssignmentsPage() {
               <p className="text-xs text-gray-400 mt-1">
                 تفویضات دیکھنے کے لیے اوپر سے شعبہ منتخب کریں
               </p>
-            </div>
-          ) : loading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
             </div>
           ) : assignments.length === 0 ? (
             <div className="text-center py-12">

@@ -20,7 +20,6 @@ export default function NewInvoicePage() {
   const [students, setStudents] = useState<any[]>([]);
   const [form, setForm] = useState<any>({ items: [], status: "unpaid" });
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const boot = async () => {
@@ -65,7 +64,6 @@ export default function NewInvoicePage() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    setLoading(true);
     try {
       await api.post("/api/finance/invoices", {
         studentId: form.studentId,
@@ -80,8 +78,6 @@ export default function NewInvoicePage() {
       router.push("/finance/invoices");
     } catch (e: any) {
       setError(e?.response?.data?.message || "محفوظ کرنے میں مسئلہ پیش آیا");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -319,20 +315,10 @@ export default function NewInvoicePage() {
             </button>
             <button
               type="submit"
-              disabled={loading}
-              className="inline-flex items-center gap-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white px-5 py-2.5 text-sm font-semibold shadow-md disabled:opacity-60 disabled:cursor-not-allowed transition-all"
+              className="inline-flex items-center gap-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white px-5 py-2.5 text-sm font-semibold shadow-md transition-all"
             >
-              {loading ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  <span>محفوظ ہو رہا ہے...</span>
-                </>
-              ) : (
-                <>
-                  <Save className="w-4 h-4" />
-                  <span>محفوظ کریں</span>
-                </>
-              )}
+              <Save className="w-4 h-4" />
+              <span>محفوظ کریں</span>
             </button>
           </div>
         </form>

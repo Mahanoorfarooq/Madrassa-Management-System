@@ -23,7 +23,7 @@ export default function AllocationsListPage() {
   const [hostelId, setHostelId] = useState<string>("");
   const [roomId, setRoomId] = useState<string>("");
   const [active, setActive] = useState<string>("true");
-  const [loading, setLoading] = useState(false);
+  // loader removed per request
 
   const loadRooms = async (hid: string) => {
     const r = await api.get("/api/hostel/rooms", {
@@ -33,19 +33,14 @@ export default function AllocationsListPage() {
   };
 
   const load = async () => {
-    setLoading(true);
-    try {
-      const r = await api.get("/api/hostel/allocations", {
-        params: {
-          hostelId: hostelId || undefined,
-          roomId: roomId || undefined,
-          active: active || undefined,
-        },
-      });
-      setItems(r.data?.allocations || []);
-    } finally {
-      setLoading(false);
-    }
+    const r = await api.get("/api/hostel/allocations", {
+      params: {
+        hostelId: hostelId || undefined,
+        roomId: roomId || undefined,
+        active: active || undefined,
+      },
+    });
+    setItems(r.data?.allocations || []);
   };
 
   useEffect(() => {
@@ -151,14 +146,9 @@ export default function AllocationsListPage() {
             <div className="md:col-span-3 flex items-end">
               <button
                 onClick={load}
-                disabled={loading}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md disabled:opacity-60 transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
               >
-                {loading ? (
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  <RefreshCw className="w-4 h-4" />
-                )}
+                <RefreshCw className="w-4 h-4" />
                 تازہ کریں
               </button>
             </div>
@@ -167,11 +157,7 @@ export default function AllocationsListPage() {
 
         {/* Table */}
         <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
-          {loading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="w-8 h-8 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-          ) : items.length === 0 ? (
+          {items.length === 0 ? (
             <div className="text-center py-12">
               <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-full p-6 w-24 h-24 mx-auto mb-4 flex items-center justify-center">
                 <ClipboardCheck className="w-12 h-12 text-emerald-400" />

@@ -26,7 +26,6 @@ export default function NewFeeStructurePage() {
   >([]);
   const [notes, setNotes] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -52,7 +51,6 @@ export default function NewFeeStructurePage() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
     try {
       await api.post("/api/finance/fee-structures", {
@@ -67,8 +65,6 @@ export default function NewFeeStructurePage() {
       router.push("/finance/fee-structures");
     } catch (e: any) {
       setError(e?.response?.data?.message || "محفوظ کرنے میں مسئلہ پیش آیا");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -274,20 +270,10 @@ export default function NewFeeStructurePage() {
             </button>
             <button
               type="submit"
-              disabled={loading}
-              className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 text-sm font-semibold shadow-md disabled:opacity-60 disabled:cursor-not-allowed transition-all"
+              className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 text-sm font-semibold shadow-md transition-all"
             >
-              {loading ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  <span>محفوظ ہو رہا ہے...</span>
-                </>
-              ) : (
-                <>
-                  <Save className="w-4 h-4" />
-                  <span>محفوظ کریں</span>
-                </>
-              )}
+              <Save className="w-4 h-4" />
+              <span>محفوظ کریں</span>
             </button>
           </div>
         </form>

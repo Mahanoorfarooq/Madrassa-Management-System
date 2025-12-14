@@ -18,24 +18,19 @@ export default function FinanceReportsPage() {
   });
   const [receipts, setReceipts] = useState<any[]>([]);
   const [invoices, setInvoices] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  // loader removed per request
 
   const load = async () => {
-    setLoading(true);
-    try {
-      const [r, i] = await Promise.all([
-        api.get("/api/finance/receipts", {
-          params: { from: range.from, to: range.to },
-        }),
-        api.get("/api/finance/invoices", {
-          params: { from: range.from, to: range.to },
-        }),
-      ]);
-      setReceipts(r.data?.receipts || []);
-      setInvoices(i.data?.invoices || []);
-    } finally {
-      setLoading(false);
-    }
+    const [r, i] = await Promise.all([
+      api.get("/api/finance/receipts", {
+        params: { from: range.from, to: range.to },
+      }),
+      api.get("/api/finance/invoices", {
+        params: { from: range.from, to: range.to },
+      }),
+    ]);
+    setReceipts(r.data?.receipts || []);
+    setInvoices(i.data?.invoices || []);
   };
 
   useEffect(() => {
@@ -118,20 +113,10 @@ export default function FinanceReportsPage() {
             <div className="flex items-end">
               <button
                 onClick={load}
-                disabled={loading}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-orange-600 hover:bg-orange-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md disabled:opacity-60 transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-orange-600 hover:bg-orange-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
               >
-                {loading ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>لوڈ ہو رہا ہے...</span>
-                  </>
-                ) : (
-                  <>
-                    <RefreshCw className="w-4 h-4" />
-                    <span>تازہ کریں</span>
-                  </>
-                )}
+                <RefreshCw className="w-4 h-4" />
+                <span>تازہ کریں</span>
               </button>
             </div>
           </div>
@@ -327,7 +312,7 @@ export default function FinanceReportsPage() {
         )}
 
         {/* Empty State */}
-        {!loading && billed === 0 && received === 0 && (
+        {billed === 0 && received === 0 && (
           <div className="bg-white rounded-xl shadow-md border border-gray-100 p-12">
             <div className="text-center">
               <div className="bg-gray-100 rounded-full p-6 w-24 h-24 mx-auto mb-4 flex items-center justify-center">

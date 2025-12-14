@@ -19,21 +19,16 @@ export default function HostelFeesPage() {
   const [items, setItems] = useState<any[]>([]);
   const [hostelId, setHostelId] = useState<string>("");
   const [active, setActive] = useState<string>("true");
-  const [loading, setLoading] = useState(false);
+  // removed loader per request
 
   const load = async () => {
-    setLoading(true);
-    try {
-      const r = await api.get("/api/hostel/fees", {
-        params: {
-          hostelId: hostelId || undefined,
-          active: active || undefined,
-        },
-      });
-      setItems(r.data?.fees || []);
-    } finally {
-      setLoading(false);
-    }
+    const r = await api.get("/api/hostel/fees", {
+      params: {
+        hostelId: hostelId || undefined,
+        active: active || undefined,
+      },
+    });
+    setItems(r.data?.fees || []);
   };
 
   useEffect(() => {
@@ -142,14 +137,9 @@ export default function HostelFeesPage() {
             <div className="md:col-span-3 flex items-end">
               <button
                 onClick={load}
-                disabled={loading}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md disabled:opacity-60 transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
               >
-                {loading ? (
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  <RefreshCw className="w-4 h-4" />
-                )}
+                <RefreshCw className="w-4 h-4" />
                 تازہ کریں
               </button>
             </div>
@@ -158,11 +148,7 @@ export default function HostelFeesPage() {
 
         {/* Table */}
         <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
-          {loading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-          ) : items.length === 0 ? (
+          {items.length === 0 ? (
             <div className="text-center py-12">
               <div className="bg-gradient-to-br from-blue-50 to-sky-50 rounded-full p-6 w-24 h-24 mx-auto mb-4 flex items-center justify-center">
                 <Banknote className="w-12 h-12 text-blue-400" />
