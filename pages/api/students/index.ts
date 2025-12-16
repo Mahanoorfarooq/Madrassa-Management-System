@@ -3,7 +3,8 @@ import { connectDB } from "@/lib/db";
 import { Student } from "@/schemas/Student";
 import { SectionModel } from "@/schemas/Section";
 import { ClassModel } from "@/schemas/Class";
-import { requireAuth } from "@/lib/auth";
+import { requireAuth, hashPassword } from "@/lib/auth";
+import { User } from "@/schemas/User";
 
 export default async function handler(
   req: NextApiRequest,
@@ -61,6 +62,28 @@ export default async function handler(
       return res.status(400).json({ message: "نام اور رول نمبر لازم ہیں۔" });
     }
 
+    const createPortalAccount = Boolean(body.createPortalAccount);
+    const portalUsername = (body.portalUsername || "").trim();
+    const portalPassword = (body.portalPassword || "").trim();
+
+    // If portal account is requested, validate inputs and ensure username is unique
+    if (createPortalAccount) {
+      if (!portalUsername || !portalPassword) {
+        return res.status(400).json({
+          message: "پورٹل اکاؤنٹ کے لیے یوزر نام اور پاس ورڈ درکار ہیں۔",
+        });
+      }
+
+      const existingUser = await User.findOne({ username: portalUsername })
+        .select("_id")
+        .lean();
+      if (existingUser) {
+        return res.status(400).json({
+          message: "یہ یوزر نام پہلے سے موجود ہے، کوئی دوسرا منتخب کریں۔",
+        });
+      }
+    }
+
     try {
       const student = await Student.create({
         fullName,
@@ -87,6 +110,21 @@ export default async function handler(
         status: body.status || "Active",
         isHostel: body.isHostel ?? false,
       });
+
+      if (createPortalAccount) {
+        const passwordHash = hashPassword(portalPassword);
+        const user = await User.create({
+          fullName,
+          username: portalUsername,
+          passwordHash,
+          role: "student",
+          linkedId: student._id,
+        });
+
+        student.userId = user._id;
+        await student.save();
+      }
+
       return res
         .status(201)
         .json({ message: "طالب علم کامیابی سے شامل ہو گیا۔", student });

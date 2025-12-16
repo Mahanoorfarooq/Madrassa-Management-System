@@ -59,7 +59,7 @@ export function middleware(req: NextRequest) {
     ) {
       if (payload?.role !== "admin") {
         const url = req.nextUrl.clone();
-        url.pathname = "/modules/teacher";
+        url.pathname = "/teacher";
         return NextResponse.redirect(url);
       }
     }

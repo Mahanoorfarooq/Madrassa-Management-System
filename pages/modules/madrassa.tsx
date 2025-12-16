@@ -91,7 +91,7 @@ export default function MadrassaModules() {
         const r = res.data?.user?.role as string | undefined;
         setRole(r || null);
         if (r && r !== "admin") {
-          window.location.href = "/modules/teacher";
+          window.location.href = "/teacher";
         }
       } catch {
         window.location.href = "/login";

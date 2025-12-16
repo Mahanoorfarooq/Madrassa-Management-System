@@ -65,9 +65,9 @@ export default async function handler(
         user.role === "admin"
           ? "/modules/madrassa"
           : user.role === "teacher"
-          ? "/modules/teacher"
+          ? "/teacher"
           : user.role === "student"
-          ? "/student/dashboard"
+          ? "/student"
           : user.role === "staff"
           ? "/staff/dashboard"
           : "/",

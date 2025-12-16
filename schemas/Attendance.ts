@@ -8,8 +8,9 @@ export interface IAttendance extends Document {
   teacherId?: Types.ObjectId; // اردو: استاد ریفرنس
   date: Date; // اردو: تاریخ
   lecture?: string; // اردو: پیریڈ / لیکچر
-  status: "Present" | "Absent" | "Leave"; // اردو: حاضری کی حیثیت
+  status: "Present" | "Absent" | "Late" | "Leave"; // اردو: حاضری کی حیثیت
   markedBy?: Types.ObjectId; // اردو: جس استاد / یوزر نے حاضری لگائی
+  remark?: string; // اردو: تبصرہ
 }
 
 const AttendanceSchema = new Schema<IAttendance>(
@@ -32,10 +33,11 @@ const AttendanceSchema = new Schema<IAttendance>(
     lecture: { type: String },
     status: {
       type: String,
-      enum: ["Present", "Absent", "Leave"],
+      enum: ["Present", "Absent", "Late", "Leave"],
       required: true,
     },
     markedBy: { type: Schema.Types.ObjectId, ref: "User" },
+    remark: { type: String },
   },
   { timestamps: true }
 );

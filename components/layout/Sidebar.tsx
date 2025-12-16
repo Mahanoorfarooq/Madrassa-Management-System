@@ -14,9 +14,13 @@ const roleLinks: Record<string, { href: string; label: string }[]> = {
     { href: "/fees", label: "فیس اور مالیات" },
   ],
   teacher: [
-    { href: "/dashboard/teacher", label: "ڈیش بورڈ" },
+    { href: "/teacher", label: "ڈیش بورڈ" },
     { href: "/attendance", label: "حاضری" },
-    { href: "/exams", label: "امتحانات" },
+    { href: "/teacher/exams", label: "امتحانات" },
+    { href: "/teacher/assignments", label: "اسائنمنٹس" },
+    { href: "/teacher/timetable", label: "ٹائم ٹیبل" },
+    { href: "/teacher/study-material", label: "تعلیمی مواد" },
+    { href: "/teacher/discipline", label: "ڈسپلن نوٹس" },
   ],
   staff: [
     { href: "/dashboard/staff", label: "ڈیش بورڈ" },
@@ -27,6 +31,7 @@ const roleLinks: Record<string, { href: string; label: string }[]> = {
     { href: "/dashboard/student", label: "میرا ڈیش بورڈ" },
     { href: "/results", label: "نتائج" },
     { href: "/certificates", label: "سرٹیفیکیٹس" },
+    { href: "/student/assignments", label: "اسائنمنٹس" },
   ],
 };
 

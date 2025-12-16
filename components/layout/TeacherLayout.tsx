@@ -16,7 +16,7 @@ export function TeacherLayout({
     if (typeof window === "undefined") return;
     const token = localStorage.getItem("madrassa_token");
     if (!token) {
-      router.replace("/login"); // reuse teacher login if separate not present
+      router.replace("/login");
     }
   }, [router]);
 
@@ -28,7 +28,10 @@ export function TeacherLayout({
   };
 
   const NavLink = ({ href, label }: { href: string; label: string }) => {
-    const active = router.pathname === href;
+    const active =
+      href === "/teacher"
+        ? router.pathname === href
+        : router.pathname === href || router.pathname.startsWith(href + "/");
     return (
       <Link
         href={href}
@@ -54,6 +57,13 @@ export function TeacherLayout({
           <NavLink href="/teacher/profile" label="میرا پروفائل" />
           <NavLink href="/teacher/classes" label="میری کلاسز اور سیکشنز" />
           <NavLink href="/teacher/attendance" label="حاضری" />
+          <NavLink href="/teacher/attendance-report" label="حاضری رپورٹ" />
+          <NavLink href="/teacher/requests" label="طالب علم کی درخواستیں" />
+          <NavLink href="/teacher/exams" label="امتحانات" />
+          <NavLink href="/teacher/assignments" label="اسائنمنٹس" />
+          <NavLink href="/teacher/timetable" label="ٹائم ٹیبل" />
+          <NavLink href="/teacher/study-material" label="تعلیمی مواد" />
+          <NavLink href="/teacher/discipline" label="ڈسپلن نوٹس" />
           <button
             onClick={handleLogout}
             className="w-full text-right mt-2 rounded px-3 py-2 text-sm text-red-600 hover:bg-red-50"
@@ -63,7 +73,11 @@ export function TeacherLayout({
         </nav>
       </div>
       <div className="md:pr-64">
-        <Topbar roleLabel="استاد" onLogout={handleLogout} />
+        <Topbar
+          roleLabel="استاد"
+          onLogout={handleLogout}
+          showHomeLink={false}
+        />
         <main className="max-w-7xl mx-auto px-3 py-4">
           {title && (
             <h1 className="text-xl font-semibold text-gray-800 text-right mb-3">

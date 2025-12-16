@@ -9,7 +9,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const user = requireAuth(req, res, ["admin", "teacher"]);
+  const user = requireAuth(req, res, ["admin", "teacher", "student"]);
   if (!user) return;
 
   await connectDB();
@@ -28,13 +28,28 @@ export default async function handler(
       const isValidObjectId = (v?: string) =>
         !!v && mongoose.Types.ObjectId.isValid(v);
 
-      if (studentId) {
-        if (!isValidObjectId(studentId)) {
+      let effectiveStudentId = studentId;
+
+      // If the caller is a student, always restrict to their own student record
+      if (user.role === "student") {
+        const self = await Student.findOne({ userId: user.id })
+          .select("_id")
+          .lean();
+        if (!self?._id) {
+          return res
+            .status(404)
+            .json({ message: "طالب علم کا ریکارڈ نہیں ملا" });
+        }
+        effectiveStudentId = String(self._id);
+      }
+
+      if (effectiveStudentId) {
+        if (!isValidObjectId(effectiveStudentId)) {
           return res
             .status(400)
             .json({ message: "طالب علم کی شناخت درست نہیں" });
         }
-        filter.student = studentId;
+        filter.student = effectiveStudentId;
       }
       if (departmentId) {
         if (!isValidObjectId(departmentId)) {
@@ -78,6 +93,9 @@ export default async function handler(
   }
 
   if (req.method === "POST") {
+    if (user.role === "student") {
+      return res.status(403).json({ message: "غیر مجاز میتھڈ۔" });
+    }
     const { studentId, date, status, departmentId, classId } = req.body as any;
     if (!studentId || !date || !status) {
       return res

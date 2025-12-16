@@ -22,6 +22,7 @@ export default function NewStudentPage() {
         deptCode={dept}
         onSubmit={onSubmit}
         submitLabel="محفوظ کریں"
+        showPortalAccount
       />
     </TalbaLayout>
   );

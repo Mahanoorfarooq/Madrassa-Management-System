@@ -17,16 +17,31 @@ import {
 export default function TeacherDashboard() {
   const [me, setMe] = useState<any>(null);
   const [classes, setClasses] = useState<any[]>([]);
+  const [dash, setDash] = useState<{
+    todayClasses: any[];
+    pendingLeavesCount: number;
+    pendingRechecksCount: number;
+    upcomingExams: any[];
+    notices: any[];
+  } | null>(null);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const [m, c] = await Promise.all([
+        const [m, c, d] = await Promise.all([
           api.get("/api/teacher/me"),
           api.get("/api/teacher/classes"),
+          api.get("/api/teacher/dashboard"),
         ]);
         setMe(m.data || null);
         setClasses(c.data?.classes || []);
+        setDash({
+          todayClasses: d.data?.todayClasses || [],
+          pendingLeavesCount: d.data?.pendingLeavesCount || 0,
+          pendingRechecksCount: d.data?.pendingRechecksCount || 0,
+          upcomingExams: d.data?.upcomingExams || [],
+          notices: d.data?.notices || [],
+        });
       } catch (error) {
         console.error("Error loading data:", error);
       }
@@ -86,8 +101,19 @@ export default function TeacherDashboard() {
     },
   ];
 
+  const formatDate = (value: any) => {
+    if (!value) return "";
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return "";
+    return d.toLocaleDateString("ur-PK", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
   return (
-    <TeacherLayout title="استاد ڈیش بورڈ">
+    <TeacherLayout>
       <div className="space-y-6">
         {/* Welcome Section */}
         <div className="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl p-6 shadow-xl text-white">
@@ -105,6 +131,75 @@ export default function TeacherDashboard() {
                 <Award className="w-10 h-10" />
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Upcoming Exams & Notices */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Upcoming Exams */}
+          <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-lg font-semibold text-gray-800">
+                آنے والے امتحانات
+              </h3>
+            </div>
+            {dash?.upcomingExams?.length ? (
+              <div className="space-y-2 max-h-60 overflow-y-auto text-right">
+                {dash.upcomingExams.map((e: any) => (
+                  <div
+                    key={e.id}
+                    className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-2"
+                  >
+                    <div className="text-sm font-semibold text-gray-800">
+                      {e.title}
+                    </div>
+                    <div className="text-[11px] text-gray-600">
+                      {e.className || "کلاس"} {e.term ? `- ${e.term}` : ""}
+                    </div>
+                    <div className="text-[11px] text-gray-500">
+                      تاریخ: {formatDate(e.examDate)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-sm text-gray-500">
+                اس وقت کوئی امتحان شیڈول نہیں۔
+              </div>
+            )}
+          </div>
+
+          {/* Notices */}
+          <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-lg font-semibold text-gray-800">
+                انتظامیہ نوٹس
+              </h3>
+            </div>
+            {dash?.notices?.length ? (
+              <div className="space-y-2 max-h-60 overflow-y-auto text-right">
+                {dash.notices.map((n: any) => (
+                  <div
+                    key={n.id}
+                    className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-2"
+                  >
+                    <div className="text-sm font-semibold text-gray-800">
+                      {n.title}
+                    </div>
+                    <div className="text-[11px] text-gray-500 mb-1">
+                      {formatDate(n.createdAt)}
+                    </div>
+                    <div className="text-xs text-gray-700 whitespace-pre-wrap">
+                      {n.message}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-sm text-gray-500">
+                ابھی کوئی نوٹس دستیاب نہیں۔
+              </div>
+            )}
           </div>
         </div>
 
@@ -165,6 +260,80 @@ export default function TeacherDashboard() {
               <TrendingUp className="w-4 h-4" />
               <span>کل طلبہ کی تعداد</span>
             </div>
+          </div>
+        </div>
+
+        {/* Pending Requests Summary */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-lg font-semibold text-gray-800">
+                زیر غور درخواستیں
+              </h3>
+            </div>
+            <div className="grid grid-cols-2 gap-3 text-right">
+              <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+                <div className="text-xs text-amber-700 mb-1">
+                  رخصت کی درخواستیں
+                </div>
+                <div className="text-2xl font-bold text-amber-700">
+                  {dash?.pendingLeavesCount ?? 0}
+                </div>
+              </div>
+              <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
+                <div className="text-xs text-blue-700 mb-1">
+                  ری چیک کی درخواستیں
+                </div>
+                <div className="text-2xl font-bold text-blue-700">
+                  {dash?.pendingRechecksCount ?? 0}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Today’s Classes */}
+          <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-lg font-semibold text-gray-800">
+                آج کی کلاسز
+              </h3>
+              <Link
+                href="/teacher/classes"
+                className="text-sm text-primary hover:underline"
+              >
+                تمام دیکھیں
+              </Link>
+            </div>
+            {dash?.todayClasses?.length ? (
+              <div className="space-y-2 max-h-60 overflow-y-auto">
+                {dash.todayClasses.flatMap((c: any) =>
+                  (c.sections || []).map((s: any) => (
+                    <Link
+                      key={`${c.classId}:${s.sectionId}`}
+                      href={`/teacher/classes/${c.classId}/sections/${s.sectionId}`}
+                      className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 hover:bg-teal-50 hover:border-teal-300 transition-all"
+                    >
+                      <div className="text-right">
+                        <div className="text-sm font-semibold text-gray-800">
+                          {c.className || "کلاس"} - {s.sectionName || "سیکشن"}
+                        </div>
+                        <div className="text-[11px] text-gray-600">
+                          طلبہ:{" "}
+                          {typeof s.studentCount === "number"
+                            ? s.studentCount
+                            : "—"}
+                        </div>
+                      </div>
+                      <span className="text-xs text-teal-700">حاضری</span>
+                    </Link>
+                  ))
+                )}
+              </div>
+            ) : (
+              <div className="text-sm text-gray-500">
+                آج کوئی کلاس نظر نہیں آ رہی۔
+              </div>
+            )}
           </div>
         </div>
 

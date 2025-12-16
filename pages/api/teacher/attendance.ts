@@ -54,7 +54,7 @@ export default async function handler(
       date: day,
       ...(lecture ? { lecture } : {}),
     })
-      .select("student status lecture")
+      .select("student status lecture remark")
       .lean();
     return res.status(200).json({ attendance: records });
   }
@@ -67,7 +67,8 @@ export default async function handler(
       lecture?: string;
       marks: Array<{
         studentId: string;
-        status: "Present" | "Absent" | "Leave";
+        status: "Present" | "Absent" | "Late" | "Leave";
+        remark?: string;
       }>;
     };
     if (!classId || !sectionId || !date || !Array.isArray(marks)) {
@@ -75,6 +76,21 @@ export default async function handler(
         .status(400)
         .json({ message: "کلاس، سیکشن، تاریخ اور مارکس درکار ہیں" });
     }
+    const day = new Date(date);
+    if (Number.isNaN(day.getTime())) {
+      return res.status(400).json({ message: "تاریخ درست نہیں" });
+    }
+    day.setHours(0, 0, 0, 0);
+
+    // Enforce same-day edit for teachers (older dates not allowed here)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (day.getTime() !== today.getTime()) {
+      return res
+        .status(403)
+        .json({ message: "صرف آج کی تاریخ کی حاضری میں ترمیم کی جا سکتی ہے" });
+    }
+
     const owns = await TeachingAssignment.exists({
       teacherId,
       classId,
@@ -82,12 +98,6 @@ export default async function handler(
     });
     if (!owns)
       return res.status(403).json({ message: "اس کلاس/سیکشن کی اجازت نہیں" });
-
-    const day = new Date(date);
-    if (Number.isNaN(day.getTime())) {
-      return res.status(400).json({ message: "تاریخ درست نہیں" });
-    }
-    day.setHours(0, 0, 0, 0);
 
     try {
       const ops = marks.map((m) => ({
@@ -102,6 +112,7 @@ export default async function handler(
               lecture: lecture || undefined,
               status: m.status,
               teacherId,
+              ...(m.remark ? { remark: m.remark } : { remark: undefined }),
             },
           },
           upsert: true,

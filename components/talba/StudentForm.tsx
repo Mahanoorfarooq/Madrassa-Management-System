@@ -32,6 +32,9 @@ export interface StudentFormValues {
   classId?: string;
   sectionId?: string;
   status?: "Active" | "Left";
+  createPortalAccount?: boolean;
+  portalUsername?: string;
+  portalPassword?: string;
 }
 
 interface StudentFormProps {
@@ -39,13 +42,74 @@ interface StudentFormProps {
   initial?: Partial<StudentFormValues>;
   onSubmit: (values: StudentFormValues) => Promise<void>;
   submitLabel?: string;
+  showPortalAccount?: boolean;
 }
+
+const InputField = ({
+  icon: Icon,
+  label,
+  name,
+  type = "text",
+  placeholder = "",
+  required = false,
+  value,
+  onChange,
+  onKeyPress,
+}: any) => (
+  <div className="group">
+    <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+      <Icon className="w-4 h-4 text-emerald-600" />
+      {label}
+    </label>
+    <input
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      required={required}
+      placeholder={placeholder}
+      onKeyPress={onKeyPress}
+      className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 hover:border-gray-300"
+    />
+  </div>
+);
+
+const SelectField = ({
+  icon: Icon,
+  label,
+  name,
+  value,
+  onChange,
+  options,
+  placeholder = "منتخب کریں",
+}: any) => (
+  <div className="group">
+    <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+      <Icon className="w-4 h-4 text-emerald-600" />
+      {label}
+    </label>
+    <select
+      name={name}
+      value={value}
+      onChange={onChange}
+      className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 hover:border-gray-300 bg-white"
+    >
+      <option value="">{placeholder}</option>
+      {options.map((opt: any) => (
+        <option key={opt._id || opt.value} value={opt._id || opt.value}>
+          {opt.label}
+        </option>
+      ))}
+    </select>
+  </div>
+);
 
 export default function StudentForm({
   deptCode,
   initial,
   onSubmit,
   submitLabel = "محفوظ کریں",
+  showPortalAccount = false,
 }: StudentFormProps) {
   const [departmentId, setDepartmentId] = useState<string>(
     initial?.departmentId || ""
@@ -69,6 +133,9 @@ export default function StudentForm({
     classId: initial?.classId || "",
     sectionId: initial?.sectionId || "",
     status: (initial?.status as any) || "Active",
+    createPortalAccount: false,
+    portalUsername: "",
+    portalPassword: "",
   });
 
   useEffect(() => {
@@ -155,64 +222,6 @@ export default function StudentForm({
     }
   };
 
-  const InputField = ({
-    icon: Icon,
-    label,
-    name,
-    type = "text",
-    placeholder = "",
-    required = false,
-    value,
-    onChange,
-  }: any) => (
-    <div className="group">
-      <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-        <Icon className="w-4 h-4 text-emerald-600" />
-        {label}
-      </label>
-      <input
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        required={required}
-        placeholder={placeholder}
-        onKeyPress={handleKeyPress}
-        className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 hover:border-gray-300"
-      />
-    </div>
-  );
-
-  const SelectField = ({
-    icon: Icon,
-    label,
-    name,
-    value,
-    onChange,
-    options,
-    placeholder = "منتخب کریں",
-  }: any) => (
-    <div className="group">
-      <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-        <Icon className="w-4 h-4 text-emerald-600" />
-        {label}
-      </label>
-      <select
-        name={name}
-        value={value}
-        onChange={onChange}
-        className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 hover:border-gray-300 bg-white"
-      >
-        <option value="">{placeholder}</option>
-        {options.map((opt: any) => (
-          <option key={opt._id || opt.value} value={opt._id || opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-
   return (
     <div className="max-w-5xl mx-auto">
       <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
@@ -248,6 +257,7 @@ export default function StudentForm({
                 name="fullName"
                 value={values.fullName}
                 onChange={onChange}
+                onKeyPress={handleKeyPress}
                 required
               />
               <InputField
@@ -256,6 +266,7 @@ export default function StudentForm({
                 name="fatherName"
                 value={values.fatherName || ""}
                 onChange={onChange}
+                onKeyPress={handleKeyPress}
               />
               <InputField
                 icon={Calendar}
@@ -264,6 +275,7 @@ export default function StudentForm({
                 type="date"
                 value={values.dateOfBirth || ""}
                 onChange={onChange}
+                onKeyPress={handleKeyPress}
               />
               <InputField
                 icon={Phone}
@@ -271,6 +283,7 @@ export default function StudentForm({
                 name="contactNumber"
                 value={values.contactNumber || ""}
                 onChange={onChange}
+                onKeyPress={handleKeyPress}
               />
               <InputField
                 icon={CreditCard}
@@ -278,6 +291,7 @@ export default function StudentForm({
                 name="cnic"
                 value={values.cnic || ""}
                 onChange={onChange}
+                onKeyPress={handleKeyPress}
                 placeholder="مثال: 12345-1234567-1"
               />
               <div className="group">
@@ -308,6 +322,7 @@ export default function StudentForm({
                 name="photoUrl"
                 value={values.photoUrl || ""}
                 onChange={onChange}
+                onKeyPress={handleKeyPress}
                 placeholder="https://..."
               />
               <InputField
@@ -316,6 +331,7 @@ export default function StudentForm({
                 name="admissionNumber"
                 value={values.admissionNumber || ""}
                 onChange={onChange}
+                onKeyPress={handleKeyPress}
               />
               <InputField
                 icon={Calendar}
@@ -324,6 +340,7 @@ export default function StudentForm({
                 type="date"
                 value={values.admissionDate || ""}
                 onChange={onChange}
+                onKeyPress={handleKeyPress}
               />
               <SelectField
                 icon={GraduationCap}
@@ -354,6 +371,82 @@ export default function StudentForm({
               />
             </div>
           </div>
+
+          {showPortalAccount && (
+            <div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b-2 border-emerald-100 text-right">
+                پورٹل اکاؤنٹ (اختیاری)
+              </h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="text-right">
+                    <p className="text-sm font-medium text-gray-800">
+                      طالب علم کے لیے لاگ اِن اکاؤنٹ بنائیں
+                    </p>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      اگر آپ چاہتے ہیں کہ طالب علم اپنا پورٹل استعمال کرے تو اس
+                      آپشن کو فعال کریں۔
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setValues((v) => ({
+                        ...v,
+                        createPortalAccount: !v.createPortalAccount,
+                      }))
+                    }
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                      values.createPortalAccount
+                        ? "bg-emerald-500"
+                        : "bg-gray-300"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform ${
+                        values.createPortalAccount
+                          ? "translate-x-5"
+                          : "translate-x-1"
+                      }`}
+                    />
+                  </button>
+                </div>
+
+                {values.createPortalAccount && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="group">
+                      <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                        <User className="w-4 h-4 text-emerald-600" />
+                        یوزر نام
+                      </label>
+                      <input
+                        type="text"
+                        name="portalUsername"
+                        value={values.portalUsername || ""}
+                        onChange={onChange}
+                        placeholder="مثال: رول نمبر یا منفرد یوزر نام"
+                        className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 hover:border-gray-300"
+                      />
+                    </div>
+                    <div className="group">
+                      <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                        <AlertCircle className="w-4 h-4 text-emerald-600" />
+                        پاس ورڈ
+                      </label>
+                      <input
+                        type="password"
+                        name="portalPassword"
+                        value={values.portalPassword || ""}
+                        onChange={onChange}
+                        placeholder="کم از کم 6 حروف کا پاس ورڈ"
+                        className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 hover:border-gray-300"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Footer */}

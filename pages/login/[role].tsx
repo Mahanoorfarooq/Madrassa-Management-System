@@ -24,7 +24,7 @@ const roleLabels: Record<string, string> = {
 // Role-based module landing pages
 const dashboardByRole: Record<string, string> = {
   admin: "/modules/madrassa",
-  teacher: "/modules/teacher",
+  teacher: "/teacher",
   student: "/dashboard/student",
   staff: "/dashboard/staff",
 };

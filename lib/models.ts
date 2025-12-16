@@ -34,3 +34,7 @@ export { LibraryBook } from "@/schemas/LibraryBook";
 export { LibraryLoan } from "@/schemas/LibraryLoan";
 export { SupportStaff } from "@/schemas/SupportStaff";
 export { Notification } from "@/schemas/Notification";
+export { Assignment } from "@/schemas/Assignment";
+export { AssignmentSubmission } from "@/schemas/AssignmentSubmission";
+export { DisciplineNote } from "@/schemas/DisciplineNote";
+export { ProfileCorrection } from "@/schemas/ProfileCorrection";

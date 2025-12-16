@@ -40,7 +40,9 @@ export default async function handler(
     return res.status(403).json({ message: "اس کلاس/سیکشن کی اجازت نہیں" });
 
   const students = await Student.find({ classId, sectionId, status: "Active" })
-    .select("fullName rollNumber photoUrl classId sectionId")
+    .select(
+      "fullName rollNumber photoUrl classId sectionId guardianName guardianPhone contactNumber emergencyContact address"
+    )
     .sort({ fullName: 1 })
     .lean();
 

@@ -11,6 +11,7 @@ export interface IResult extends Document {
   totalObtained: number;
   totalMarks: number;
   grade: string;
+  remarks?: string;
 }
 
 const ResultSchema = new Schema<IResult>(
@@ -37,6 +38,7 @@ const ResultSchema = new Schema<IResult>(
     totalObtained: { type: Number, required: true },
     totalMarks: { type: Number, required: true },
     grade: { type: String, required: true },
+    remarks: { type: String },
   },
   { timestamps: true }
 );
