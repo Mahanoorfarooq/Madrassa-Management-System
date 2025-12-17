@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 
 const links = [
   { href: "/talba", label: "ڈیش بورڈ" },
-  { href: "/talba/admissions", label: "داخلہ (Admissions)" },
   { href: "/talba/hifz", label: "شعبہ حفظ القرآن" },
   { href: "/talba/nizami", label: "شعبہ درس نظامی" },
   { href: "/talba/tajweed", label: "شعبہ تجوید" },
