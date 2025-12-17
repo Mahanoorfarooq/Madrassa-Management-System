@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -61,7 +62,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 px-4">
       {/* Home button */}
-      <a
+      <Link
         href="/"
         className="absolute top-12 right-12 h-12 w-12 rounded-lg bg-grey-200 shadow-sm hover:shadow-md border border-slate-200 flex items-center justify-center transition-all duration-200 hover:scale-105"
         aria-label="ہوم"
@@ -77,7 +78,7 @@ export default function LoginPage() {
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
           <polyline points="9 22 9 12 15 12 15 22" />
         </svg>
-      </a>
+      </Link>
 
       {/* Main card */}
       <div className="w-full max-w-md">

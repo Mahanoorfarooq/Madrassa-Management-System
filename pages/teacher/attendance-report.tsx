@@ -303,7 +303,7 @@ export default function TeacherAttendanceReport() {
 
         {!report && !loading && !error && (
           <div className="mt-4 text-center text-xs text-gray-500">
-            اوپر سے فلٹر منتخب کریں اور "رپورٹ دیکھیں" پر کلک کریں۔
+            اوپر سے فلٹر منتخب کریں اور &quot;رپورٹ دیکھیں&quot; پر کلک کریں۔
           </div>
         )}
       </div>

@@ -30,17 +30,6 @@ interface DocItem {
 }
 
 export default function AdmissionDetail() {
-  if (ADMISSIONS_DISABLED) {
-    return (
-      <TalbaLayout title="ایڈمیشن تفصیل">
-        <div className="py-16 flex items-center justify-center" dir="rtl">
-          <p className="text-sm text-gray-500">
-            ایڈمیشن ماڈیول عارضی طور پر بند ہے، تفصیل فی الحال دستیاب نہیں۔
-          </p>
-        </div>
-      </TalbaLayout>
-    );
-  }
   const router = useRouter();
   const { id } = router.query as { id?: string };
 
@@ -139,6 +128,18 @@ export default function AdmissionDetail() {
   const submitReject = async () => {
     await savePatch({ action: "reject", decisionNote });
   };
+
+  if (ADMISSIONS_DISABLED) {
+    return (
+      <TalbaLayout title="ایڈمیشن تفصیل">
+        <div className="py-16 flex items-center justify-center" dir="rtl">
+          <p className="text-sm text-gray-500">
+            ایڈمیشن ماڈیول عارضی طور پر بند ہے، تفصیل فی الحال دستیاب نہیں۔
+          </p>
+        </div>
+      </TalbaLayout>
+    );
+  }
 
   if (loading && !admission) {
     return (

@@ -224,7 +224,7 @@ export default function AdminTeacherCreate() {
             ))}
             {!assignments.length && (
               <div className="text-xs text-gray-500">
-                کوئی تفویض شامل نہیں — اوپر "نیا" دبائیں
+                کوئی تفویض شامل نہیں — اوپر &quot;نیا&quot; دبائیں
               </div>
             )}
           </div>

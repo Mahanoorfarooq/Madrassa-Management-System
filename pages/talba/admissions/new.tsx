@@ -12,17 +12,6 @@ interface DeptOption {
 }
 
 export default function NewAdmissionInquiry() {
-  if (ADMISSIONS_DISABLED) {
-    return (
-      <TalbaLayout title="نئی انکوائری">
-        <div className="py-16 flex items-center justify-center" dir="rtl">
-          <p className="text-sm text-gray-500">
-            ایڈمیشن ماڈیول عارضی طور پر بند ہے، نئی انکوائری فی الحال ممکن نہیں۔
-          </p>
-        </div>
-      </TalbaLayout>
-    );
-  }
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -72,6 +61,18 @@ export default function NewAdmissionInquiry() {
       setLoading(false);
     }
   };
+
+  if (ADMISSIONS_DISABLED) {
+    return (
+      <TalbaLayout title="نئی انکوائری">
+        <div className="py-16 flex items-center justify-center" dir="rtl">
+          <p className="text-sm text-gray-500">
+            ایڈمیشن ماڈیول عارضی طور پر بند ہے، نئی انکوائری فی الحال ممکن نہیں۔
+          </p>
+        </div>
+      </TalbaLayout>
+    );
+  }
 
   return (
     <TalbaLayout title="نئی انکوائری">

@@ -121,7 +121,8 @@ export default function TeacherAttendanceLanding() {
             <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
               <div className="text-sm text-blue-700 leading-relaxed">
                 پہلے کلاس منتخب کریں، پھر اس کے متعلقہ سیکشن کو منتخب کریں، اور
-                "جائیں" پر کلک کریں تاکہ طلبہ کی حاضری کا صفحہ کھل جائے۔
+                &quot;جائیں&quot; پر کلک کریں تاکہ طلبہ کی حاضری کا صفحہ کھل
+                جائے۔
               </div>
             </div>
 
