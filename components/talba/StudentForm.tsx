@@ -9,8 +9,11 @@ import {
   Image,
   Hash,
   GraduationCap,
+  BookOpen,
   Users,
   AlertCircle,
+  HeartPulse,
+  Home,
 } from "lucide-react";
 
 interface Option {
@@ -18,19 +21,41 @@ interface Option {
   label: string;
 }
 
+interface NamedOption {
+  _id: string;
+  name: string;
+}
+
 export interface StudentFormValues {
   fullName: string;
+  gender?: "male" | "female" | "other";
   fatherName?: string;
   dateOfBirth?: string;
   contactNumber?: string;
+  emergencyContact?: string;
   cnic?: string;
   address?: string;
   photoUrl?: string;
+  guardianName?: string;
+  guardianRelation?: string;
+  guardianCNIC?: string;
+  guardianPhone?: string;
+  guardianAddress?: string;
   admissionNumber?: string;
   admissionDate?: string;
+  previousSchool?: string;
+  notes?: string;
   departmentId: string;
   classId?: string;
   sectionId?: string;
+  halaqahId?: string;
+  isHostel?: boolean;
+  isTransport?: boolean;
+  transportRouteId?: string;
+  transportPickupNote?: string;
+  scholarshipType?: "none" | "percent" | "fixed";
+  scholarshipValue?: number;
+  scholarshipNote?: string;
   status?: "Active" | "Left";
   createPortalAccount?: boolean;
   portalUsername?: string;
@@ -116,23 +141,42 @@ export default function StudentForm({
   );
   const [classes, setClasses] = useState<Option[]>([]);
   const [sections, setSections] = useState<Option[]>([]);
+  const [halaqah, setHalaqah] = useState<NamedOption[]>([]);
+  const [routes, setRoutes] = useState<NamedOption[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const [values, setValues] = useState<StudentFormValues>({
     fullName: initial?.fullName || "",
+    gender: (initial as any)?.gender || "male",
     fatherName: initial?.fatherName || "",
     dateOfBirth: initial?.dateOfBirth || "",
     contactNumber: initial?.contactNumber || "",
+    emergencyContact: (initial as any)?.emergencyContact || "",
     cnic: (initial as any)?.cnic || "",
     address: initial?.address || "",
     photoUrl: initial?.photoUrl || "",
+    guardianName: (initial as any)?.guardianName || "",
+    guardianRelation: (initial as any)?.guardianRelation || "",
+    guardianCNIC: (initial as any)?.guardianCNIC || "",
+    guardianPhone: (initial as any)?.guardianPhone || "",
+    guardianAddress: (initial as any)?.guardianAddress || "",
     admissionNumber: initial?.admissionNumber || "",
     admissionDate: initial?.admissionDate || "",
+    previousSchool: (initial as any)?.previousSchool || "",
+    notes: (initial as any)?.notes || "",
     departmentId: initial?.departmentId || "",
     classId: initial?.classId || "",
     sectionId: initial?.sectionId || "",
+    halaqahId: (initial as any)?.halaqahId || "",
     status: (initial?.status as any) || "Active",
+    isHostel: Boolean((initial as any)?.isHostel),
+    isTransport: Boolean((initial as any)?.isTransport),
+    transportRouteId: (initial as any)?.transportRouteId || "",
+    transportPickupNote: (initial as any)?.transportPickupNote || "",
+    scholarshipType: (initial as any)?.scholarshipType || "none",
+    scholarshipValue: Number((initial as any)?.scholarshipValue || 0),
+    scholarshipNote: (initial as any)?.scholarshipNote || "",
     createPortalAccount: false,
     portalUsername: "",
     portalPassword: "",
@@ -149,6 +193,18 @@ export default function StudentForm({
         if (dept?._id) {
           setDepartmentId(dept._id);
           setValues((v) => ({ ...v, departmentId: dept._id }));
+
+          // load halaqah list for this department
+          const halaqahRes = await api
+            .get("/api/halaqah", { params: { departmentId: dept._id } })
+            .catch(() => null);
+          setHalaqah((halaqahRes as any)?.data?.halaqah || []);
+
+          // load transport routes
+          const routesRes = await api
+            .get("/api/transport-routes")
+            .catch(() => null);
+          setRoutes((routesRes as any)?.data?.routes || []);
           const classesRes = await api.get("/api/classes", {
             params: { departmentId: dept._id },
           });
@@ -175,6 +231,17 @@ export default function StudentForm({
     };
     bootstrap();
   }, [deptCode]);
+
+  useEffect(() => {
+    const loadHalaqah = async () => {
+      if (!departmentId) return;
+      const res = await api
+        .get("/api/halaqah", { params: { departmentId } })
+        .catch(() => null);
+      setHalaqah((res as any)?.data?.halaqah || []);
+    };
+    loadHalaqah();
+  }, [departmentId]);
 
   const onChange = (
     e: React.ChangeEvent<
@@ -277,11 +344,31 @@ export default function StudentForm({
                 onChange={onChange}
                 onKeyPress={handleKeyPress}
               />
+              <SelectField
+                icon={Users}
+                label="جنس"
+                name="gender"
+                value={(values.gender as any) || "male"}
+                onChange={onChange}
+                options={[
+                  { value: "male", label: "مرد" },
+                  { value: "female", label: "خاتون" },
+                  { value: "other", label: "دیگر" },
+                ]}
+              />
               <InputField
                 icon={Phone}
                 label="رابطہ نمبر"
                 name="contactNumber"
                 value={values.contactNumber || ""}
+                onChange={onChange}
+                onKeyPress={handleKeyPress}
+              />
+              <InputField
+                icon={HeartPulse}
+                label="ہنگامی رابطہ"
+                name="emergencyContact"
+                value={values.emergencyContact || ""}
                 onChange={onChange}
                 onKeyPress={handleKeyPress}
               />
@@ -302,6 +389,140 @@ export default function StudentForm({
                 <textarea
                   name="address"
                   value={values.address || ""}
+                  onChange={onChange}
+                  rows={3}
+                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 hover:border-gray-300 resize-none"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Hostel / Transport Section */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b-2 border-emerald-100 text-right">
+              رہائش / ٹرانسپورٹ (اختیاری)
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex items-center justify-between rounded-lg border-2 border-gray-200 px-4 py-3">
+                <div className="text-right">
+                  <div className="text-sm font-medium text-gray-800">ہاسٹل</div>
+                  <div className="text-xs text-gray-500">
+                    اگر طالب علم ہاسٹل میں ہے
+                  </div>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={Boolean(values.isHostel)}
+                  onChange={(e) =>
+                    setValues((v) => ({ ...v, isHostel: e.target.checked }))
+                  }
+                />
+              </div>
+
+              <div className="flex items-center justify-between rounded-lg border-2 border-gray-200 px-4 py-3">
+                <div className="text-right">
+                  <div className="text-sm font-medium text-gray-800">
+                    ٹرانسپورٹ
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    اگر طالب علم ٹرانسپورٹ استعمال کرتا ہے
+                  </div>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={Boolean(values.isTransport)}
+                  onChange={(e) =>
+                    setValues((v) => ({
+                      ...v,
+                      isTransport: e.target.checked,
+                      transportRouteId: e.target.checked
+                        ? v.transportRouteId
+                        : "",
+                    }))
+                  }
+                />
+              </div>
+
+              <div className="group">
+                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <Users className="w-4 h-4 text-emerald-600" />
+                  ٹرانسپورٹ روٹ
+                </label>
+                <select
+                  name="transportRouteId"
+                  value={values.transportRouteId || ""}
+                  onChange={onChange}
+                  disabled={!values.isTransport}
+                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 hover:border-gray-300 bg-white disabled:bg-gray-100"
+                >
+                  <option value="">منتخب کریں</option>
+                  {routes.map((r: any) => (
+                    <option key={r._id} value={r._id}>
+                      {r.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <InputField
+                icon={MapPin}
+                label="Pickup Note"
+                name="transportPickupNote"
+                value={values.transportPickupNote || ""}
+                onChange={onChange}
+                onKeyPress={handleKeyPress}
+                placeholder="مثال: مین گیٹ / فلاں جگہ"
+              />
+            </div>
+          </div>
+
+          {/* Guardian Information Section */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b-2 border-emerald-100 text-right">
+              سرپرست کی معلومات
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <InputField
+                icon={User}
+                label="سرپرست کا نام"
+                name="guardianName"
+                value={values.guardianName || ""}
+                onChange={onChange}
+                onKeyPress={handleKeyPress}
+              />
+              <InputField
+                icon={Users}
+                label="رشتہ"
+                name="guardianRelation"
+                value={values.guardianRelation || ""}
+                onChange={onChange}
+                onKeyPress={handleKeyPress}
+                placeholder="والد/والدہ/چچا..."
+              />
+              <InputField
+                icon={CreditCard}
+                label="سرپرست CNIC"
+                name="guardianCNIC"
+                value={values.guardianCNIC || ""}
+                onChange={onChange}
+                onKeyPress={handleKeyPress}
+              />
+              <InputField
+                icon={Phone}
+                label="سرپرست فون"
+                name="guardianPhone"
+                value={values.guardianPhone || ""}
+                onChange={onChange}
+                onKeyPress={handleKeyPress}
+              />
+              <div className="group md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <Home className="w-4 h-4 text-emerald-600" />
+                  سرپرست کا پتہ
+                </label>
+                <textarea
+                  name="guardianAddress"
+                  value={values.guardianAddress || ""}
                   onChange={onChange}
                   rows={3}
                   className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 hover:border-gray-300 resize-none"
@@ -342,6 +563,14 @@ export default function StudentForm({
                 onChange={onChange}
                 onKeyPress={handleKeyPress}
               />
+              <InputField
+                icon={BookOpen}
+                label="سابقہ ادارہ"
+                name="previousSchool"
+                value={values.previousSchool || ""}
+                onChange={onChange}
+                onKeyPress={handleKeyPress}
+              />
               <SelectField
                 icon={GraduationCap}
                 label="کلاس"
@@ -358,6 +587,25 @@ export default function StudentForm({
                 onChange={onChange}
                 options={sections}
               />
+              <div className="group">
+                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <Users className="w-4 h-4 text-emerald-600" />
+                  حلقہ
+                </label>
+                <select
+                  name="halaqahId"
+                  value={values.halaqahId || ""}
+                  onChange={onChange}
+                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 hover:border-gray-300 bg-white"
+                >
+                  <option value="">منتخب کریں</option>
+                  {halaqah.map((h: any) => (
+                    <option key={h._id} value={h._id}>
+                      {h.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <SelectField
                 icon={AlertCircle}
                 label="حیثیت"
@@ -369,6 +617,50 @@ export default function StudentForm({
                   { value: "Left", label: "نکل چکے" },
                 ]}
               />
+              <SelectField
+                icon={CreditCard}
+                label="اسکالرشپ / رعایت"
+                name="scholarshipType"
+                value={(values as any).scholarshipType || "none"}
+                onChange={onChange}
+                options={[
+                  { value: "none", label: "کوئی نہیں" },
+                  { value: "percent", label: "فیصد" },
+                  { value: "fixed", label: "فکسڈ رقم" },
+                ]}
+              />
+              <InputField
+                icon={CreditCard}
+                label="اسکالرشپ ویلیو"
+                name="scholarshipValue"
+                type="number"
+                value={(values as any).scholarshipValue ?? 0}
+                onChange={onChange}
+                onKeyPress={handleKeyPress}
+                placeholder="0"
+              />
+              <InputField
+                icon={AlertCircle}
+                label="اسکالرشپ نوٹ"
+                name="scholarshipNote"
+                value={(values as any).scholarshipNote || ""}
+                onChange={onChange}
+                onKeyPress={handleKeyPress}
+                placeholder="اختیاری"
+              />
+              <div className="group md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 text-emerald-600" />
+                  نوٹس
+                </label>
+                <textarea
+                  name="notes"
+                  value={values.notes || ""}
+                  onChange={onChange}
+                  rows={3}
+                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 hover:border-gray-300 resize-none"
+                />
+              </div>
             </div>
           </div>
 

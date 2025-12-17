@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connectDB } from "@/lib/db";
-import { requireAuth } from "@/lib/auth";
+import { requireAuth, requirePermission } from "@/lib/auth";
 import { FinanceTransaction } from "@/schemas/FinanceTransaction";
 
 export default async function handler(
@@ -9,6 +9,9 @@ export default async function handler(
 ) {
   const user = requireAuth(req, res, ["admin", "staff"]);
   if (!user) return;
+
+  const ok = await requirePermission(req, res, user, "manage_fees");
+  if (!ok) return;
 
   await connectDB();
 

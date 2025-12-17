@@ -26,6 +26,36 @@ export function NisabSidebar() {
           سلیبس
         </Link>
         <Link
+          href="/nisab/dars"
+          className={`block rounded px-3 py-2 transition ${
+            router.pathname === "/nisab/dars"
+              ? "bg-primary"
+              : "hover:bg-gray-700"
+          }`}
+        >
+          مضامین / دروس
+        </Link>
+        <Link
+          href="/nisab/timetable"
+          className={`block rounded px-3 py-2 transition ${
+            router.pathname === "/nisab/timetable"
+              ? "bg-primary"
+              : "hover:bg-gray-700"
+          }`}
+        >
+          ٹائم ٹیبل
+        </Link>
+        <Link
+          href="/nisab/calendar"
+          className={`block rounded px-3 py-2 transition ${
+            router.pathname === "/nisab/calendar"
+              ? "bg-primary"
+              : "hover:bg-gray-700"
+          }`}
+        >
+          اکیڈمک کیلنڈر
+        </Link>
+        <Link
           href="/nisab/exams"
           className={`block rounded px-3 py-2 transition ${
             router.pathname === "/nisab/exams"

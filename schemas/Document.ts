@@ -4,6 +4,11 @@ export type DocumentType =
   | "id_card"
   | "admission_form"
   | "character_certificate"
+  | "birth_certificate"
+  | "b_form"
+  | "cnic"
+  | "previous_school"
+  | "photo"
   | "other";
 
 export interface IDocument extends MDocument {
@@ -11,6 +16,7 @@ export interface IDocument extends MDocument {
   type: DocumentType; // اردو: دستاویز کی قسم
   title: string; // اردو: عنوان
   pdfPath?: string; // اردو: پی ڈی ایف فائل کا راستہ
+  verified?: boolean;
 }
 
 const DocumentSchema = new Schema<IDocument>(
@@ -23,11 +29,22 @@ const DocumentSchema = new Schema<IDocument>(
     },
     type: {
       type: String,
-      enum: ["id_card", "admission_form", "character_certificate", "other"],
+      enum: [
+        "id_card",
+        "admission_form",
+        "character_certificate",
+        "birth_certificate",
+        "b_form",
+        "cnic",
+        "previous_school",
+        "photo",
+        "other",
+      ],
       required: true,
     },
     title: { type: String, required: true },
     pdfPath: { type: String },
+    verified: { type: Boolean, default: false, index: true },
   },
   { timestamps: true }
 );

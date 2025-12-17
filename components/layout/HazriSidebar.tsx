@@ -47,6 +47,16 @@ export function HazriSidebar() {
         >
           عملہ
         </Link>
+        <Link
+          href="/hazri/oversight"
+          className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 ${
+            router.pathname === "/hazri/oversight"
+              ? "bg-primary/90 text-white shadow-md"
+              : "hover:bg-slate-800/80 text-slate-200"
+          }`}
+        >
+          نگرانی
+        </Link>
       </nav>
     </aside>
   );

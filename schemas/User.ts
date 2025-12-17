@@ -17,6 +17,8 @@ export interface IUser extends Document {
   linkedId?: mongoose.Types.ObjectId;
   // صارف کی حیثیت
   status?: "active" | "disabled";
+  // اضافی اجازتیں (granular permissions)
+  permissions?: string[];
 }
 
 const UserSchema = new Schema<IUser>(
@@ -39,6 +41,11 @@ const UserSchema = new Schema<IUser>(
     linkedTeacherId: {
       type: Schema.Types.ObjectId,
       ref: "Teacher",
+      index: true,
+    },
+    permissions: {
+      type: [String],
+      default: [],
       index: true,
     },
   },

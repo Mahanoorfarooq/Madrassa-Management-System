@@ -75,6 +75,16 @@ export function HostelSidebar() {
         >
           اخراجات
         </Link>
+        <Link
+          href="/hostel/uniforms"
+          className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 ${
+            router.pathname === "/hostel/uniforms"
+              ? "bg-primary/90 text-white shadow-md"
+              : "hover:bg-slate-800/80 text-slate-200"
+          }`}
+        >
+          یونیفارم انوینٹری
+        </Link>
       </nav>
     </aside>
   );

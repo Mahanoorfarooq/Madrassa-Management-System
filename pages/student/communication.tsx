@@ -11,8 +11,8 @@ interface MessageItem {
 }
 
 interface NotificationItem {
-  id: number;
-  channel: "SMS" | "WhatsApp" | "Email" | "Push";
+  id: string;
+  channel: string;
   title: string;
   date: string;
 }
@@ -36,20 +36,7 @@ export default function StudentCommunication() {
     },
   ]);
 
-  const [notifications] = useState<NotificationItem[]>([
-    {
-      id: 1,
-      channel: "SMS",
-      title: "فیس کی ادائیگی کی یاد دہانی",
-      date: "2025-12-01",
-    },
-    {
-      id: 2,
-      channel: "WhatsApp",
-      title: "کل عام تعطیل ہوگی",
-      date: "2025-12-03",
-    },
-  ]);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
 
   const [tickets, setTickets] = useState<TicketItem[]>([]);
   const [category, setCategory] = useState<string>("IT");
@@ -59,24 +46,37 @@ export default function StudentCommunication() {
   const [ticketSubmitting, setTicketSubmitting] = useState(false);
 
   useEffect(() => {
-    const loadTickets = async () => {
+    const load = async () => {
       try {
-        const res = await api.get("/api/student/tickets");
-        const list = (res.data?.tickets || []) as any[];
-        const mapped: TicketItem[] = list.map((t) => ({
+        const [tRes, nRes] = await Promise.all([
+          api.get("/api/student/tickets"),
+          api.get("/api/student/notifications"),
+        ]);
+
+        const tList = (tRes.data?.tickets || []) as any[];
+        const mappedTickets: TicketItem[] = tList.map((t) => ({
           id: String(t._id),
           category: t.category,
           subject: t.subject,
           status: t.status as TicketItem["status"],
           createdAt: t.createdAt,
         }));
-        setTickets(mapped);
+        setTickets(mappedTickets);
+
+        const nList = (nRes.data?.notifications || []) as any[];
+        const mappedNotifs: NotificationItem[] = nList.map((n) => ({
+          id: String(n._id),
+          channel: n.channel || "in_app",
+          title: n.title,
+          date: n.createdAt,
+        }));
+        setNotifications(mappedNotifs);
       } catch {
-        // ignore; section will still be usable
+        // ignore; page still works with empty data
       }
     };
 
-    loadTickets();
+    load();
   }, []);
 
   const submitTicket = async (e: FormEvent) => {

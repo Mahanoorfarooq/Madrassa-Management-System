@@ -69,8 +69,30 @@ export default function StudentExams() {
 
         const scheduleItems: ExamScheduleItem[] = [];
         exams.forEach((ex) => {
-          const examDate = ex.examDate;
           const title: string = ex.title || ex.term || "امتحان";
+
+          // Prefer detailed papers schedule if available
+          if (Array.isArray(ex.papers) && ex.papers.length) {
+            ex.papers.forEach((p: any, idx: number) => {
+              const date = p.date || ex.examDate;
+              const timeParts: string[] = [];
+              if (p.startTime) timeParts.push(p.startTime);
+              if (p.endTime) timeParts.push(p.endTime);
+              const time = timeParts.join(" - ");
+              scheduleItems.push({
+                id: `${ex._id}-${idx}`,
+                name: title,
+                date,
+                time,
+                subject: p.subject || "",
+                room: p.room || "",
+              });
+            });
+            return;
+          }
+
+          // Fallback: simple per-subject schedule based on examDate
+          const examDate = ex.examDate;
           if (Array.isArray(ex.subjects) && ex.subjects.length) {
             ex.subjects.forEach((sub: string, idx: number) => {
               scheduleItems.push({

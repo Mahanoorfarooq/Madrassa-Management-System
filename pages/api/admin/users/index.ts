@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connectDB } from "@/lib/db";
-import { requireAuth, hashPassword } from "@/lib/auth";
+import { requireAuth, hashPassword, requirePermission } from "@/lib/auth";
 import { User } from "@/schemas/User";
 
 export default async function handler(
@@ -9,6 +9,9 @@ export default async function handler(
 ) {
   const me = requireAuth(req, res, ["admin"]);
   if (!me) return;
+
+  const ok = await requirePermission(req, res, me, "manage_users");
+  if (!ok) return;
 
   await connectDB();
 
@@ -68,6 +71,7 @@ export default async function handler(
         role,
         linkedId: linkedId || undefined,
         status: status || "active",
+        permissions: [],
       });
       const safe = {
         id: created._id,
@@ -76,6 +80,7 @@ export default async function handler(
         role: created.role,
         status: created.status,
         linkedId: created.linkedId,
+        permissions: created.permissions || [],
       };
       return res.status(201).json({ message: "صارف بنا دیا گیا", user: safe });
     } catch (e: any) {

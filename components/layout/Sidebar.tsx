@@ -12,6 +12,11 @@ const roleLinks: Record<string, { href: string; label: string }[]> = {
     { href: "/teachers", label: "اساتذہ" },
     { href: "/hostel", label: "ہاسٹل" },
     { href: "/fees", label: "فیس اور مالیات" },
+    { href: "/modules/madrassa/settings/notifications", label: "اعلانات" },
+    {
+      href: "/modules/madrassa/settings/activity-logs",
+      label: "Activity Logs",
+    },
   ],
   teacher: [
     { href: "/teacher", label: "ڈیش بورڈ" },

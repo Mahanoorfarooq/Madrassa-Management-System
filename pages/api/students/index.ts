@@ -16,15 +16,27 @@ export default async function handler(
   await connectDB();
 
   if (req.method === "GET") {
-    const { classId, sectionId, status, q, departmentId, isHostel } =
-      req.query as any;
+    const {
+      classId,
+      sectionId,
+      status,
+      q,
+      departmentId,
+      isHostel,
+      halaqahId,
+      isTransport,
+    } = req.query as any;
     const filter: any = {};
     if (departmentId) filter.departmentId = departmentId;
     if (classId) filter.classId = classId;
     if (sectionId) filter.sectionId = sectionId;
+    if (halaqahId) filter.halaqahId = halaqahId;
     if (status) filter.status = status;
     if (typeof isHostel !== "undefined") {
       filter.isHostel = isHostel === "true";
+    }
+    if (typeof isTransport !== "undefined") {
+      filter.isTransport = isTransport === "true";
     }
 
     if (q) {
@@ -103,12 +115,19 @@ export default async function handler(
         departmentId: body.departmentId || undefined,
         classId: body.classId || undefined,
         sectionId: body.sectionId || undefined,
+        halaqahId: body.halaqahId || undefined,
         admissionNumber: body.admissionNumber,
         admissionDate: body.admissionDate || undefined,
         previousSchool: body.previousSchool,
         notes: body.notes,
         status: body.status || "Active",
         isHostel: body.isHostel ?? false,
+        isTransport: body.isTransport ?? false,
+        transportRouteId: body.transportRouteId || undefined,
+        transportPickupNote: body.transportPickupNote || undefined,
+        scholarshipType: body.scholarshipType || "none",
+        scholarshipValue: Number(body.scholarshipValue || 0),
+        scholarshipNote: body.scholarshipNote || undefined,
       });
 
       if (createPortalAccount) {

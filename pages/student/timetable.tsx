@@ -1,18 +1,23 @@
-import { useMemo } from "react";
 import { StudentLayout } from "@/components/layout/StudentLayout";
 import { useEffect, useState } from "react";
 import api from "@/utils/api";
 import { Calendar, Clock, User, BookOpen } from "lucide-react";
 
-interface SubjectRow {
+interface TimetableRow {
+  id: string;
+  dayOfWeek: number;
+  period: number;
+  startTime?: string;
+  endTime?: string;
   subject: string;
   teacherName: string;
+  room?: string;
 }
 
 const urDays = ["اتوار", "پیر", "منگل", "بدھ", "جمعرات", "جمعہ", "ہفتہ"];
 
 export default function StudentTimetable() {
-  const [subjects, setSubjects] = useState<SubjectRow[]>([]);
+  const [entries, setEntries] = useState<TimetableRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [view, setView] = useState<"weekly" | "daily">("weekly");
@@ -23,14 +28,8 @@ export default function StudentTimetable() {
       try {
         setLoading(true);
         setError(null);
-        const res = await api.get("/api/student/classes");
-        const rows = (res.data?.subjects || []) as any[];
-        setSubjects(
-          rows.map((r: any) => ({
-            subject: r.subject || "",
-            teacherName: r.teacherName || "",
-          }))
-        );
+        const res = await api.get("/api/student/timetable");
+        setEntries((res.data?.entries || []) as any[]);
       } catch (e: any) {
         setError(
           e?.response?.data?.message || "ٹائم ٹیبل لوڈ کرنے میں مسئلہ پیش آیا۔"
@@ -42,18 +41,12 @@ export default function StudentTimetable() {
     load();
   }, []);
 
-  const weeklyGrid = useMemo(() => {
-    // Simple distribution of subjects across days in order
-    const days = Array.from({ length: 7 }, (_, i) => ({
-      day: i,
-      periods: [] as SubjectRow[],
-    }));
-    subjects.forEach((s, idx) => {
-      const d = idx % 5; // Mon-Fri by default
-      days[(d + 1) % 7].periods.push(s); // shift so 1=Mon
-    });
-    return days;
-  }, [subjects]);
+  const weeklyGrid = Array.from({ length: 7 }, (_, i) => ({
+    day: i,
+    periods: entries
+      .filter((e) => e.dayOfWeek === i)
+      .sort((a, b) => (a.period || 0) - (b.period || 0)),
+  }));
 
   return (
     <StudentLayout >

@@ -14,66 +14,118 @@ export default async function handler(
   await connectDB();
 
   if (req.method === "GET") {
-    const { status } = req.query;
+    const { status, stage, q } = req.query as any;
     const filter: any = {};
     if (status) filter.status = status;
+    if (stage) filter.stage = stage;
+    if (q) {
+      const rx = new RegExp(String(q), "i");
+      filter.$or = [
+        { applicantName: rx },
+        { fatherName: rx },
+        { guardianName: rx },
+        { admissionNumber: rx },
+        { contactNumber: rx },
+        { cnic: rx },
+      ];
+    }
     const admissions = await Admission.find(filter)
       .populate("student")
-      .sort({ admissionDate: -1 });
+      .sort({ createdAt: -1 });
     return res.status(200).json({ admissions });
   }
 
   if (req.method === "POST") {
-    const {
-      studentId,
-      admissionNumber,
-      admissionDate,
-      previousSchool,
-      classId,
-      sectionId,
-      status,
-      formDate,
-      notes,
-    } = req.body;
+    const body = req.body as any;
 
-    if (!studentId || !admissionNumber || !admissionDate) {
-      return res
-        .status(400)
-        .json({ message: "داخلہ نمبر، طالب علم اور داخلہ تاریخ درکار ہیں۔" });
+    // Legacy path: admission for an existing student
+    if (body.studentId) {
+      const {
+        studentId,
+        admissionNumber,
+        admissionDate,
+        previousSchool,
+        classId,
+        sectionId,
+        status,
+        formDate,
+        notes,
+      } = body;
+
+      if (!studentId || !admissionNumber || !admissionDate) {
+        return res
+          .status(400)
+          .json({ message: "داخلہ نمبر، طالب علم اور داخلہ تاریخ درکار ہیں۔" });
+      }
+
+      try {
+        const admission = await Admission.create({
+          student: studentId,
+          admissionNumber,
+          admissionDate,
+          previousSchool,
+          classId,
+          sectionId,
+          status,
+          formDate,
+          notes,
+          stage: "Approved",
+          applicantName: body.applicantName || "طالب علم",
+        });
+
+        // بنیادی فیلڈز طالب علم پر بھی اپ ڈیٹ کر دیں
+        await Student.findByIdAndUpdate(studentId, {
+          admissionNumber,
+          admissionDate,
+          previousSchool,
+          classId,
+          sectionId,
+          status,
+          formDate,
+          notes,
+        });
+
+        return res
+          .status(201)
+          .json({ message: "داخلہ فارم محفوظ ہو گیا۔", admission });
+      } catch (e) {
+        return res
+          .status(500)
+          .json({ message: "داخلہ محفوظ کرنے میں مسئلہ پیش آیا۔" });
+      }
+    }
+
+    // New pipeline path: create inquiry
+    const applicantName = (body.applicantName || "").trim();
+    if (!applicantName) {
+      return res.status(400).json({ message: "نام درکار ہے۔" });
     }
 
     try {
       const admission = await Admission.create({
-        student: studentId,
-        admissionNumber,
-        admissionDate,
-        previousSchool,
-        classId,
-        sectionId,
-        status,
-        formDate,
-        notes,
+        stage: "Inquiry",
+        applicantName,
+        fatherName: body.fatherName,
+        guardianName: body.guardianName,
+        guardianRelation: body.guardianRelation,
+        contactNumber: body.contactNumber,
+        cnic: body.cnic,
+        dateOfBirth: body.dateOfBirth ? new Date(body.dateOfBirth) : undefined,
+        address: body.address,
+        previousSchool: body.previousSchool,
+        departmentId: body.departmentId || undefined,
+        classId: body.classId || undefined,
+        sectionId: body.sectionId || undefined,
+        notes: body.notes,
+        documents: Array.isArray(body.documents) ? body.documents : [],
       });
-
-      // بنیادی فیلڈز طالب علم پر بھی اپ ڈیٹ کر دیں
-      await Student.findByIdAndUpdate(studentId, {
-        admissionNumber,
-        admissionDate,
-        previousSchool,
-        classId,
-        sectionId,
-        status,
-        formDate,
-        notes,
-      });
-
       return res
         .status(201)
-        .json({ message: "داخلہ فارم محفوظ ہو گیا۔", admission });
+        .json({ message: "انکوائری محفوظ ہو گئی۔", admission });
     } catch (e) {
       return res
         .status(500)
-        .json({ message: "داخلہ محفوظ کرنے میں مسئلہ پیش آیا۔" });
+        .json({ message: "انکوائری محفوظ کرنے میں مسئلہ پیش آیا۔" });
     }
   }
 

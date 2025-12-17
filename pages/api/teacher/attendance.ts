@@ -4,6 +4,7 @@ import { requireAuth } from "@/lib/auth";
 import { User } from "@/schemas/User";
 import { TeachingAssignment } from "@/schemas/TeachingAssignment";
 import { Attendance } from "@/schemas/Attendance";
+import { AttendancePolicy } from "@/schemas/AttendancePolicy";
 
 export default async function handler(
   req: NextApiRequest,
@@ -82,13 +83,41 @@ export default async function handler(
     }
     day.setHours(0, 0, 0, 0);
 
-    // Enforce same-day edit for teachers (older dates not allowed here)
+    // Cutoff lock (default 22:00). Teachers can only mark same-day attendance before cutoff.
+    const policy = (await AttendancePolicy.findOne({
+      key: "student_attendance",
+    })
+      .select("cutoffTime isLockedEnabled")
+      .lean()) || { cutoffTime: "22:00", isLockedEnabled: true };
+
+    const now = new Date();
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    if (day.getTime() !== today.getTime()) {
-      return res
-        .status(403)
-        .json({ message: "صرف آج کی تاریخ کی حاضری میں ترمیم کی جا سکتی ہے" });
+    const isToday = day.getTime() === today.getTime();
+
+    if (policy.isLockedEnabled) {
+      const parts = String((policy as any).cutoffTime || "22:00").split(":");
+      const hh = Number(parts[0] || 22);
+      const mm = Number(parts[1] || 0);
+      const cutoff = new Date(today);
+      cutoff.setHours(hh, mm, 0, 0);
+
+      if (!isToday || now.getTime() > cutoff.getTime()) {
+        return res.status(403).json({
+          message:
+            "حاضری لاک ہو چکی ہے۔ براہ کرم Attendance Edit Request بنائیں۔",
+          locked: true,
+        });
+      }
+    } else {
+      // If locking is disabled, still prevent teachers from editing older dates directly.
+      if (!isToday) {
+        return res
+          .status(403)
+          .json({
+            message: "براہ کرم پرانی تاریخ کے لیے Edit Request بنائیں۔",
+          });
+      }
     }
 
     const owns = await TeachingAssignment.exists({

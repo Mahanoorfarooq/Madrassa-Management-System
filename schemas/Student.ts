@@ -27,6 +27,7 @@ export interface IStudent extends Document {
   departmentId?: Types.ObjectId; // اردو: شعبہ ریفرنس
   classId?: Types.ObjectId; // اردو: کلاس ریفرنس
   sectionId?: Types.ObjectId; // اردو: سیکشن ریفرنس
+  halaqahId?: Types.ObjectId; // اردو: حلقہ ریفرنس
   className?: string; // پرانی فیلڈ (مطابقت کے لیے)
   section?: string; // پرانی فیلڈ (مطابقت کے لیے)
 
@@ -40,6 +41,16 @@ export interface IStudent extends Document {
   // عمومی حیثیت
   status: "Active" | "Left"; // اردو: طالب علم کی حیثیت
   isHostel: boolean; // اردو: ہاسٹل میں ہے یا نہیں
+
+  // ٹرانسپورٹ (اختیاری)
+  isTransport?: boolean;
+  transportRouteId?: Types.ObjectId;
+  transportPickupNote?: string;
+
+  // اسکالرشپ / رعایت (فی طالب علم)
+  scholarshipType?: "none" | "percent" | "fixed";
+  scholarshipValue?: number;
+  scholarshipNote?: string;
 
   // اخراج / لیونگ فارم
   exitDate?: Date; // اردو: اخراج کی تاریخ
@@ -81,6 +92,7 @@ const StudentSchema = new Schema<IStudent>(
     },
     classId: { type: Schema.Types.ObjectId, ref: "Class", index: true },
     sectionId: { type: Schema.Types.ObjectId, ref: "Section", index: true },
+    halaqahId: { type: Schema.Types.ObjectId, ref: "Halaqah", index: true },
     className: { type: String },
     section: { type: String },
 
@@ -98,6 +110,23 @@ const StudentSchema = new Schema<IStudent>(
     },
     isHostel: { type: Boolean, default: false },
 
+    isTransport: { type: Boolean, default: false, index: true },
+    transportRouteId: {
+      type: Schema.Types.ObjectId,
+      ref: "TransportRoute",
+      index: true,
+    },
+    transportPickupNote: { type: String },
+
+    scholarshipType: {
+      type: String,
+      enum: ["none", "percent", "fixed"],
+      default: "none",
+      index: true,
+    },
+    scholarshipValue: { type: Number, default: 0 },
+    scholarshipNote: { type: String },
+
     exitDate: { type: Date },
     exitReason: { type: String },
     transferCertificateUrl: { type: String },
@@ -107,6 +136,7 @@ const StudentSchema = new Schema<IStudent>(
 );
 
 StudentSchema.index({ classId: 1, sectionId: 1, status: 1 });
+StudentSchema.index({ halaqahId: 1, status: 1 });
 
 export const Student =
   models.Student || model<IStudent>("Student", StudentSchema);

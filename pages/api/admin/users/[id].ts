@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connectDB } from "@/lib/db";
-import { requireAuth, hashPassword } from "@/lib/auth";
+import { requireAuth, hashPassword, requirePermission } from "@/lib/auth";
 import { User } from "@/schemas/User";
 
 export default async function handler(
@@ -9,6 +9,9 @@ export default async function handler(
 ) {
   const me = requireAuth(req, res, ["admin"]);
   if (!me) return;
+
+  const ok = await requirePermission(req, res, me, "manage_users");
+  if (!ok) return;
 
   await connectDB();
 
@@ -23,13 +26,18 @@ export default async function handler(
 
   // Update editable fields
   if (req.method === "PUT") {
-    const { fullName, role, linkedId, status } = req.body as {
+    const { fullName, role, linkedId, status, permissions } = req.body as {
       fullName?: string;
       role?: "admin" | "teacher" | "student" | "staff";
       linkedId?: string;
       status?: "active" | "disabled";
+      permissions?: string[];
     };
     try {
+      const cleanPermissions = Array.isArray(permissions)
+        ? permissions.map((p) => String(p || "").trim()).filter(Boolean)
+        : undefined;
+
       const updated = await User.findByIdAndUpdate(
         id,
         {
@@ -39,6 +47,9 @@ export default async function handler(
             ? { linkedId: linkedId || undefined }
             : {}),
           ...(status ? { status } : {}),
+          ...(cleanPermissions !== undefined
+            ? { permissions: cleanPermissions }
+            : {}),
         },
         { new: true }
       ).select("-passwordHash");

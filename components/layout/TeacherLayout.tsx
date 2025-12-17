@@ -57,6 +57,10 @@ export function TeacherLayout({
           <NavLink href="/teacher/profile" label="میرا پروفائل" />
           <NavLink href="/teacher/classes" label="میری کلاسز اور سیکشنز" />
           <NavLink href="/teacher/attendance" label="حاضری" />
+          <NavLink
+            href="/teacher/attendance-edit-requests"
+            label="حاضری ایڈٹ ریکویسٹ"
+          />
           <NavLink href="/teacher/attendance-report" label="حاضری رپورٹ" />
           <NavLink href="/teacher/requests" label="طالب علم کی درخواستیں" />
           <NavLink href="/teacher/exams" label="امتحانات" />

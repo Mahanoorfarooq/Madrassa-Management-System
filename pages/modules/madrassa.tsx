@@ -12,6 +12,7 @@ import {
   Library,
   LogOut,
   ArrowLeft,
+  MessageSquare,
 } from "lucide-react";
 
 const adminModules = [
@@ -79,6 +80,38 @@ const adminModules = [
     icon: Library,
     gradient: "from-rose-500 to-pink-500",
   },
+  {
+    key: "tickets",
+    title: "شکایات / ٹکٹس",
+    description: "طلبہ کی شکایات، ٹکٹس اور سٹیٹس ٹریکنگ",
+    href: "/admin/tickets",
+    icon: MessageSquare,
+    gradient: "from-slate-500 to-slate-700",
+  },
+  {
+    key: "notifications",
+    title: "اعلانات / نوٹیفیکیشنز",
+    description: "اعلانات اور سسٹم نوٹیفیکیشنز کا مرکزی پینل",
+    href: "/modules/madrassa/settings/notifications",
+    icon: MessageSquare,
+    gradient: "from-blue-500 to-indigo-600",
+  },
+  {
+    key: "auditLogs",
+    title: "آڈٹ لاگز",
+    description: "سسٹم میں ہونے والی سرگرمی اور approvals کی ہسٹری",
+    href: "/modules/madrassa/settings/activity-logs",
+    icon: ClipboardCheck,
+    gradient: "from-emerald-500 to-cyan-600",
+  },
+  {
+    key: "userManagement",
+    title: "یوزر مینجمنٹ",
+    description: "سسٹم یوزرز اور رولز، مزید admin اکاؤنٹس بنائیں",
+    href: "/modules/madrassa/settings/users",
+    icon: Users,
+    gradient: "from-fuchsia-500 to-pink-600",
+  },
 ];
 
 export default function MadrassaModules() {
@@ -98,6 +131,7 @@ export default function MadrassaModules() {
       }
     })();
   }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50 to-blue-50">
       {/* Decorative Background Elements */}
@@ -160,6 +194,7 @@ export default function MadrassaModules() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {adminModules.map((m, index) => {
               const IconComponent = m.icon;
+              const isTickets = m.key === "tickets";
               return (
                 <Link
                   key={m.key}
@@ -198,6 +233,11 @@ export default function MadrassaModules() {
                     <p className="text-sm text-gray-600 leading-relaxed">
                       {m.description}
                     </p>
+                    {isTickets && (
+                      <div className="mt-3 text-xs text-gray-500">
+                        تفصیل دیکھنے کے لیے کھولیں
+                      </div>
+                    )}
                   </div>
 
                   {/* Button */}

@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { connectDB } from "@/lib/db";
+import { User } from "@/schemas/User";
 
 const JWT_SECRET = process.env.JWT_SECRET || "change_this_secret";
 
@@ -65,6 +67,37 @@ export function requireAuth(
     return null;
   }
   return tokenUser;
+}
+
+export async function requirePermission(
+  req: NextApiRequest,
+  res: NextApiResponse,
+  tokenUser: JwtUserPayload,
+  permission: string
+): Promise<boolean> {
+  if (!permission) return true;
+  if (tokenUser.role === "admin") return true;
+
+  await connectDB();
+
+  const u = await User.findById(tokenUser.id)
+    .select("permissions role status")
+    .lean();
+
+  if (!u || u.status === "disabled") {
+    res.status(401).json({ message: "Unauthorized" });
+    return false;
+  }
+
+  const perms = Array.isArray((u as any).permissions)
+    ? (u as any).permissions
+    : [];
+  if (!perms.includes(permission)) {
+    res.status(403).json({ message: "Forbidden" });
+    return false;
+  }
+
+  return true;
 }
 
 // Strict version for RBAC-sensitive routes (same behavior as updated requireAuth).

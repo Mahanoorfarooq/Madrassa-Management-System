@@ -169,32 +169,32 @@ export default function ReceiptsListPage() {
                     <th className="px-5 py-3 text-right font-bold text-gray-700">
                       تاریخ
                     </th>
-                    <th className="px-5 py-3 text-right font-bold text-gray-700">
-                      رقم
+                    <th className="px-6 py-4 text-center text-sm font-bold text-gray-700">
+                      عمل
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {items.map((t: any, index) => (
+                  {items.map((r: any, index) => (
                     <tr
-                      key={t._id}
+                      key={r._id}
                       className={`hover:bg-emerald-50 transition-colors ${
                         index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                       }`}
                     >
                       <td className="px-5 py-3">
                         <span className="font-mono bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold">
-                          {t.receiptNo}
+                          {r.receiptNo}
                         </span>
                       </td>
                       <td className="px-5 py-3">
-                        {t.studentId?.name ? (
+                        {r.studentId?.fullName ? (
                           <div className="flex items-center gap-2">
                             <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
                               <User className="w-4 h-4 text-emerald-600" />
                             </div>
                             <span className="text-gray-700">
-                              {t.studentId?.name}
+                              {r.studentId?.fullName}
                             </span>
                           </div>
                         ) : (
@@ -202,11 +202,11 @@ export default function ReceiptsListPage() {
                         )}
                       </td>
                       <td className="px-5 py-3">
-                        {t.departmentId?.name ? (
+                        {r.departmentId?.name ? (
                           <div className="flex items-center gap-2">
                             <Building className="w-3.5 h-3.5 text-gray-400" />
                             <span className="text-gray-700">
-                              {t.departmentId?.name}
+                              {r.departmentId?.name}
                             </span>
                           </div>
                         ) : (
@@ -217,14 +217,18 @@ export default function ReceiptsListPage() {
                         <div className="flex items-center gap-2">
                           <Calendar className="w-3.5 h-3.5 text-gray-400" />
                           <span className="text-gray-700">
-                            {String(t.date).substring(0, 10)}
+                            {String(r.date).substring(0, 10)}
                           </span>
                         </div>
                       </td>
-                      <td className="px-5 py-3">
-                        <span className="font-semibold text-emerald-600">
-                          ₨ {Number(t.amountPaid || 0).toLocaleString()}
-                        </span>
+                      <td className="px-6 py-4 text-center">
+                        <Link
+                          href={`/finance/receipts/${r._id}`}
+                          target="_blank"
+                          className="inline-flex rounded border border-gray-200 px-3 py-1.5 text-xs font-semibold hover:bg-gray-50"
+                        >
+                          پرنٹ
+                        </Link>
                       </td>
                     </tr>
                   ))}
@@ -233,11 +237,25 @@ export default function ReceiptsListPage() {
                   <tr>
                     <td
                       className="px-5 py-3 font-bold text-gray-800"
+                      colSpan={3}
+                    >
+                      کل
+                    </td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-700">
+                      —
+                    </td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-700">
+                      —
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      className="px-5 py-3 font-bold text-gray-800"
                       colSpan={4}
                     >
                       کل
                     </td>
-                    <td className="px-5 py-3 font-bold text-emerald-600">
+                    <td className="px-6 py-4 text-center text-sm font-bold text-emerald-600">
                       ₨ {total.toLocaleString()}
                     </td>
                   </tr>

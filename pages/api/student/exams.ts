@@ -38,22 +38,33 @@ export default async function handler(
 
     let exams: any[] = [];
     if (className) {
-      exams = await Exam.find({ className })
+      exams = await Exam.find({
+        className,
+        status: { $in: ["scheduled", "published"] },
+      })
         .sort({ examDate: 1 })
         .limit(200)
         .lean();
     }
 
     const results = await Result.find({ student: me._id })
-      .populate({ path: "exam", select: "title term className examDate" })
+      .populate({
+        path: "exam",
+        select: "title term className examDate status publishedAt papers",
+        match: { status: "published" },
+      })
       .sort({ createdAt: -1 })
       .limit(200)
       .lean();
 
+    const publishedResults = (results || []).filter(
+      (r: any) => (r as any)?.exam?._id
+    );
+
     // Compute latest exam ranking/position among class candidates if possible
     let latestRank: { position: number; total: number } | null = null;
-    if (results && results.length > 0 && results[0]?.exam?._id) {
-      const latestExamId = results[0].exam._id;
+    if (publishedResults && publishedResults.length > 0) {
+      const latestExamId = (publishedResults[0] as any).exam._id;
       try {
         const cohort = await Result.find({ exam: latestExamId })
           .select("student totalObtained")
@@ -71,7 +82,9 @@ export default async function handler(
       } catch {}
     }
 
-    return res.status(200).json({ exams, results, latestRank });
+    return res
+      .status(200)
+      .json({ exams, results: publishedResults, latestRank });
   } catch (e: any) {
     return res.status(500).json({
       message: e?.message || "امتحانات کے ڈیٹا لوڈ کرنے میں مسئلہ پیش آیا۔",

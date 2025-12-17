@@ -6,7 +6,11 @@ const links = [
   { href: "/finance/transactions", label: "معاملات" },
   { href: "/finance/fee-structures", label: "فیس ڈھانچہ" },
   { href: "/finance/invoices", label: "انوائسز" },
+  { href: "/finance/invoices/bulk", label: "بلک انوائس" },
   { href: "/finance/receipts", label: "رسیدیں" },
+  { href: "/finance/dues", label: "بقایا" },
+  { href: "/finance/adjustments", label: "ریفنڈ / Adjustment" },
+  { href: "/finance/reminders", label: "ری مائنڈرز" },
   { href: "/finance/reports", label: "رپورٹس" },
   { href: "/finance/ledgers", label: "لیجر" },
 ];

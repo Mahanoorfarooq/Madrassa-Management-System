@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/db";
 import { Attendance } from "@/schemas/Attendance";
 import { Student } from "@/schemas/Student";
 import { requireAuth } from "@/lib/auth";
+import { AttendancePolicy } from "@/schemas/AttendancePolicy";
 
 export default async function handler(
   req: NextApiRequest,
@@ -123,6 +124,38 @@ export default async function handler(
         return res.status(400).json({ message: "تاریخ درست نہیں" });
       }
       d.setHours(0, 0, 0, 0);
+
+      // Cutoff lock (default 22:00). Admin can override.
+      if (user.role !== "admin") {
+        const policy = (await AttendancePolicy.findOne({
+          key: "student_attendance",
+        })
+          .select("cutoffTime isLockedEnabled")
+          .lean()) || { cutoffTime: "22:00", isLockedEnabled: true };
+
+        if ((policy as any).isLockedEnabled) {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const parts = String((policy as any).cutoffTime || "22:00").split(
+            ":"
+          );
+          const hh = Number(parts[0] || 22);
+          const mm = Number(parts[1] || 0);
+          const cutoff = new Date(today);
+          cutoff.setHours(hh, mm, 0, 0);
+          const now = new Date();
+
+          const isToday = d.getTime() === today.getTime();
+          if (!isToday || now.getTime() > cutoff.getTime()) {
+            return res.status(403).json({
+              message:
+                "حاضری لاک ہو چکی ہے۔ براہ کرم Edit Request کے ذریعے ترمیم کریں۔",
+              locked: true,
+            });
+          }
+        }
+      }
+
       const record = await Attendance.findOneAndUpdate(
         { student: studentId, date: d },
         {

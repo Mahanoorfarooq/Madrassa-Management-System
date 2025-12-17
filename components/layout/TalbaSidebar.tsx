@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 
 const links = [
   { href: "/talba", label: "ڈیش بورڈ" },
+  { href: "/talba/admissions", label: "داخلہ (Admissions)" },
   { href: "/talba/hifz", label: "شعبہ حفظ القرآن" },
   { href: "/talba/nizami", label: "شعبہ درس نظامی" },
   { href: "/talba/tajweed", label: "شعبہ تجوید" },
@@ -10,6 +11,8 @@ const links = [
   { href: "/talba/departments", label: "شعبہ جات" },
   { href: "/talba/classes", label: "کلاس و سیکشن مینجمنٹ" },
   { href: "/talba/sections", label: "سیکشنز" },
+  { href: "/talba/halaqah", label: "حلقہ (Halaqah)" },
+  { href: "/talba/transport", label: "ٹرانسپورٹ روٹس" },
   { href: "/talba/students", label: "طالب علم سرچ" },
   { href: "/talba/teachers", label: "اساتذہ" },
   { href: "/talba/attendance", label: "حاضری" },
