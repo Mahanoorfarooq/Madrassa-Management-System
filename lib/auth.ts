@@ -84,7 +84,7 @@ export async function requirePermission(
     .select("permissions role status")
     .lean();
 
-  if (!u || u.status === "disabled") {
+  if (!u || (u as any).status === "disabled") {
     res.status(401).json({ message: "Unauthorized" });
     return false;
   }
