@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { TalbaLayout } from "@/components/layout/TalbaLayout";
 import api from "@/utils/api";
 
+const ADMISSIONS_DISABLED = true;
+
 type Stage =
   | "Inquiry"
   | "Form"
@@ -28,6 +30,17 @@ interface DocItem {
 }
 
 export default function AdmissionDetail() {
+  if (ADMISSIONS_DISABLED) {
+    return (
+      <TalbaLayout title="ایڈمیشن تفصیل">
+        <div className="py-16 flex items-center justify-center" dir="rtl">
+          <p className="text-sm text-gray-500">
+            ایڈمیشن ماڈیول عارضی طور پر بند ہے، تفصیل فی الحال دستیاب نہیں۔
+          </p>
+        </div>
+      </TalbaLayout>
+    );
+  }
   const router = useRouter();
   const { id } = router.query as { id?: string };
 

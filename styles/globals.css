@@ -28,3 +28,13 @@ body {
 * {
   box-sizing: border-box;
 }
+
+/* Hide scrollbars but keep scroll behaviour (used for teacher sidebar, etc.) */
+.scrollbar-none {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}

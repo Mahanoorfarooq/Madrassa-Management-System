@@ -20,6 +20,8 @@ const STAGES: { key: Stage; label: string }[] = [
   { key: "Rejected", label: "مسترد" },
 ];
 
+const ADMISSIONS_DISABLED = true;
+
 interface AdmissionRow {
   _id: string;
   stage: Stage;
@@ -32,6 +34,17 @@ interface AdmissionRow {
 }
 
 export default function TalbaAdmissionsList() {
+  if (ADMISSIONS_DISABLED) {
+    return (
+      <TalbaLayout title="ایڈمیشن پائپ لائن">
+        <div className="py-16 flex items-center justify-center" dir="rtl">
+          <p className="text-sm text-gray-500">
+            ایڈمیشن ماڈیول عارضی طور پر بند ہے۔
+          </p>
+        </div>
+      </TalbaLayout>
+    );
+  }
   const [stage, setStage] = useState<Stage>("Inquiry");
   const [q, setQ] = useState<string>("");
   const [loading, setLoading] = useState(false);

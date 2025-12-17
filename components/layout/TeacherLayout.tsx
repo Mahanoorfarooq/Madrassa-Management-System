@@ -48,7 +48,7 @@ export function TeacherLayout({
 
   return (
     <div className="min-h-screen bg-lightBg">
-      <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white px-4 py-6">
+      <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white px-4 py-6 overflow-y-auto scrollbar-none">
         <div className="mb-6 text-xl font-semibold text-secondary text-right">
           استاد پورٹل
         </div>
