@@ -2,14 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import api from "@/utils/api";
 import { TeacherLayout } from "@/components/layout/TeacherLayout";
-import {
-  CalendarDays,
-  Users,
-  RefreshCw,
-  CheckCircle2,
-  X,
-  UserCheck,
-} from "lucide-react";
+import { Users, RefreshCw, CheckCircle2, X, UserCheck } from "lucide-react";
 
 export default function TeacherSectionStudents() {
   const router = useRouter();
