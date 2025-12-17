@@ -33,10 +33,10 @@ export default async function handler(
 
       // If the caller is a student, always restrict to their own student record
       if (user.role === "student") {
-        const self = await Student.findOne({ userId: user.id })
+        const self = (await Student.findOne({ userId: user.id })
           .select("_id")
-          .lean();
-        if (!self?._id) {
+          .lean()) as { _id?: mongoose.Types.ObjectId } | null;
+        if (!self || !self._id) {
           return res
             .status(404)
             .json({ message: "طالب علم کا ریکارڈ نہیں ملا" });

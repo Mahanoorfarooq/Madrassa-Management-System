@@ -95,7 +95,7 @@ export default async function handler(
     today.setHours(0, 0, 0, 0);
     const isToday = day.getTime() === today.getTime();
 
-    if (policy.isLockedEnabled) {
+    if ((policy as any).isLockedEnabled) {
       const parts = String((policy as any).cutoffTime || "22:00").split(":");
       const hh = Number(parts[0] || 22);
       const mm = Number(parts[1] || 0);
@@ -112,11 +112,9 @@ export default async function handler(
     } else {
       // If locking is disabled, still prevent teachers from editing older dates directly.
       if (!isToday) {
-        return res
-          .status(403)
-          .json({
-            message: "براہ کرم پرانی تاریخ کے لیے Edit Request بنائیں۔",
-          });
+        return res.status(403).json({
+          message: "براہ کرم پرانی تاریخ کے لیے Edit Request بنائیں۔",
+        });
       }
     }
 

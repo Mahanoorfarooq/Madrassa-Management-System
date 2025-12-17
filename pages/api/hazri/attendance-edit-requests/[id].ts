@@ -68,13 +68,13 @@ export default async function handler(
     const afterRows: any[] = [];
 
     for (const ch of doc.changes as any[]) {
-      const existing = await Attendance.findOne({
+      const existing = (await Attendance.findOne({
         student: ch.studentId,
         classId: doc.classId,
         sectionId: doc.sectionId,
         date: day,
         ...(doc.lecture ? { lecture: doc.lecture } : {}),
-      }).lean();
+      }).lean()) as { status?: string; remark?: string } | null;
 
       beforeRows.push({
         studentId: String(ch.studentId),
@@ -82,7 +82,7 @@ export default async function handler(
         remark: existing?.remark || null,
       });
 
-      const updated = await Attendance.findOneAndUpdate(
+      const updated = (await Attendance.findOneAndUpdate(
         {
           student: ch.studentId,
           classId: doc.classId,
@@ -103,7 +103,7 @@ export default async function handler(
           },
         },
         { upsert: true, new: true, setDefaultsOnInsert: true }
-      ).lean();
+      ).lean()) as { status?: string; remark?: string } | null;
 
       afterRows.push({
         studentId: String(ch.studentId),
