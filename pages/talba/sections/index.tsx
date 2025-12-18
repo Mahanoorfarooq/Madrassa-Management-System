@@ -53,6 +53,7 @@ export default function SectionsPage() {
   const [classes, setClasses] = useState<ClassItem[]>([]);
   const [classId, setClassId] = useState<string>(initialClassId);
   const [sections, setSections] = useState<Section[]>([]);
+  const [q, setQ] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
@@ -262,7 +263,16 @@ export default function SectionsPage() {
               </h2>
             </div>
 
-            <div className="p-6">
+            <div className="p-6 space-y-4">
+              {/* Search */}
+              <div className="flex justify-end">
+                <input
+                  value={q}
+                  onChange={(e) => setQ(e.target.value)}
+                  placeholder="سیکشن تلاش کریں..."
+                  className="w-full md:w-72 rounded-lg border-2 border-gray-200 px-4 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                />
+              </div>
               {!classId ? (
                 <div className="text-center py-12">
                   <div className="bg-gray-100 rounded-full p-6 w-24 h-24 mx-auto mb-4 flex items-center justify-center">
@@ -277,40 +287,46 @@ export default function SectionsPage() {
                 </div>
               ) : sections.length > 0 ? (
                 <div className="space-y-3">
-                  {sections.map((s, index) => (
-                    <div
-                      key={s._id}
-                      className={`group rounded-xl border-2 border-gray-200 p-5 hover:border-purple-400 hover:shadow-md transition-all duration-200 ${
-                        index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="bg-purple-100 rounded-lg p-2 group-hover:bg-purple-200 transition-colors">
-                            <Users className="w-5 h-5 text-purple-600" />
+                  {sections
+                    .filter((s) =>
+                      (s.sectionName || "")
+                        .toLowerCase()
+                        .includes(q.toLowerCase())
+                    )
+                    .map((s, index) => (
+                      <div
+                        key={s._id}
+                        className={`group rounded-xl border-2 border-gray-200 p-5 hover:border-purple-400 hover:shadow-md transition-all duration-200 ${
+                          index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="bg-purple-100 rounded-lg p-2 group-hover:bg-purple-200 transition-colors">
+                              <Users className="w-5 h-5 text-purple-600" />
+                            </div>
+                            <div>
+                              <h3 className="text-sm font-semibold text-gray-800">
+                                {s.sectionName}
+                              </h3>
+                              <p className="text-xs text-gray-500">
+                                سیکشن نمبر: {index + 1}
+                              </p>
+                            </div>
                           </div>
-                          <div>
-                            <h3 className="text-sm font-semibold text-gray-800">
-                              {s.sectionName}
-                            </h3>
-                            <p className="text-xs text-gray-500">
-                              سیکشن نمبر: {index + 1}
-                            </p>
-                          </div>
-                        </div>
 
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => removeSection(s._id)}
-                            className="inline-flex items-center gap-1 px-4 py-2 rounded-lg text-xs font-medium bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                            حذف
-                          </button>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => removeSection(s._id)}
+                              className="inline-flex items-center gap-1 px-4 py-2 rounded-lg text-xs font-medium bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                              حذف
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               ) : (
                 <div className="text-center py-12">

@@ -39,11 +39,19 @@ export default function AdmissionFormDoc() {
               </div>
             </div>
             <button
-              onClick={() => window.print()}
-              className="flex items-center gap-2 rounded-lg bg-white/20 backdrop-blur-sm text-white px-4 py-2 text-sm font-semibold hover:bg-white/30 transition-all border border-white/30"
+              disabled={!student?._id}
+              onClick={() => {
+                if (!student?._id) return;
+                // Open the same PDF template in the SAME tab
+                window.open(
+                  `/api/reports/admission-form/${student._id}`,
+                  "_self"
+                );
+              }}
+              className="flex items-center gap-2 rounded-lg bg-white/20 backdrop-blur-sm text-white px-4 py-2 text-sm font-semibold hover:bg-white/30 transition-all border border-white/30 disabled:opacity-60"
             >
               <Printer className="w-4 h-4" />
-              پرنٹ
+              پی ڈی ایف پرنٹ
             </button>
           </div>
         </div>

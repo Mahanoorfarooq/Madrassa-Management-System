@@ -1,6 +1,11 @@
 import mongoose, { Schema, Document, models, model } from "mongoose";
 
-export type UserRole = "admin" | "teacher" | "staff" | "student";
+export type UserRole =
+  | "admin"
+  | "teacher"
+  | "staff"
+  | "student"
+  | "super_admin";
 
 export interface IUser extends Document {
   // اردو: صارف کا پورا نام
@@ -11,6 +16,8 @@ export interface IUser extends Document {
   passwordHash: string;
   // اردو: کردار (ایڈمن، استاد، اسٹاف، طالب علم)
   role: UserRole;
+  // جس جامعہ سے یوزر منسلک ہے (سوائے super_admin کے)
+  jamiaId?: mongoose.Types.ObjectId | null;
   // استاد یوزر کو متعلقہ استاد ریکارڈ سے جوڑنے کے لیے
   linkedTeacherId?: mongoose.Types.ObjectId;
   // عمومی لنک (استاد/طالب علم/اسٹاف میں سے متعلقہ ریکارڈ)
@@ -28,8 +35,14 @@ const UserSchema = new Schema<IUser>(
     passwordHash: { type: String, required: true },
     role: {
       type: String,
-      enum: ["admin", "teacher", "staff", "student"],
+      enum: ["admin", "teacher", "staff", "student", "super_admin"],
       required: true,
+    },
+    jamiaId: {
+      type: Schema.Types.ObjectId,
+      ref: "Jamia",
+      index: true,
+      default: null,
     },
     linkedId: { type: Schema.Types.ObjectId, index: true },
     status: {

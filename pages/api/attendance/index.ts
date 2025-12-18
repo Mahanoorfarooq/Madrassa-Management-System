@@ -5,6 +5,7 @@ import { Attendance } from "@/schemas/Attendance";
 import { Student } from "@/schemas/Student";
 import { requireAuth } from "@/lib/auth";
 import { AttendancePolicy } from "@/schemas/AttendancePolicy";
+import { ensureModuleEnabled, getJamiaForUser } from "@/lib/jamia";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,6 +13,9 @@ export default async function handler(
 ) {
   const user = requireAuth(req, res, ["admin", "teacher", "student"]);
   if (!user) return;
+
+  const moduleOk = await ensureModuleEnabled(req, res, user, "attendance");
+  if (!moduleOk) return;
 
   await connectDB();
 
@@ -79,6 +83,39 @@ export default async function handler(
             return res.status(400).json({ message: "تاریخ درست نہیں" });
           }
           filter.date.$lte = dTo;
+        }
+      }
+
+      const jamia = await getJamiaForUser(user);
+      if (jamia) {
+        if (filter.student) {
+          const stu = (await Student.findById(filter.student)
+            .select("_id jamiaId")
+            .lean()) as {
+            _id?: mongoose.Types.ObjectId;
+            jamiaId?: mongoose.Types.ObjectId;
+          } | null;
+          if (!stu?._id) {
+            return res
+              .status(404)
+              .json({ message: "طالب علم کا ریکارڈ نہیں ملا" });
+          }
+          if (stu.jamiaId && String(stu.jamiaId) !== String(jamia._id)) {
+            return res
+              .status(403)
+              .json({ message: "یہ طالب علم اس جامعہ سے تعلق نہیں رکھتا۔" });
+          }
+        } else {
+          const stuFilter: any = { jamiaId: jamia._id };
+          if (departmentId) stuFilter.departmentId = departmentId;
+          if (classId) stuFilter.classId = classId;
+
+          const students = await Student.find(stuFilter).select("_id").lean();
+          const ids = students.map((s: any) => s._id);
+          if (ids.length === 0) {
+            return res.status(200).json({ attendance: [] });
+          }
+          filter.student = { $in: ids };
         }
       }
 
@@ -153,6 +190,26 @@ export default async function handler(
               locked: true,
             });
           }
+        }
+      }
+
+      const jamia = await getJamiaForUser(user);
+      if (jamia) {
+        const stu = (await Student.findById(studentId)
+          .select("_id jamiaId")
+          .lean()) as {
+          _id?: mongoose.Types.ObjectId;
+          jamiaId?: mongoose.Types.ObjectId;
+        } | null;
+        if (!stu?._id) {
+          return res
+            .status(404)
+            .json({ message: "طالب علم کا ریکارڈ نہیں ملا" });
+        }
+        if (stu.jamiaId && String(stu.jamiaId) !== String(jamia._id)) {
+          return res
+            .status(403)
+            .json({ message: "یہ طالب علم اس جامعہ سے تعلق نہیں رکھتا۔" });
         }
       }
 

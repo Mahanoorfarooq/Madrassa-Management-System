@@ -5,6 +5,7 @@ import { User } from "@/schemas/User";
 import { TeachingAssignment } from "@/schemas/TeachingAssignment";
 import { Attendance } from "@/schemas/Attendance";
 import { Student } from "@/schemas/Student";
+import { ensureModuleEnabled, getJamiaForUser } from "@/lib/jamia";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,6 +13,9 @@ export default async function handler(
 ) {
   const me = requireAuth(req, res, ["teacher"]);
   if (!me) return;
+
+  const moduleOk = await ensureModuleEnabled(req, res, me, "attendance");
+  if (!moduleOk) return;
 
   if (req.method !== "GET") {
     return res.status(405).json({ message: "غیر مجاز میتھڈ" });
@@ -61,11 +65,39 @@ export default async function handler(
     return res.status(403).json({ message: "اس کلاس/سیکشن کی اجازت نہیں" });
   }
 
-  const records = await Attendance.find({
+  const jamia = await getJamiaForUser(me);
+
+  let queryStudentIds: string[] = [];
+  if (jamia) {
+    const students = await Student.find({
+      classId,
+      sectionId,
+      jamiaId: jamia._id,
+      status: "Active",
+    })
+      .select("_id")
+      .lean();
+    queryStudentIds = students.map((s: any) => String(s._id));
+    if (!queryStudentIds.length) {
+      return res.status(200).json({
+        from: fromDate,
+        to: toDate,
+        totalDays: 0,
+        students: [],
+      });
+    }
+  }
+
+  const attendanceFilter: any = {
     classId,
     sectionId,
     date: { $gte: fromDate, $lte: toDate },
-  })
+  };
+  if (queryStudentIds.length) {
+    attendanceFilter.student = { $in: queryStudentIds };
+  }
+
+  const records = await Attendance.find(attendanceFilter)
     .select("student status date")
     .lean();
 

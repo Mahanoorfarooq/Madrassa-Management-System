@@ -12,6 +12,7 @@ interface RouteRow {
 
 export default function TalbaTransportRoutesPage() {
   const [items, setItems] = useState<RouteRow[]>([]);
+  const [q, setQ] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [code, setCode] = useState<string>("");
   const [fee, setFee] = useState<string>("");
@@ -119,6 +120,14 @@ export default function TalbaTransportRoutesPage() {
         </div>
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="flex justify-end p-3 border-b bg-gray-50">
+            <input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="روٹ تلاش کریں..."
+              className="w-full md:w-72 rounded-lg border px-3 py-2 text-sm"
+            />
+          </div>
           <table className="min-w-full text-sm text-right">
             <thead className="bg-gray-50 border-b">
               <tr>
@@ -149,25 +158,31 @@ export default function TalbaTransportRoutesPage() {
                   </td>
                 </tr>
               )}
-              {items.map((r) => (
-                <tr key={r._id} className="border-t">
-                  <td className="px-3 py-2 font-semibold text-gray-900">
-                    {r.name}
-                  </td>
-                  <td className="px-3 py-2 font-mono">{r.code || "—"}</td>
-                  <td className="px-3 py-2">
-                    {typeof r.fee === "number" ? r.fee : "—"}
-                  </td>
-                  <td className="px-3 py-2">
-                    <button
-                      onClick={() => remove(r._id)}
-                      className="rounded border border-red-200 text-red-700 px-3 py-1.5 text-xs font-semibold hover:bg-red-50"
-                    >
-                      حذف
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {items
+                .filter((r) =>
+                  `${r.name} ${r.code || ""}`
+                    .toLowerCase()
+                    .includes(q.toLowerCase())
+                )
+                .map((r) => (
+                  <tr key={r._id} className="border-t">
+                    <td className="px-3 py-2 font-semibold text-gray-900">
+                      {r.name}
+                    </td>
+                    <td className="px-3 py-2 font-mono">{r.code || "—"}</td>
+                    <td className="px-3 py-2">
+                      {typeof r.fee === "number" ? r.fee : "—"}
+                    </td>
+                    <td className="px-3 py-2">
+                      <button
+                        onClick={() => remove(r._id)}
+                        className="rounded border border-red-200 text-red-700 px-3 py-1.5 text-xs font-semibold hover:bg-red-50"
+                      >
+                        حذف
+                      </button>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

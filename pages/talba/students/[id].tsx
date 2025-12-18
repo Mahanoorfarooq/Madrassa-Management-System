@@ -352,11 +352,15 @@ export default function TalbaStudentDetail() {
             submitLabel="اپ ڈیٹ کریں"
           />
 
-          <div className="flex justify-end" dir="rtl">
+          <div className="flex justify-end gap-2" dir="rtl">
+            <a
+              href={`/talba/students/admission-form/${id}`}
+              className="rounded border border-gray-200 px-4 py-2 text-xs font-semibold hover:bg-gray-50"
+            >
+              داخلہ فارم پرنٹ
+            </a>
             <a
               href={`/talba/students/id-card/${id}`}
-              target="_blank"
-              rel="noreferrer"
               className="rounded border border-gray-200 px-4 py-2 text-xs font-semibold hover:bg-gray-50"
             >
               ID کارڈ پرنٹ

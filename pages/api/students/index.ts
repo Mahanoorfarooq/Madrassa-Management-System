@@ -5,6 +5,16 @@ import { SectionModel } from "@/schemas/Section";
 import { ClassModel } from "@/schemas/Class";
 import { requireAuth, hashPassword } from "@/lib/auth";
 import { User } from "@/schemas/User";
+import { ensureModuleEnabled, getJamiaForUser } from "@/lib/jamia";
+
+// Allow larger payloads to support base64-encoded photo uploads
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "5mb",
+    },
+  },
+};
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,6 +22,9 @@ export default async function handler(
 ) {
   const user = requireAuth(req, res, ["admin", "teacher", "staff"]);
   if (!user) return;
+
+  const moduleOk = await ensureModuleEnabled(req, res, user, "admissions");
+  if (!moduleOk) return;
 
   await connectDB();
 
@@ -46,6 +59,11 @@ export default async function handler(
         { rollNumber: regex },
         { cnic: regex },
       ];
+    }
+
+    const jamia = await getJamiaForUser(user);
+    if (jamia) {
+      filter.jamiaId = jamia._id;
     }
 
     const docs = await Student.find(filter)
@@ -97,12 +115,14 @@ export default async function handler(
     }
 
     try {
+      const jamia = await getJamiaForUser(user);
       const student = await Student.create({
         fullName,
         rollNumber,
         cnic: body.cnic,
         dateOfBirth: body.dateOfBirth || undefined,
         gender: body.gender,
+        photoUrl: body.photoUrl || undefined,
         address: body.address,
         contactNumber: body.contactNumber,
         emergencyContact: body.emergencyContact,
@@ -128,6 +148,7 @@ export default async function handler(
         scholarshipType: body.scholarshipType || "none",
         scholarshipValue: Number(body.scholarshipValue || 0),
         scholarshipNote: body.scholarshipNote || undefined,
+        jamiaId: jamia ? jamia._id : undefined,
       });
 
       if (createPortalAccount) {
@@ -138,6 +159,7 @@ export default async function handler(
           passwordHash,
           role: "student",
           linkedId: student._id,
+          jamiaId: jamia ? jamia._id : undefined,
         });
 
         student.userId = user._id;

@@ -8,7 +8,8 @@ const JWT_SECRET = process.env.JWT_SECRET || "change_this_secret";
 
 export interface JwtUserPayload {
   id: string;
-  role: "admin" | "teacher" | "staff" | "student";
+  role: "admin" | "teacher" | "staff" | "student" | "super_admin";
+  linkedId?: string;
 }
 
 export function signToken(user: JwtUserPayload) {

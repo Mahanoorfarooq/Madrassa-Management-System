@@ -6,7 +6,7 @@ import {
   Calendar,
   CreditCard,
   MapPin,
-  Image,
+  Image as ImageIcon,
   Hash,
   GraduationCap,
   BookOpen,
@@ -194,13 +194,11 @@ export default function StudentForm({
           setDepartmentId(dept._id);
           setValues((v) => ({ ...v, departmentId: dept._id }));
 
-          // load halaqah list for this department
           const halaqahRes = await api
             .get("/api/halaqah", { params: { departmentId: dept._id } })
             .catch(() => null);
           setHalaqah((halaqahRes as any)?.data?.halaqah || []);
 
-          // load transport routes
           const routesRes = await api
             .get("/api/transport-routes")
             .catch(() => null);
@@ -287,6 +285,28 @@ export default function StudentForm({
       e.preventDefault();
       submit(e as any);
     }
+  };
+
+  // Local image upload -> base64 into values.photoUrl
+  const [photoError, setPhotoError] = useState<string | null>(null);
+  const handlePhotoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target?.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setPhotoError("Only image files are allowed");
+      return;
+    }
+    // 2MB limit
+    if (file.size > 2 * 1024 * 1024) {
+      setPhotoError("Image size must be under 2MB");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setValues((v) => ({ ...v, photoUrl: String(reader.result || "") }));
+      setPhotoError(null);
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -537,15 +557,33 @@ export default function StudentForm({
               تعلیمی معلومات
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <InputField
-                icon={Image}
-                label="طالب علم کی تصویر (URL)"
-                name="photoUrl"
-                value={values.photoUrl || ""}
-                onChange={onChange}
-                onKeyPress={handleKeyPress}
-                placeholder="https://..."
-              />
+              <div className="group">
+                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <ImageIcon className="w-4 h-4 text-emerald-600" />
+                  طالب علم کی تصویر
+                </label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <input
+                    type="text"
+                    name="photoUrl"
+                    value={values.photoUrl || ""}
+                    onChange={onChange}
+                    placeholder="https://example.com/photo.jpg"
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 hover:border-gray-300"
+                  />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoFileChange}
+                    className="w-full rounded-lg border-2 border-dashed border-gray-300 px-4 py-2.5 text-sm cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all"
+                  />
+                </div>
+                {photoError && (
+                  <p className="mt-2 text-xs text-red-600 text-right">
+                    {photoError}
+                  </p>
+                )}
+              </div>
               <InputField
                 icon={Hash}
                 label="داخلہ نمبر"
@@ -675,11 +713,12 @@ export default function StudentForm({
                     <p className="text-sm font-medium text-gray-800">
                       طالب علم کے لیے لاگ اِن اکاؤنٹ بنائیں
                     </p>
-                    <p className="text-xs text-gray-500 mt-0.5">
+                    <p className="text-xs text-gray-500 mt-1">
                       اگر آپ چاہتے ہیں کہ طالب علم اپنا پورٹل استعمال کرے تو اس
                       آپشن کو فعال کریں۔
                     </p>
                   </div>
+
                   <button
                     type="button"
                     onClick={() =>
@@ -688,16 +727,16 @@ export default function StudentForm({
                         createPortalAccount: !v.createPortalAccount,
                       }))
                     }
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    className={`relative inline-flex h-7 w-14 flex-shrink-0 cursor-pointer rounded-full transition-colors duration-300 focus:outline-none ${
                       values.createPortalAccount
                         ? "bg-emerald-500"
                         : "bg-gray-300"
                     }`}
                   >
                     <span
-                      className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform ${
+                      className={`inline-block h-6 w-6 transform rounded-full bg-white shadow-md transition-transform duration-300 ${
                         values.createPortalAccount
-                          ? "translate-x-5"
+                          ? "translate-x-7"
                           : "translate-x-1"
                       }`}
                     />
@@ -708,7 +747,7 @@ export default function StudentForm({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="group">
                       <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                        <User className="w-4 h-4 text-emerald-600" />
+                        <User className="w-5 h-5 text-emerald-600" />
                         یوزر نام
                       </label>
                       <input
@@ -717,12 +756,12 @@ export default function StudentForm({
                         value={values.portalUsername || ""}
                         onChange={onChange}
                         placeholder="مثال: رول نمبر یا منفرد یوزر نام"
-                        className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 hover:border-gray-300"
+                        className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all duration-200 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 hover:border-gray-300"
                       />
                     </div>
                     <div className="group">
                       <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                        <AlertCircle className="w-4 h-4 text-emerald-600" />
+                        <AlertCircle className="w-5 h-5 text-emerald-600" />
                         پاس ورڈ
                       </label>
                       <input
@@ -731,7 +770,7 @@ export default function StudentForm({
                         value={values.portalPassword || ""}
                         onChange={onChange}
                         placeholder="کم از کم 6 حروف کا پاس ورڈ"
-                        className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 hover:border-gray-300"
+                        className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all duration-200 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 hover:border-gray-300"
                       />
                     </div>
                   </div>

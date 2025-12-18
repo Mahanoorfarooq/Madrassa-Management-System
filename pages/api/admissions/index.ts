@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/db";
 import { Admission } from "@/schemas/Admission";
 import { Student } from "@/schemas/Student";
 import { requireAuth } from "@/lib/auth";
+import { ensureModuleEnabled, getJamiaForUser } from "@/lib/jamia";
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,6 +11,9 @@ export default async function handler(
 ) {
   const user = requireAuth(req, res, ["admin", "teacher"]);
   if (!user) return;
+
+  const moduleOk = await ensureModuleEnabled(req, res, user, "admissions");
+  if (!moduleOk) return;
 
   await connectDB();
 
@@ -29,6 +33,12 @@ export default async function handler(
         { cnic: rx },
       ];
     }
+
+    const jamia = await getJamiaForUser(user);
+    if (jamia) {
+      filter.jamiaId = jamia._id;
+    }
+
     const admissions = await Admission.find(filter)
       .populate("student")
       .sort({ createdAt: -1 });
@@ -59,6 +69,23 @@ export default async function handler(
       }
 
       try {
+        const jamia = await getJamiaForUser(user);
+        if (jamia) {
+          const stu: any = await Student.findById(studentId)
+            .select("_id jamiaId")
+            .lean();
+          if (!stu?._id) {
+            return res
+              .status(404)
+              .json({ message: "طالب علم کا ریکارڈ نہیں ملا۔" });
+          }
+          if (stu.jamiaId && String(stu.jamiaId) !== String(jamia._id)) {
+            return res.status(403).json({
+              message: "یہ طالب علم اس جامعہ سے تعلق نہیں رکھتا۔",
+            });
+          }
+        }
+
         const admission = await Admission.create({
           student: studentId,
           admissionNumber,
@@ -83,6 +110,7 @@ export default async function handler(
           status,
           formDate,
           notes,
+          jamiaId: jamia ? jamia._id : undefined,
         });
 
         return res
@@ -102,6 +130,7 @@ export default async function handler(
     }
 
     try {
+      const jamia = await getJamiaForUser(user);
       const admission = await Admission.create({
         stage: "Inquiry",
         applicantName,
@@ -118,6 +147,7 @@ export default async function handler(
         sectionId: body.sectionId || undefined,
         notes: body.notes,
         documents: Array.isArray(body.documents) ? body.documents : [],
+        jamiaId: jamia ? jamia._id : undefined,
       });
       return res
         .status(201)

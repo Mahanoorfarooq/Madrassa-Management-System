@@ -7,6 +7,7 @@ import { ClassModel } from "@/schemas/Class";
 import { SectionModel } from "@/schemas/Section";
 import { Result } from "@/schemas/Result";
 import { Student } from "@/schemas/Student";
+import { ensureModuleEnabled, getJamiaForUser } from "@/lib/jamia";
 
 function computeGrade(percent: number): string {
   if (Number.isNaN(percent)) return "N/A";
@@ -23,6 +24,9 @@ export default async function handler(
 ) {
   const me = requireAuth(req, res, ["teacher"]);
   if (!me) return;
+
+  const moduleOk = await ensureModuleEnabled(req, res, me, "exams");
+  if (!moduleOk) return;
 
   await connectDB();
 
@@ -56,12 +60,19 @@ export default async function handler(
       });
       if (!owns) return res.status(403).json({ message: "اجازت نہیں" });
 
-      // Fetch active students in this class/section
-      const students = await Student.find({
+      const jamia = await getJamiaForUser(me);
+
+      // Fetch active students in this class/section (restricted by jamia if linked)
+      const studentFilter: any = {
         classId,
         sectionId,
         status: "Active",
-      })
+      };
+      if (jamia) {
+        studentFilter.jamiaId = jamia._id;
+      }
+
+      const students = await Student.find(studentFilter)
         .select("fullName rollNumber")
         .lean();
       const studentIds = students.map((s: any) => s._id);

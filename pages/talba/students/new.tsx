@@ -9,11 +9,20 @@ export default function NewStudentPage() {
     (router.query.dept as "HIFZ" | "NIZAMI" | "TAJWEED" | "WAFAQ") || "HIFZ";
 
   const onSubmit = async (values: StudentFormValues) => {
-    await api.post("/api/students", {
+    const res = await api.post("/api/students", {
       ...values,
       rollNumber: values.admissionNumber || "",
     });
-    router.push({ pathname: "/talba/students", query: { dept } });
+
+    const created = (res as any)?.data?.student;
+    if (created?._id) {
+      router.push({
+        pathname: `/talba/students/${created._id}`,
+        query: { dept, justCreated: "1" },
+      });
+    } else {
+      router.push({ pathname: "/talba/students", query: { dept } });
+    }
   };
 
   return (

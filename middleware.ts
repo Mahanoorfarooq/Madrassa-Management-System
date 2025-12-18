@@ -11,6 +11,7 @@ const PROTECTED: Array<{ prefix: string; login: string }> = [
   { prefix: "/admin", login: "/login" },
   { prefix: "/modules/teacher", login: "/login" },
   { prefix: "/modules/madrassa", login: "/login" },
+  { prefix: "/super-admin", login: "/login" },
   // Add more modules here if you want global enforcement
   // { prefix: "/finance", login: "/login/finance" },
   // { prefix: "/hostel", login: "/login/hostel" },
@@ -43,6 +44,15 @@ export function middleware(req: NextRequest) {
     }
 
     const payload = decodeJwt(token);
+
+    if (pathname.startsWith("/super-admin")) {
+      if (payload?.role !== "super_admin") {
+        const url = req.nextUrl.clone();
+        url.pathname = "/modules/madrassa";
+        return NextResponse.redirect(url);
+      }
+    }
+
     if (
       pathname.startsWith("/teacher") ||
       pathname.startsWith("/modules/teacher")

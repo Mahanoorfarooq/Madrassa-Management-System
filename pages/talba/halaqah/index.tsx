@@ -19,6 +19,7 @@ export default function TalbaHalaqahPage() {
   const [departments, setDepartments] = useState<DeptOption[]>([]);
   const [departmentId, setDepartmentId] = useState<string>("");
   const [items, setItems] = useState<HalaqahRow[]>([]);
+  const [q, setQ] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -130,6 +131,14 @@ export default function TalbaHalaqahPage() {
         </div>
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="flex justify-end p-3 border-b bg-gray-50">
+            <input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="حلقہ تلاش کریں..."
+              className="w-full md:w-72 rounded-lg border px-3 py-2 text-sm"
+            />
+          </div>
           <table className="min-w-full text-sm text-right">
             <thead className="bg-gray-50 border-b">
               <tr>
@@ -158,21 +167,25 @@ export default function TalbaHalaqahPage() {
                   </td>
                 </tr>
               )}
-              {items.map((h) => (
-                <tr key={h._id} className="border-t">
-                  <td className="px-3 py-2 font-semibold text-gray-900">
-                    {h.name}
-                  </td>
-                  <td className="px-3 py-2">
-                    <button
-                      onClick={() => remove(h._id)}
-                      className="rounded border border-red-200 text-red-700 px-3 py-1.5 text-xs font-semibold hover:bg-red-50"
-                    >
-                      حذف
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {items
+                .filter((h) =>
+                  (h.name || "").toLowerCase().includes(q.toLowerCase())
+                )
+                .map((h) => (
+                  <tr key={h._id} className="border-t">
+                    <td className="px-3 py-2 font-semibold text-gray-900">
+                      {h.name}
+                    </td>
+                    <td className="px-3 py-2">
+                      <button
+                        onClick={() => remove(h._id)}
+                        className="rounded border border-red-200 text-red-700 px-3 py-1.5 text-xs font-semibold hover:bg-red-50"
+                      >
+                        حذف
+                      </button>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

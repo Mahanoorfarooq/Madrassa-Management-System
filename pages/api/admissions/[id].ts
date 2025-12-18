@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
 import { Admission } from "@/schemas/Admission";
 import { Student } from "@/schemas/Student";
+import { ensureModuleEnabled, getJamiaForUser } from "@/lib/jamia";
 
 const STAGES = [
   "Inquiry",
@@ -22,9 +23,14 @@ export default async function handler(
   const user = requireAuth(req, res, ["admin", "teacher"]);
   if (!user) return;
 
+  const moduleOk = await ensureModuleEnabled(req, res, user, "admissions");
+  if (!moduleOk) return;
+
   await connectDB();
 
   const { id } = req.query as { id: string };
+
+  const jamia = await getJamiaForUser(user);
 
   if (req.method === "GET") {
     const doc = await Admission.findById(id)
@@ -34,6 +40,15 @@ export default async function handler(
       .populate({ path: "sectionId", select: "sectionName" })
       .lean();
     if (!doc) return res.status(404).json({ message: "ریکارڈ نہیں ملا" });
+
+    if (
+      jamia &&
+      (doc as any).jamiaId &&
+      String((doc as any).jamiaId) !== String(jamia._id)
+    ) {
+      return res.status(403).json({ message: "اس ریکارڈ کی اجازت نہیں" });
+    }
+
     return res.status(200).json({ admission: doc });
   }
 
@@ -58,6 +73,14 @@ export default async function handler(
       const admission: any = await Admission.findById(id);
       if (!admission)
         return res.status(404).json({ message: "ریکارڈ نہیں ملا" });
+
+      if (
+        jamia &&
+        admission.jamiaId &&
+        String(admission.jamiaId) !== String(jamia._id)
+      ) {
+        return res.status(403).json({ message: "اس ریکارڈ کی اجازت نہیں" });
+      }
 
       if (admission.student) {
         const updated = await Admission.findByIdAndUpdate(
@@ -99,6 +122,7 @@ export default async function handler(
         status: "Active",
         isHostel: false,
         rollNumber: admissionNumber,
+        jamiaId: jamia ? jamia._id : (admission as any).jamiaId,
       });
 
       const updated = await Admission.findByIdAndUpdate(

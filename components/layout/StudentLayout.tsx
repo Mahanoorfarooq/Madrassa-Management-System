@@ -1,7 +1,8 @@
-import { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Topbar } from "@/components/layout/Topbar";
+import api from "@/utils/api";
 
 export function StudentLayout({
   title,
@@ -12,13 +13,47 @@ export function StudentLayout({
 }) {
   const router = useRouter();
   const sidebarRef = useRef<HTMLDivElement>(null);
+  const [jamia, setJamia] = useState<{
+    name: string;
+    modules?: {
+      admissions?: boolean;
+      attendance?: boolean;
+      exams?: boolean;
+      fees?: boolean;
+      hostel?: boolean;
+      library?: boolean;
+      donations?: boolean;
+    };
+  } | null>(null);
+
+  const [jamiaLoading, setJamiaLoading] = useState(false);
+  const [jamiaError, setJamiaError] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     const token = localStorage.getItem("madrassa_token");
     if (!token) {
       router.replace("/login");
+      return;
     }
+
+    const loadJamia = async () => {
+      try {
+        setJamiaLoading(true);
+        setJamiaError(null);
+        const res = await api.get("/api/jamia/me");
+        setJamia(res.data?.jamia || null);
+      } catch (e: any) {
+        // Do not block student portal if jamia load fails; just log error state.
+        const msg = e?.response?.data?.message;
+        setJamiaError(typeof msg === "string" ? msg : null);
+        setJamia(null);
+      } finally {
+        setJamiaLoading(false);
+      }
+    };
+
+    loadJamia();
   }, [router]);
 
   // ✅ Wheel scroll without scrollbar
@@ -73,19 +108,29 @@ export function StudentLayout({
       {/* Sidebar */}
       <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white px-4 py-6">
         <div ref={sidebarRef} className="h-full overflow-y-auto sidebar-scroll">
-          <div className="mb-6 text-xl font-semibold text-secondary text-right">
+          <div className="mb-1 text-xl font-semibold text-secondary text-right">
             طالب علم پورٹل
           </div>
+          {jamia && (
+            <div className="mb-4 text-xs text-slate-300 text-right">
+              {jamia.name}
+            </div>
+          )}
 
           <nav className="space-y-3 text-right text-sm">
             <NavLink href="/student" label="ڈیش بورڈ" exact />
 
-            <div>
-              <div className="px-2 text-[11px] uppercase tracking-wider text-slate-400 mb-1">
-                حاضری
+            {(!jamia || jamia.modules?.attendance) && (
+              <div>
+                <div className="px-2 text-[11px] uppercase tracking-wider text-slate-400 mb-1">
+                  حاضری
+                </div>
+                <NavLink
+                  href="/student/attendance"
+                  label="روزانہ حاضری ریکارڈ"
+                />
               </div>
-              <NavLink href="/student/attendance" label="روزانہ حاضری ریکارڈ" />
-            </div>
+            )}
 
             <div>
               <div className="px-2 text-[11px] uppercase tracking-wider text-slate-400 mb-1">
@@ -100,17 +145,19 @@ export function StudentLayout({
               <NavLink href="/student/resources" label="لیکچر نوٹس/مواد" />
             </div>
 
-            <div>
-              <div className="px-2 text-[11px] uppercase tracking-wider text-slate-400 mb-1">
-                امتحانات و نتائج
+            {(!jamia || jamia.modules?.exams) && (
+              <div>
+                <div className="px-2 text-[11px] uppercase tracking-wider text-slate-400 mb-1">
+                  امتحانات و نتائج
+                </div>
+                <NavLink href="/student/exams" label="شیڈول، نمبرات، ری چیک" />
+                <NavLink href="/student/docs/id-card" label="ایڈمٹ کارڈ" />
+                <NavLink
+                  href="/student/docs/transcript"
+                  label="مجموعی نتیجہ/ٹرانسکرپٹ"
+                />
               </div>
-              <NavLink href="/student/exams" label="شیڈول، نمبرات، ری چیک" />
-              <NavLink href="/student/docs/id-card" label="ایڈمٹ کارڈ" />
-              <NavLink
-                href="/student/docs/transcript"
-                label="مجموعی نتیجہ/ٹرانسکرپٹ"
-              />
-            </div>
+            )}
 
             <div>
               <div className="px-2 text-[11px] uppercase tracking-wider text-slate-400 mb-1">
@@ -125,9 +172,13 @@ export function StudentLayout({
               <div className="px-2 text-[11px] uppercase tracking-wider text-slate-400 mb-1">
                 مزید
               </div>
-              <NavLink href="/student/fees" label="فیس" />
+              {(!jamia || jamia.modules?.fees) && (
+                <NavLink href="/student/fees" label="فیس" />
+              )}
               <NavLink href="/student/communication" label="پیغامات / شکایات" />
-              <NavLink href="/student/hostel" label="ہاسٹل" />
+              {(!jamia || jamia.modules?.hostel) && (
+                <NavLink href="/student/hostel" label="ہاسٹل" />
+              )}
             </div>
 
             <button

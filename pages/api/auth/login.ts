@@ -37,7 +37,13 @@ export default async function handler(
       .json({ message: "اکاؤنٹ غیر فعال ہے۔ براہ کرم منتظم سے رابطہ کریں۔" });
   }
 
-  const token = signToken({ id: user._id.toString(), role: user.role });
+  const token = signToken({
+    id: user._id.toString(),
+    role: user.role,
+    linkedId: (user as any)?.linkedId
+      ? String((user as any).linkedId)
+      : undefined,
+  });
 
   // Set http-only cookie for global auth
   const isProd = process.env.NODE_ENV === "production";
@@ -62,7 +68,9 @@ export default async function handler(
       status: user.status || "active",
       // optional helper for client-side redirects
       redirect:
-        user.role === "admin"
+        user.role === "super_admin"
+          ? "/super-admin"
+          : user.role === "admin"
           ? "/modules/madrassa"
           : user.role === "teacher"
           ? "/teacher"

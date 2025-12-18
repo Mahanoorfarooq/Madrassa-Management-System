@@ -25,6 +25,7 @@ export interface IAdmission extends Document {
   departmentId?: Types.ObjectId;
   classId?: Types.ObjectId; // اردو: کلاس ریفرنس
   sectionId?: Types.ObjectId; // اردو: سیکشن ریفرنس
+  jamiaId?: Types.ObjectId; // اردو: جامعہ ریفرنس (ملٹی ٹیننٹ کے لیے)
   status: "Active" | "Left"; // اردو: حیثیت
   formDate?: Date; // اردو: فارم پُر ہونے کی تاریخ
   notes?: string; // اردو: نوٹس
@@ -88,6 +89,11 @@ const AdmissionSchema = new Schema<IAdmission>(
     },
     classId: { type: Schema.Types.ObjectId, ref: "Class" },
     sectionId: { type: Schema.Types.ObjectId, ref: "Section" },
+    jamiaId: {
+      type: Schema.Types.ObjectId,
+      ref: "Jamia",
+      index: true,
+    },
     status: {
       type: String,
       enum: ["Active", "Left"],

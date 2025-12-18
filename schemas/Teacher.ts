@@ -14,6 +14,9 @@ export interface ITeacher extends Document {
   address?: string; // اردو: پتا
   status?: "active" | "inactive"; // اردو: حالت
   photoUrl?: string; // اردو: تصویر کا ربط
+  salary?: number; // اردو: تنخواہ
+  // جامعہ ریفرنس (ملٹی ٹیننٹ کے لیے)
+  jamiaId?: Types.ObjectId | null;
 }
 
 const TeacherSchema = new Schema<ITeacher>(
@@ -36,6 +39,13 @@ const TeacherSchema = new Schema<ITeacher>(
       index: true,
     },
     photoUrl: { type: String },
+    salary: { type: Number },
+    jamiaId: {
+      type: Schema.Types.ObjectId,
+      ref: "Jamia",
+      index: true,
+      default: null,
+    },
   },
   { timestamps: true }
 );

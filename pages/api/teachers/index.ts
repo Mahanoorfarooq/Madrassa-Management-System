@@ -40,6 +40,8 @@ export default async function handler(
       assignedClasses,
       username,
       password,
+      salary,
+      photoUrl,
     } = req.body as any;
     if (!fullName) {
       return res.status(400).json({ message: "استاد کا نام درکار ہے۔" });
@@ -66,6 +68,13 @@ export default async function handler(
         fullName,
         designation,
         contactNumber,
+        salary:
+          typeof salary === "number"
+            ? salary
+            : salary
+            ? Number(salary)
+            : undefined,
+        photoUrl: photoUrl || undefined,
         departmentIds: Array.isArray(departmentIds)
           ? departmentIds
           : departmentId

@@ -219,7 +219,6 @@ export default function StudentProfile() {
                   <a
                     key={idx}
                     href={doc.href}
-                    target="_blank"
                     rel="noreferrer"
                     className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-orange-50 hover:border-orange-300 transition-all group"
                   >

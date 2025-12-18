@@ -58,6 +58,8 @@ export interface IStudent extends Document {
   transferCertificateUrl?: string; // اردو: ٹرانسفر سرٹیفیکیٹ پی ڈی ایف لنک
   // متعلقہ صارف (اختیاری)
   userId?: Types.ObjectId;
+  // جامعہ ریفرنس (ملٹی ٹیننٹ کے لیے)
+  jamiaId?: Types.ObjectId | null;
 }
 
 const StudentSchema = new Schema<IStudent>(
@@ -131,6 +133,12 @@ const StudentSchema = new Schema<IStudent>(
     exitReason: { type: String },
     transferCertificateUrl: { type: String },
     userId: { type: Schema.Types.ObjectId, ref: "User", index: true },
+    jamiaId: {
+      type: Schema.Types.ObjectId,
+      ref: "Jamia",
+      index: true,
+      default: null,
+    },
   },
   { timestamps: true }
 );
