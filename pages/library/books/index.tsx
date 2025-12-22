@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import api from "@/utils/api";
 import { LibraryLayout } from "@/components/layout/LibraryLayout";
+import { Modal } from "@/components/ui/Modal";
 import {
   BookOpen,
   Search,
@@ -16,6 +17,8 @@ export default function LibraryBooksList() {
   const [books, setBooks] = useState<any[]>([]);
   const [q, setQ] = useState("");
   const [loading, setLoading] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -34,17 +37,22 @@ export default function LibraryBooksList() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const remove = async (id: string) => {
-    if (!confirm("کیا آپ واقعی اس کتاب کو حذف کرنا چاہتے ہیں؟")) return;
-    await api.delete(`/api/library/books/${id}`);
+  const askRemove = (id: string) => {
+    setDeleteId(id);
+    setConfirmOpen(true);
+  };
+
+  const confirmRemove = async () => {
+    if (!deleteId) return;
+    await api.delete(`/api/library/books/${deleteId}`);
+    setConfirmOpen(false);
+    setDeleteId(null);
     load();
   };
 
   return (
     <LibraryLayout>
       <div className="p-6 space-y-5" dir="rtl">
-       
-
         {/* Search and Actions Card */}
         <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-5">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -156,7 +164,7 @@ export default function LibraryBooksList() {
                           ترمیم
                         </Link>
                         <button
-                          onClick={() => remove(b._id)}
+                          onClick={() => askRemove(b._id)}
                           className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-600 text-white text-xs font-semibold hover:bg-red-700 transition-all shadow-sm hover:shadow-md"
                         >
                           <Trash2 className="w-3 h-3" />
@@ -185,6 +193,36 @@ export default function LibraryBooksList() {
           </div>
         </div>
       </div>
+
+      <Modal
+        open={confirmOpen}
+        onClose={() => {
+          setConfirmOpen(false);
+          setDeleteId(null);
+        }}
+        title="تصدیق حذف"
+      >
+        <div className="space-y-4 text-right">
+          <p>کیا آپ واقعی اس کتاب کو حذف کرنا چاہتے ہیں؟</p>
+          <div className="flex items-center justify-end gap-2">
+            <button
+              onClick={() => {
+                setConfirmOpen(false);
+                setDeleteId(null);
+              }}
+              className="rounded border px-4 py-2 text-xs"
+            >
+              منسوخ کریں
+            </button>
+            <button
+              onClick={confirmRemove}
+              className="rounded bg-red-600 text-white px-4 py-2 text-xs font-semibold hover:bg-red-700"
+            >
+              حذف کریں
+            </button>
+          </div>
+        </div>
+      </Modal>
     </LibraryLayout>
   );
 }

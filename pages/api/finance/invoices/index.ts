@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/db";
 import { requireAuth, requirePermission } from "@/lib/auth";
 import { Invoice } from "@/schemas/Invoice";
 import { Receipt } from "@/schemas/Receipt";
+import { logActivity } from "@/lib/activityLogger";
 
 function genNo(prefix: string) {
   const d = new Date();
@@ -67,6 +68,14 @@ export default async function handler(
       status: body.status || "unpaid",
       dueDate: body.dueDate ? new Date(body.dueDate) : undefined,
       generatedFrom: body.generatedFrom || undefined,
+    });
+    await logActivity({
+      actorUserId: user.id,
+      action: "invoice_created",
+      entityType: "invoice",
+      entityId: created?._id,
+      after: created,
+      meta: { createdBy: user.id, role: user.role },
     });
     return res
       .status(201)

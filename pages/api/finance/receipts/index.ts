@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/db";
 import { requireAuth, requirePermission } from "@/lib/auth";
 import { Receipt } from "@/schemas/Receipt";
 import { Invoice } from "@/schemas/Invoice";
+import { logActivity } from "@/lib/activityLogger";
 
 function genNo(prefix: string) {
   const d = new Date();
@@ -57,6 +58,14 @@ export default async function handler(
       date: body.date ? new Date(body.date) : new Date(),
       method: body.method,
       referenceNo: body.referenceNo,
+    });
+    await logActivity({
+      actorUserId: user.id,
+      action: "receipt_created",
+      entityType: "receipt",
+      entityId: created?._id,
+      after: created,
+      meta: { createdBy: user.id, role: user.role },
     });
 
     // Try to auto-update invoice status

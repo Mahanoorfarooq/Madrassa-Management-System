@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { connectDB } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
 import { FinanceTransaction } from "@/schemas/FinanceTransaction";
+import { logActivity } from "@/lib/activityLogger";
 
 export default async function handler(
   req: NextApiRequest,
@@ -39,6 +40,14 @@ export default async function handler(
         },
         { new: true }
       );
+      await logActivity({
+        actorUserId: user.id,
+        action: "finance_transaction_updated",
+        entityType: "finance_transaction",
+        entityId: id,
+        after: updated,
+        meta: { updatedBy: user.id, role: user.role },
+      });
       return res
         .status(200)
         .json({ message: "ریکارڈ اپ ڈیٹ ہو گیا", transaction: updated });
@@ -48,7 +57,15 @@ export default async function handler(
   }
 
   if (req.method === "DELETE") {
-    await FinanceTransaction.findByIdAndDelete(id);
+    const deleted = await FinanceTransaction.findByIdAndDelete(id);
+    await logActivity({
+      actorUserId: user.id,
+      action: "finance_transaction_deleted",
+      entityType: "finance_transaction",
+      entityId: id,
+      before: deleted,
+      meta: { deletedBy: user.id, role: user.role },
+    });
     return res.status(200).json({ message: "ریکارڈ حذف ہو گیا" });
   }
 

@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { connectDB } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
 import { TeacherAttendance } from "@/schemas/TeacherAttendance";
+import { logActivity } from "@/lib/activityLogger";
 
 export default async function handler(
   req: NextApiRequest,
@@ -40,6 +41,14 @@ export default async function handler(
       { status: body.status, markedBy: user.id },
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
+    await logActivity({
+      actorUserId: user.id,
+      action: "teacher_attendance_marked",
+      entityType: "teacher_attendance",
+      entityId: rec?._id,
+      after: { teacherId: body.teacherId, date, status: body.status },
+      meta: { markedBy: user.id, role: user.role },
+    });
     return res
       .status(201)
       .json({ message: "حاضری محفوظ ہو گئی", attendance: rec });

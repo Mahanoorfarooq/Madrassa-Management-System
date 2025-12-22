@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
 import { LibraryBook } from "@/schemas/LibraryBook";
 import { LibraryLoan } from "@/schemas/LibraryLoan";
+import { logActivity } from "@/lib/activityLogger";
 
 export default async function handler(
   req: NextApiRequest,
@@ -46,6 +47,14 @@ export default async function handler(
           book.availableCopies = book.totalCopies;
         await book.save();
       }
+      await logActivity({
+        actorUserId: user.id,
+        action: "library_loan_returned",
+        entityType: "library_loan",
+        entityId: loan?._id,
+        after: loan,
+        meta: { returnedBy: user.id, role: user.role },
+      });
       return res.status(200).json({ message: "کتاب واپس لے لی گئی", loan });
     }
 
@@ -66,6 +75,14 @@ export default async function handler(
       }
     }
     await LibraryLoan.findByIdAndDelete(id);
+    await logActivity({
+      actorUserId: user.id,
+      action: "library_loan_deleted",
+      entityType: "library_loan",
+      entityId: id,
+      before: loan,
+      meta: { deletedBy: user.id, role: user.role },
+    });
     return res.status(200).json({ message: "ریکارڈ حذف ہو گیا" });
   }
 

@@ -5,6 +5,7 @@ import { Attendance } from "@/schemas/Attendance";
 import { Student } from "@/schemas/Student";
 import { requireAuth } from "@/lib/auth";
 import { AttendancePolicy } from "@/schemas/AttendancePolicy";
+import { logActivity } from "@/lib/activityLogger";
 import { ensureModuleEnabled, getJamiaForUser } from "@/lib/jamia";
 
 export default async function handler(
@@ -223,6 +224,20 @@ export default async function handler(
         },
         { upsert: true, new: true, setDefaultsOnInsert: true }
       );
+      await logActivity({
+        actorUserId: user.id,
+        action: "student_attendance_marked",
+        entityType: "student_attendance",
+        entityId: record?._id,
+        after: {
+          student: studentId,
+          date: d,
+          status,
+          departmentId: departmentId || null,
+          classId: classId || null,
+        },
+        meta: { markedBy: user.id, role: user.role },
+      });
       return res
         .status(200)
         .json({ message: "حاضری محفوظ ہو گئی۔", attendance: record });

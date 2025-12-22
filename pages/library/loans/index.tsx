@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import api from "@/utils/api";
 import { LibraryLayout } from "@/components/layout/LibraryLayout";
+import { Modal } from "@/components/ui/Modal";
 import {
   BookOpen,
   Users,
@@ -48,6 +49,8 @@ export default function LibraryLoansPage() {
   );
   const [loans, setLoans] = useState<any[]>([]);
   const [loadingLoans, setLoadingLoans] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const selectedBook = useMemo(
     () => books.find((b) => b._id === selectedBookId),
@@ -141,11 +144,18 @@ export default function LibraryLoansPage() {
     await loadLoans();
   };
 
-  const deleteLoan = async (id: string) => {
-    if (!confirm("کیا آپ واقعی اس ریکارڈ کو حذف کرنا چاہتے ہیں؟")) return;
-    await api.delete(`/api/library/loans/${id}`);
+  const askRemove = (id: string) => {
+    setDeleteId(id);
+    setConfirmOpen(true);
+  };
+
+  const deleteLoan = async () => {
+    if (!deleteId) return;
+    await api.delete(`/api/library/loans/${deleteId}`);
     await searchBooks();
     await loadLoans();
+    setConfirmOpen(false);
+    setDeleteId(null);
   };
 
   return (
@@ -397,7 +407,7 @@ export default function LibraryLoansPage() {
                           </button>
                         )}
                         <button
-                          onClick={() => deleteLoan(x._id)}
+                          onClick={() => askRemove(x._id)}
                           className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-600 text-white text-xs font-semibold hover:bg-red-700 transition-all shadow-sm hover:shadow-md"
                         >
                           <Trash2 className="w-3 h-3" />
@@ -422,6 +432,36 @@ export default function LibraryLoansPage() {
             </table>
           </div>
         </div>
+
+        <Modal
+          open={confirmOpen}
+          onClose={() => {
+            setConfirmOpen(false);
+            setDeleteId(null);
+          }}
+          title="تصدیق حذف"
+        >
+          <div className="space-y-4 text-right">
+            <p>کیا آپ واقعی اس ریکارڈ کو حذف کرنا چاہتے ہیں؟</p>
+            <div className="flex items-center justify-end gap-2">
+              <button
+                onClick={() => {
+                  setConfirmOpen(false);
+                  setDeleteId(null);
+                }}
+                className="rounded border px-4 py-2 text-xs"
+              >
+                منسوخ کریں
+              </button>
+              <button
+                onClick={deleteLoan}
+                className="rounded bg-red-600 text-white px-4 py-2 text-xs font-semibold hover:bg-red-700"
+              >
+                حذف کریں
+              </button>
+            </div>
+          </div>
+        </Modal>
       </div>
     </LibraryLayout>
   );

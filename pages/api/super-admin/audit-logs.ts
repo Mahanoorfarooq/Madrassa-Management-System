@@ -1,17 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connectDB } from "@/lib/db";
-import { requireAuth, requirePermission } from "@/lib/auth";
+import { requireAuth } from "@/lib/auth";
 import { ActivityLog } from "@/schemas/ActivityLog";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const me = requireAuth(req, res, ["admin"]);
+  const me = requireAuth(req, res, ["super_admin"]);
   if (!me) return;
-
-  const ok = await requirePermission(req, res, me, "manage_attendance");
-  if (!ok) return;
 
   await connectDB();
 

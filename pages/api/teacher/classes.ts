@@ -11,20 +11,27 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const me = requireAuth(req, res, ["teacher"]);
+  const me = requireAuth(req, res, ["teacher", "super_admin"]);
   if (!me) return;
   if (req.method !== "GET")
     return res.status(405).json({ message: "غیر مجاز میتھڈ" });
 
   await connectDB();
 
-  const user = await User.findById(me.id).select("linkedId linkedTeacherId");
-  if (!user) return res.status(404).json({ message: "صارف نہیں ملا" });
-  const teacherId = (user as any).linkedId || (user as any).linkedTeacherId;
-  if (!teacherId)
-    return res.status(400).json({ message: "استاد پروفائل سے لنک موجود نہیں" });
+  let teacherId: any = null;
+  if (me.role !== "super_admin") {
+    const user = await User.findById(me.id).select("linkedId linkedTeacherId");
+    if (!user) return res.status(404).json({ message: "صارف نہیں ملا" });
+    teacherId = (user as any).linkedId || (user as any).linkedTeacherId;
+    if (!teacherId)
+      return res
+        .status(400)
+        .json({ message: "استاد پروفائل سے لنک موجود نہیں" });
+  }
 
-  const assigns = await TeachingAssignment.find({ teacherId })
+  const assigns = await TeachingAssignment.find(
+    me.role === "super_admin" ? {} : { teacherId }
+  )
     .populate({ path: "classId", model: ClassModel, select: "className" })
     .populate({ path: "sectionId", model: SectionModel, select: "sectionName" })
     .lean();

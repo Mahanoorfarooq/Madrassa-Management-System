@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { connectDB } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
 import { LibraryBook } from "@/schemas/LibraryBook";
+import { logActivity } from "@/lib/activityLogger";
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,7 +17,8 @@ export default async function handler(
     const { q } = req.query as { q?: string };
     const filter: any = {};
     if (q) {
-      const regex = new RegExp(q, "i");
+      const safe = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const regex = new RegExp(safe, "i");
       filter.$or = [
         { title: regex },
         { author: regex },
@@ -44,6 +46,14 @@ export default async function handler(
         isbn,
         totalCopies,
         availableCopies: totalCopies,
+      });
+      await logActivity({
+        actorUserId: user.id,
+        action: "library_book_created",
+        entityType: "library_book",
+        entityId: book?._id,
+        after: book,
+        meta: { createdBy: user.id, role: user.role },
       });
       return res.status(201).json({ message: "کتاب شامل ہو گئی", book });
     } catch (e) {

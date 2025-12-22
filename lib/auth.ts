@@ -34,7 +34,11 @@ export function comparePassword(password: string, hash: string) {
 }
 
 export function getUserFromRequest(req: NextApiRequest): JwtUserPayload | null {
-  // 1) Try Authorization: Bearer <token>
+  const cookieToken = (req as any)?.cookies?.["auth_token"];
+  if (cookieToken) {
+    const u = verifyToken(cookieToken);
+    if (u) return u;
+  }
   const authHeader = req.headers.authorization;
   if (authHeader) {
     const [scheme, token] = authHeader.split(" ");
@@ -42,12 +46,6 @@ export function getUserFromRequest(req: NextApiRequest): JwtUserPayload | null {
       const u = verifyToken(token);
       if (u) return u;
     }
-  }
-  // 2) Try http-only cookie 'auth_token'
-  // In Next.js API routes, cookies are available on req.cookies
-  const cookieToken = (req as any)?.cookies?.["auth_token"]; // fallback typing for Next versions
-  if (cookieToken) {
-    return verifyToken(cookieToken);
   }
   return null;
 }

@@ -18,7 +18,9 @@ export default async function handler(
     if (departmentId) filter.departmentId = departmentId;
     if (type) filter.type = type;
     if (active === "true") filter.isActive = true;
-    const list = await FeeStructure.find(filter).sort({ effectiveFrom: -1 });
+    const list = await FeeStructure.find(filter)
+      .sort({ effectiveFrom: -1 })
+      .populate({ path: "departmentId", select: "name code" });
     return res.status(200).json({ feeStructures: list });
   }
 

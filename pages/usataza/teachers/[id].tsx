@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import api from "@/utils/api";
 import { UsatazaLayout } from "@/components/layout/UsatazaLayout";
+import { Modal } from "@/components/ui/Modal";
 import TeacherFormAdmin, {
   TeacherAdminFormValues,
 } from "@/components/usataza/TeacherFormAdmin";
@@ -13,6 +14,7 @@ export default function UsatazaTeacherDetail() {
     useState<Partial<TeacherAdminFormValues> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -43,10 +45,15 @@ export default function UsatazaTeacherDetail() {
     router.push("/usataza/teachers");
   };
 
-  const onDelete = async () => {
+  const onDelete = () => {
     if (!id) return;
-    if (!confirm("کیا آپ واقعی اس استاد کو حذف کرنا چاہتے ہیں؟")) return;
+    setConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!id) return;
     await api.delete(`/api/teachers/${id}`);
+    setConfirmOpen(false);
     router.push("/usataza/teachers");
   };
 
@@ -77,6 +84,29 @@ export default function UsatazaTeacherDetail() {
           </div>
         </div>
       )}
+      <Modal
+        open={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        title="تصدیق حذف"
+      >
+        <div className="space-y-4 text-right">
+          <p>کیا آپ واقعی اس استاد کو حذف کرنا چاہتے ہیں؟</p>
+          <div className="flex items-center justify-end gap-2">
+            <button
+              onClick={() => setConfirmOpen(false)}
+              className="rounded border px-4 py-2 text-xs"
+            >
+              منسوخ کریں
+            </button>
+            <button
+              onClick={confirmDelete}
+              className="rounded bg-red-600 text-white px-4 py-2 text-xs font-semibold hover:bg-red-700"
+            >
+              حذف کریں
+            </button>
+          </div>
+        </div>
+      </Modal>
     </UsatazaLayout>
   );
 }

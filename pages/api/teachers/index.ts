@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { connectDB } from "@/lib/db";
 import { Teacher } from "@/schemas/Teacher";
 import { User } from "@/schemas/User";
+import { TeachingAssignment } from "@/schemas/TeachingAssignment";
 import { requireAuth, hashPassword } from "@/lib/auth";
 
 export default async function handler(
@@ -38,6 +39,7 @@ export default async function handler(
       departmentId,
       departmentIds,
       assignedClasses,
+      classIds,
       username,
       password,
       salary,
@@ -82,6 +84,29 @@ export default async function handler(
           : [],
         assignedClasses: Array.isArray(assignedClasses) ? assignedClasses : [],
       });
+
+      // Create TeachingAssignment rows if classIds provided
+      if (Array.isArray(classIds) && classIds.length) {
+        const depId =
+          departmentId ||
+          (Array.isArray(departmentIds) ? departmentIds[0] : null);
+        if (depId) {
+          const docs = classIds
+            .filter((cid: any) => !!cid)
+            .map((cid: any) => ({
+              teacherId: teacher._id,
+              departmentId: depId,
+              classId: cid,
+            }));
+          if (docs.length) {
+            try {
+              await TeachingAssignment.insertMany(docs, { ordered: false });
+            } catch {
+              // ignore duplicate errors due to unique index
+            }
+          }
+        }
+      }
 
       // Optionally create linked User account for this teacher
       if (username && password) {

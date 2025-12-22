@@ -1,0 +1,197 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import api from "@/utils/api";
+
+interface JamiaRow {
+  _id: string;
+  name: string;
+  address?: string;
+  isActive: boolean;
+  isDeleted: boolean;
+  modules?: Partial<{
+    admissions: boolean;
+    attendance: boolean;
+    exams: boolean;
+    fees: boolean;
+    hostel: boolean;
+    library: boolean;
+    donations: boolean;
+  }>;
+  createdAt?: string;
+}
+
+export default function JamiasListPage() {
+  const [items, setItems] = useState<JamiaRow[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const load = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await api.get("/api/super-admin/jamias");
+      setItems(res.data?.jamias || []);
+    } catch (e: any) {
+      setError(e?.response?.data?.message || "جامعات لوڈ کرنے میں مسئلہ");
+      setItems([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  const toggleActive = async (jamia: JamiaRow) => {
+    try {
+      await api.put(`/api/super-admin/jamias/${jamia._id}`, {
+        isActive: !jamia.isActive,
+      });
+      await load();
+    } catch (e: any) {
+      setError(e?.response?.data?.message || "اسٹیٹس تبدیل کرنے میں مسئلہ");
+    }
+  };
+
+  const softDelete = async (jamia: JamiaRow) => {
+    if (!confirm("کیا آپ واقعی اس جامعہ کو مستقل غیر فعال کرنا چاہتے ہیں؟"))
+      return;
+    try {
+      await api.delete(`/api/super-admin/jamias/${jamia._id}`);
+      await load();
+    } catch (e: any) {
+      setError(e?.response?.data?.message || "جامعہ غیر فعال کرنے میں مسئلہ");
+    }
+  };
+
+  const moduleBadges = (m?: JamiaRow["modules"]) => {
+    if (!m) return null;
+    const entries = Object.entries(m).filter(([, v]) => v);
+    return (
+      <div className="flex flex-wrap gap-1 justify-end">
+        {entries.map(([k]) => (
+          <span
+            key={k}
+            className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 text-xs"
+          >
+            {labelForModule(k)}
+          </span>
+        ))}
+      </div>
+    );
+  };
+
+  const labelForModule = (k: string) => {
+    switch (k) {
+      case "admissions":
+        return "داخلے";
+      case "attendance":
+        return "حاضری";
+      case "exams":
+        return "امتحانات";
+      case "fees":
+        return "فیس";
+      case "hostel":
+        return "ہاسٹل";
+      case "library":
+        return "کتب خانہ";
+      case "donations":
+        return "عطیات";
+      default:
+        return k;
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-semibold text-right">جامعہ مینجمنٹ</h1>
+        <Link
+          href="/super-admin/jamias/new"
+          className="px-3 py-2 rounded bg-emerald-600 text-white text-sm"
+        >
+          ➕ نیا جامعہ
+        </Link>
+      </div>
+
+      {error && (
+        <div className="bg-red-50 text-red-700 px-3 py-2 rounded text-sm text-right">
+          {error}
+        </div>
+      )}
+
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-right text-sm">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="px-3 py-2">نام</th>
+                <th className="px-3 py-2">اسٹیٹس</th>
+                <th className="px-3 py-2">ماڈیولز</th>
+                <th className="px-3 py-2">تاریخ</th>
+                <th className="px-3 py-2">ایکشن</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((j) => (
+                <tr key={j._id} className="border-t">
+                  <td className="px-3 py-2 font-medium">{j.name}</td>
+                  <td className="px-3 py-2">
+                    {j.isDeleted ? (
+                      <span className="text-xs text-red-600">غیر فعال</span>
+                    ) : j.isActive ? (
+                      <span className="text-xs text-green-600">فعال</span>
+                    ) : (
+                      <span className="text-xs text-amber-600">
+                        عارضی غیر فعال
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-3 py-2">{moduleBadges(j.modules)}</td>
+                  <td className="px-3 py-2">
+                    {j.createdAt
+                      ? new Date(j.createdAt).toLocaleDateString("ur-PK")
+                      : "-"}
+                  </td>
+                  <td className="px-3 py-2 space-x-2 space-x-reverse">
+                    <Link
+                      href={`/super-admin/jamias/${j._id}`}
+                      className="px-2 py-1 text-xs rounded bg-blue-600 text-white"
+                    >
+                      ✏️ ترمیم
+                    </Link>
+                    <button
+                      onClick={() => toggleActive(j)}
+                      className="px-2 py-1 text-xs rounded bg-emerald-600 text-white"
+                    >
+                      {j.isActive ? "⛔ غیر فعال" : "فعال کریں"}
+                    </button>
+                    <button
+                      onClick={() => softDelete(j)}
+                      className="px-2 py-1 text-xs rounded bg-red-600 text-white"
+                    >
+                      مستقل غیر فعال
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              {items.length === 0 && !loading && (
+                <tr>
+                  <td
+                    colSpan={5}
+                    className="px-3 py-6 text-center text-sm text-slate-500"
+                  >
+                    کوئی ریکارڈ موجود نہیں
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}

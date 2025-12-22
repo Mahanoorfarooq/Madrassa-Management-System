@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { connectDB } from "@/lib/db";
 import { requireAuth, hashPassword, requirePermission } from "@/lib/auth";
 import { User } from "@/schemas/User";
+import { logActivity } from "@/lib/activityLogger";
 
 export default async function handler(
   req: NextApiRequest,
@@ -82,6 +83,14 @@ export default async function handler(
         linkedId: created.linkedId,
         permissions: created.permissions || [],
       };
+      await logActivity({
+        actorUserId: me.id,
+        action: "user_created",
+        entityType: "user",
+        entityId: created._id,
+        after: safe,
+        meta: { createdBy: me.id },
+      });
       return res.status(201).json({ message: "صارف بنا دیا گیا", user: safe });
     } catch (e: any) {
       return res

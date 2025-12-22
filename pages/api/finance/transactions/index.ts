@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { connectDB } from "@/lib/db";
 import { requireAuth, requirePermission } from "@/lib/auth";
 import { FinanceTransaction } from "@/schemas/FinanceTransaction";
+import { logActivity } from "@/lib/activityLogger";
 
 export default async function handler(
   req: NextApiRequest,
@@ -58,6 +59,14 @@ export default async function handler(
         student: body.student || undefined,
         teacher: body.teacher || undefined,
         department: body.department || undefined,
+      });
+      await logActivity({
+        actorUserId: user.id,
+        action: "finance_transaction_created",
+        entityType: "finance_transaction",
+        entityId: tx?._id,
+        after: tx,
+        meta: { createdBy: user.id, role: user.role },
       });
       return res
         .status(201)

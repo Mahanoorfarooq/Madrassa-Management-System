@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { connectDB } from "@/lib/db";
 import { requireAuth, requirePermission } from "@/lib/auth";
 import { Invoice } from "@/schemas/Invoice";
+import { logActivity } from "@/lib/activityLogger";
 
 export default async function handler(
   req: NextApiRequest,
@@ -41,13 +42,29 @@ export default async function handler(
       },
       { new: true }
     );
+    await logActivity({
+      actorUserId: user.id,
+      action: "invoice_updated",
+      entityType: "invoice",
+      entityId: id,
+      after: updated,
+      meta: { updatedBy: user.id, role: user.role },
+    });
     return res
       .status(200)
       .json({ message: "ریکارڈ اپ ڈیٹ ہو گیا", invoice: updated });
   }
 
   if (req.method === "DELETE") {
-    await Invoice.findByIdAndDelete(id);
+    const deleted = await Invoice.findByIdAndDelete(id);
+    await logActivity({
+      actorUserId: user.id,
+      action: "invoice_deleted",
+      entityType: "invoice",
+      entityId: id,
+      before: deleted,
+      meta: { deletedBy: user.id, role: user.role },
+    });
     return res.status(200).json({ message: "ریکارڈ حذف ہو گیا" });
   }
 

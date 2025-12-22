@@ -163,9 +163,9 @@ export default function TeacherHazriPage() {
                     <td className="px-6 py-4 text-sm font-medium text-gray-800">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-lg flex items-center justify-center text-white font-semibold text-xs">
-                          {t.name?.charAt(0) || "T"}
+                          {(t.fullName || t.name || "T").charAt(0)}
                         </div>
-                        {t.name}
+                        {t.fullName || t.name}
                       </div>
                     </td>
                     <td className="px-6 py-4 text-center">

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import api from "@/utils/api";
 import {
   User,
@@ -20,6 +20,8 @@ export interface TeacherFormValues {
   assignedClasses: string[];
   username?: string;
   password?: string;
+  // For creating TeachingAssignment records on create
+  classIds?: string[];
 }
 
 interface TeacherFormProps {
@@ -41,17 +43,13 @@ export default function TeacherForm({
   const [classOptions, setClassOptions] = useState<
     { _id: string; label: string }[]
   >([]);
-  const [values, setValues] = useState<TeacherFormValues>({
-    fullName: initial?.fullName || "",
-    designation: initial?.designation || "",
-    contactNumber: initial?.contactNumber || "",
-    departmentId: initial?.departmentId || "",
-    assignedClasses: initial?.assignedClasses || [],
-    username: initial?.username || "",
-    password: "",
-  });
-  const [newClassInput, setNewClassInput] = useState<string>("");
+  const [assignedClasses, setAssignedClasses] = useState<string[]>(
+    initial?.assignedClasses || []
+  );
+  const newClassInputRef = useRef<HTMLInputElement | null>(null);
   const [selectClassId, setSelectClassId] = useState<string>("");
+  // Track selected class IDs (from dropdown) to create TeachingAssignment(s)
+  const [selectedClassIds, setSelectedClassIds] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -65,7 +63,6 @@ export default function TeacherForm({
         const dept = deptRes.data?.department;
         if (dept?._id) {
           setDepartmentId(dept._id);
-          setValues((v) => ({ ...v, departmentId: dept._id }));
           const classesRes = await api.get("/api/classes", {
             params: { departmentId: dept._id },
           });
@@ -82,54 +79,67 @@ export default function TeacherForm({
     bootstrap();
   }, [deptCode]);
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setValues((v) => ({ ...v, [name]: value }));
-  };
-
   const addAssignedClass = () => {
-    if (!newClassInput.trim()) return;
-    setValues((v) => ({
-      ...v,
-      assignedClasses: [...v.assignedClasses, newClassInput.trim()],
-    }));
-    setNewClassInput("");
+    const value = newClassInputRef.current?.value?.trim();
+    if (!value) return;
+    setAssignedClasses((prev) => [...prev, value]);
+    if (newClassInputRef.current) newClassInputRef.current.value = "";
   };
 
   const addAssignedClassFromSelect = () => {
     if (!selectClassId) return;
     const found = classOptions.find((c) => c._id === selectClassId);
     if (!found) return;
-    setValues((v) => ({
-      ...v,
-      assignedClasses: [...v.assignedClasses, found.label],
-    }));
+    setAssignedClasses((prev) => [...prev, found.label]);
+    setSelectedClassIds((ids) =>
+      ids.includes(found._id) ? ids : [...ids, found._id]
+    );
     setSelectClassId("");
   };
 
   const removeAssignedClass = (idx: number) => {
-    setValues((v) => ({
-      ...v,
-      assignedClasses: v.assignedClasses.filter((_, i) => i !== idx),
-    }));
+    setAssignedClasses((prev) => {
+      const label = prev[idx];
+      if (label) {
+        const match = classOptions.find((c) => c.label === label);
+        if (match) {
+          setSelectedClassIds((ids) => ids.filter((id) => id !== match._id));
+        }
+      }
+      return prev.filter((_, i) => i !== idx);
+    });
   };
 
-  const submit = async (e: React.MouseEvent) => {
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     try {
-      await onSubmit({ ...values, departmentId });
-    } catch (e: any) {
-      setError(e?.response?.data?.message || "محفوظ کرنے میں مسئلہ پیش آیا");
+      const form = e.currentTarget;
+      const data = new FormData(form);
+
+      const fullName = String(data.get("fullName") || "").trim();
+      const designation = String(data.get("designation") || "").trim();
+      const contactNumber = String(data.get("contactNumber") || "").trim();
+      const username = String(data.get("username") || "").trim();
+      const password = String(data.get("password") || "");
+
+      const payload: TeacherFormValues = {
+        fullName,
+        designation: designation || undefined,
+        contactNumber: contactNumber || undefined,
+        departmentId,
+        assignedClasses,
+        username: username || undefined,
+        password: password || undefined,
+        classIds: selectedClassIds,
+      };
+
+      await onSubmit(payload);
+    } catch (err: any) {
+      setError(err?.response?.data?.message || "محفوظ کرنے میں مسئلہ پیش آیا");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
     }
   };
 
@@ -140,8 +150,7 @@ export default function TeacherForm({
     type = "text",
     placeholder = "",
     required = false,
-    value,
-    onChange,
+    defaultValue = "",
   }: any) => (
     <div className="group">
       <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
@@ -151,11 +160,9 @@ export default function TeacherForm({
       <input
         type={type}
         name={name}
-        value={value}
-        onChange={onChange}
+        defaultValue={defaultValue}
         required={required}
         placeholder={placeholder}
-        onKeyPress={handleKeyPress}
         className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm transition-all focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 hover:border-gray-300"
       />
     </div>
@@ -163,7 +170,10 @@ export default function TeacherForm({
 
   return (
     <div className="max-w-5xl mx-auto">
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+      <form
+        className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden"
+        onSubmit={submit}
+      >
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-6">
           <h2 className="text-2xl font-bold text-white text-right flex items-center justify-end gap-3">
@@ -195,24 +205,21 @@ export default function TeacherForm({
                 icon={User}
                 label="نام استاد"
                 name="fullName"
-                value={values.fullName}
-                onChange={onChange}
+                defaultValue={initial?.fullName || ""}
                 required
               />
               <InputField
                 icon={Award}
                 label="عہدہ"
                 name="designation"
-                value={values.designation || ""}
-                onChange={onChange}
+                defaultValue={initial?.designation || ""}
                 placeholder="استاد / قاری / معلم"
               />
               <InputField
                 icon={Phone}
                 label="رابطہ نمبر"
                 name="contactNumber"
-                value={values.contactNumber || ""}
-                onChange={onChange}
+                defaultValue={initial?.contactNumber || ""}
               />
             </div>
           </div>
@@ -227,8 +234,7 @@ export default function TeacherForm({
                 icon={UserCircle}
                 label="یوزر نام"
                 name="username"
-                value={values.username || ""}
-                onChange={onChange}
+                defaultValue={initial?.username || ""}
                 placeholder="مثال: ustad.ahmad"
               />
               <InputField
@@ -236,8 +242,7 @@ export default function TeacherForm({
                 label="پاس ورڈ (نیا / ری سیٹ)"
                 name="password"
                 type="password"
-                value={values.password || ""}
-                onChange={onChange}
+                defaultValue={""}
                 placeholder="اگر خالی چھوڑیں تو پرانا برقرار رہے گا"
               />
             </div>
@@ -286,15 +291,8 @@ export default function TeacherForm({
               </p>
               <div className="flex gap-3 flex-col sm:flex-row">
                 <input
-                  value={newClassInput}
-                  onChange={(e) => setNewClassInput(e.target.value)}
+                  ref={newClassInputRef}
                   placeholder="مثلاً: حفظ - کلاس A"
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      addAssignedClass();
-                    }
-                  }}
                   className="flex-1 rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                 />
                 <button
@@ -309,13 +307,13 @@ export default function TeacherForm({
             </div>
 
             {/* Display Assigned Classes */}
-            {values.assignedClasses.length > 0 ? (
+            {assignedClasses.length > 0 ? (
               <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-200">
                 <p className="text-xs text-blue-700 font-medium mb-3 text-right">
-                  منتخب شدہ کلاسز ({values.assignedClasses.length})
+                  منتخب شدہ کلاسز ({assignedClasses.length})
                 </p>
                 <div className="flex gap-2 flex-wrap justify-end">
-                  {values.assignedClasses.map((c, idx) => (
+                  {assignedClasses.map((c, idx) => (
                     <span
                       key={`${c}-${idx}`}
                       className="inline-flex items-center gap-2 rounded-full bg-white border-2 border-blue-200 text-gray-700 px-4 py-2 text-sm font-medium shadow-sm hover:shadow-md transition-all"
@@ -346,7 +344,7 @@ export default function TeacherForm({
         {/* Footer */}
         <div className="bg-gray-50 px-8 py-6 flex justify-end border-t border-gray-200">
           <button
-            onClick={submit}
+            type="submit"
             disabled={loading}
             className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3.5 text-sm font-semibold shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 active:scale-95"
           >
@@ -375,7 +373,7 @@ export default function TeacherForm({
             )}
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

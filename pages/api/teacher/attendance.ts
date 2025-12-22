@@ -10,16 +10,21 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const me = requireAuth(req, res, ["teacher"]);
+  const me = requireAuth(req, res, ["teacher", "super_admin"]);
   if (!me) return;
 
   await connectDB();
 
-  const user = await User.findById(me.id).select("linkedId linkedTeacherId");
-  if (!user) return res.status(404).json({ message: "صارف نہیں ملا" });
-  const teacherId = (user as any).linkedId || (user as any).linkedTeacherId;
-  if (!teacherId)
-    return res.status(400).json({ message: "استاد پروفائل سے لنک موجود نہیں" });
+  let teacherId: any = null;
+  if (me.role !== "super_admin") {
+    const user = await User.findById(me.id).select("linkedId linkedTeacherId");
+    if (!user) return res.status(404).json({ message: "صارف نہیں ملا" });
+    teacherId = (user as any).linkedId || (user as any).linkedTeacherId;
+    if (!teacherId)
+      return res
+        .status(400)
+        .json({ message: "استاد پروفائل سے لنک موجود نہیں" });
+  }
 
   if (req.method === "GET") {
     const { classId, sectionId, date, lecture } = req.query as {
@@ -40,14 +45,15 @@ export default async function handler(
     }
     day.setHours(0, 0, 0, 0);
 
-    // ownership check
-    const owns = await TeachingAssignment.exists({
-      teacherId,
-      classId,
-      sectionId,
-    });
-    if (!owns)
-      return res.status(403).json({ message: "اس کلاس/سیکشن کی اجازت نہیں" });
+    if (me.role !== "super_admin") {
+      const owns = await TeachingAssignment.exists({
+        teacherId,
+        classId,
+        sectionId,
+      });
+      if (!owns)
+        return res.status(403).json({ message: "اس کلاس/سیکشن کی اجازت نہیں" });
+    }
 
     const records = await Attendance.find({
       classId,
@@ -83,48 +89,45 @@ export default async function handler(
     }
     day.setHours(0, 0, 0, 0);
 
-    // Cutoff lock (default 22:00). Teachers can only mark same-day attendance before cutoff.
     const policy = (await AttendancePolicy.findOne({
       key: "student_attendance",
     })
       .select("cutoffTime isLockedEnabled")
       .lean()) || { cutoffTime: "22:00", isLockedEnabled: true };
 
-    const now = new Date();
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const isToday = day.getTime() === today.getTime();
+    if (me.role !== "super_admin") {
+      const now = new Date();
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const isToday = day.getTime() === today.getTime();
 
-    if ((policy as any).isLockedEnabled) {
-      const parts = String((policy as any).cutoffTime || "22:00").split(":");
-      const hh = Number(parts[0] || 22);
-      const mm = Number(parts[1] || 0);
-      const cutoff = new Date(today);
-      cutoff.setHours(hh, mm, 0, 0);
+      if ((policy as any).isLockedEnabled) {
+        const parts = String((policy as any).cutoffTime || "22:00").split(":");
+        const hh = Number(parts[0] || 22);
+        const mm = Number(parts[1] || 0);
+        const cutoff = new Date(today);
+        cutoff.setHours(hh, mm, 0, 0);
 
-      if (!isToday || now.getTime() > cutoff.getTime()) {
-        return res.status(403).json({
-          message:
-            "حاضری لاک ہو چکی ہے۔ براہ کرم Attendance Edit Request بنائیں۔",
-          locked: true,
-        });
+        if (!isToday || now.getTime() > cutoff.getTime()) {
+          return res.status(403).json({
+            message:
+              "حاضری لاک ہو چکی ہے۔ براہ کرم Attendance Edit Request بنائیں۔",
+            locked: true,
+          });
+        }
       }
-    } else {
-      // If locking is disabled, still prevent teachers from editing older dates directly.
-      if (!isToday) {
-        return res.status(403).json({
-          message: "براہ کرم پرانی تاریخ کے لیے Edit Request بنائیں۔",
-        });
-      }
+      // If locking is disabled, allow backdated attendance
     }
 
-    const owns = await TeachingAssignment.exists({
-      teacherId,
-      classId,
-      sectionId,
-    });
-    if (!owns)
-      return res.status(403).json({ message: "اس کلاس/سیکشن کی اجازت نہیں" });
+    if (me.role !== "super_admin") {
+      const owns = await TeachingAssignment.exists({
+        teacherId,
+        classId,
+        sectionId,
+      });
+      if (!owns)
+        return res.status(403).json({ message: "اس کلاس/سیکشن کی اجازت نہیں" });
+    }
 
     try {
       const ops = marks.map((m) => ({
@@ -138,7 +141,7 @@ export default async function handler(
               date: day,
               lecture: lecture || undefined,
               status: m.status,
-              teacherId,
+              teacherId: teacherId || undefined,
               ...(m.remark ? { remark: m.remark } : { remark: undefined }),
             },
           },

@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { connectDB } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
 import { LibraryBook } from "@/schemas/LibraryBook";
+import { logActivity } from "@/lib/activityLogger";
 
 export default async function handler(
   req: NextApiRequest,
@@ -36,6 +37,14 @@ export default async function handler(
       book.totalCopies = newTotal;
       book.availableCopies = newAvailable;
       await book.save();
+      await logActivity({
+        actorUserId: user.id,
+        action: "library_book_updated",
+        entityType: "library_book",
+        entityId: id,
+        after: book,
+        meta: { updatedBy: user.id, role: user.role },
+      });
       return res.status(200).json({ message: "کتاب اپ ڈیٹ ہو گئی", book });
     } catch (e) {
       return res.status(500).json({ message: "اپ ڈیٹ کرنے میں مسئلہ پیش آیا" });
@@ -43,7 +52,15 @@ export default async function handler(
   }
 
   if (req.method === "DELETE") {
-    await LibraryBook.findByIdAndDelete(id);
+    const deleted = await LibraryBook.findByIdAndDelete(id);
+    await logActivity({
+      actorUserId: user.id,
+      action: "library_book_deleted",
+      entityType: "library_book",
+      entityId: id,
+      before: deleted,
+      meta: { deletedBy: user.id, role: user.role },
+    });
     return res.status(200).json({ message: "کتاب حذف ہو گئی" });
   }
 

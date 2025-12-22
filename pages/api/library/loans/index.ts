@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
 import { LibraryBook } from "@/schemas/LibraryBook";
 import { LibraryLoan } from "@/schemas/LibraryLoan";
+import { logActivity } from "@/lib/activityLogger";
 
 export default async function handler(
   req: NextApiRequest,
@@ -81,6 +82,14 @@ export default async function handler(
       dueDate: dueDate ? new Date(dueDate) : undefined,
       status: "Issued",
       notes,
+    });
+    await logActivity({
+      actorUserId: user.id,
+      action: "library_loan_issued",
+      entityType: "library_loan",
+      entityId: loan?._id,
+      after: loan,
+      meta: { createdBy: user.id, role: user.role },
     });
     return res.status(201).json({ message: "کتاب جاری کر دی گئی", loan });
   }

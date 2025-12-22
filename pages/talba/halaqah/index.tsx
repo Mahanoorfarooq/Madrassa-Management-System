@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "@/utils/api";
 import { TalbaLayout } from "@/components/layout/TalbaLayout";
+import { Modal } from "@/components/ui/Modal";
 
 interface DeptOption {
   _id: string;
@@ -23,6 +24,8 @@ export default function TalbaHalaqahPage() {
   const [name, setName] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const load = async () => {
     try {
@@ -73,10 +76,17 @@ export default function TalbaHalaqahPage() {
     }
   };
 
-  const remove = async (id: string) => {
-    if (!confirm("کیا آپ واقعی یہ حلقہ حذف کرنا چاہتے ہیں؟")) return;
-    await api.delete(`/api/halaqah/${id}`);
+  const askRemove = (id: string) => {
+    setDeleteId(id);
+    setConfirmOpen(true);
+  };
+
+  const confirmRemove = async () => {
+    if (!deleteId) return;
+    await api.delete(`/api/halaqah/${deleteId}`);
     await load();
+    setConfirmOpen(false);
+    setDeleteId(null);
   };
 
   return (
@@ -178,7 +188,7 @@ export default function TalbaHalaqahPage() {
                     </td>
                     <td className="px-3 py-2">
                       <button
-                        onClick={() => remove(h._id)}
+                        onClick={() => askRemove(h._id)}
                         className="rounded border border-red-200 text-red-700 px-3 py-1.5 text-xs font-semibold hover:bg-red-50"
                       >
                         حذف
@@ -190,6 +200,36 @@ export default function TalbaHalaqahPage() {
           </table>
         </div>
       </div>
+
+      <Modal
+        open={confirmOpen}
+        onClose={() => {
+          setConfirmOpen(false);
+          setDeleteId(null);
+        }}
+        title="تصدیق حذف"
+      >
+        <div className="space-y-4 text-right">
+          <p>کیا آپ واقعی یہ حلقہ حذف کرنا چاہتے ہیں؟</p>
+          <div className="flex items-center justify-end gap-2">
+            <button
+              onClick={() => {
+                setConfirmOpen(false);
+                setDeleteId(null);
+              }}
+              className="rounded border px-4 py-2 text-xs"
+            >
+              منسوخ کریں
+            </button>
+            <button
+              onClick={confirmRemove}
+              className="rounded bg-red-600 text-white px-4 py-2 text-xs font-semibold hover:bg-red-700"
+            >
+              حذف کریں
+            </button>
+          </div>
+        </div>
+      </Modal>
     </TalbaLayout>
   );
 }

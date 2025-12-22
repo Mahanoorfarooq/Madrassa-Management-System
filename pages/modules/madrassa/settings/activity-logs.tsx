@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "@/utils/api";
 import { MadrassaSettingsLayout } from "@/components/layout/MadrassaSettingsLayout";
 
@@ -17,8 +17,6 @@ export default function ActivityLogsPage() {
     try {
       const res = await api.get("/api/admin/activity-logs", {
         params: {
-          entityType: entityType || undefined,
-          action: action || undefined,
           from: from || undefined,
           to: to || undefined,
         },
@@ -31,6 +29,11 @@ export default function ActivityLogsPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <MadrassaSettingsLayout title="آڈٹ لاگز">
@@ -121,12 +124,14 @@ export default function ActivityLogsPage() {
                       {new Date(item.createdAt).toLocaleString()}
                     </td>
                     <td className="px-3 py-2">
-                      {item.user?.name || item.user?.email || "N/A"}
+                      {item.actorUserId?.fullName ||
+                        item.actorUserId?.username ||
+                        "N/A"}
                     </td>
                     <td className="px-3 py-2">{item.entityType}</td>
                     <td className="px-3 py-2">{item.action}</td>
                     <td className="px-3 py-2 max-w-xs truncate">
-                      {JSON.stringify(item.metadata || {})}
+                      {JSON.stringify(item.meta || item.metadata || {})}
                     </td>
                   </tr>
                 ))

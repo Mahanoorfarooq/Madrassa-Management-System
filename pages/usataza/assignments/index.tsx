@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "@/utils/api";
 import { UsatazaLayout } from "@/components/layout/UsatazaLayout";
+import { Modal } from "@/components/ui/Modal";
 import {
   ClipboardList,
   Plus,
@@ -42,6 +43,8 @@ export default function TeachingAssignmentsPage() {
   const [subject, setSubject] = useState<string>("");
 
   const [assignments, setAssignments] = useState<any[]>([]);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   useEffect(() => {
     const loadDepts = async () => {
@@ -112,13 +115,20 @@ export default function TeachingAssignmentsPage() {
     setAssignments(aRes.data?.assignments || []);
   };
 
-  const removeAssignment = async (id: string) => {
-    if (!confirm("کیا آپ واقعی اس تفویض کو حذف کرنا چاہتے ہیں؟")) return;
-    await api.delete(`/api/teaching-assignments/${id}`);
+  const askRemove = (id: string) => {
+    setDeleteId(id);
+    setConfirmOpen(true);
+  };
+
+  const confirmRemove = async () => {
+    if (!deleteId) return;
+    await api.delete(`/api/teaching-assignments/${deleteId}`);
     const aRes = await api.get("/api/teaching-assignments", {
       params: { departmentId },
     });
     setAssignments(aRes.data?.assignments || []);
+    setConfirmOpen(false);
+    setDeleteId(null);
   };
 
   return (
@@ -375,7 +385,7 @@ export default function TeachingAssignmentsPage() {
                       </td>
                       <td className="px-5 py-3">
                         <button
-                          onClick={() => removeAssignment(a._id)}
+                          onClick={() => askRemove(a._id)}
                           className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -390,6 +400,36 @@ export default function TeachingAssignmentsPage() {
           )}
         </div>
       </div>
+
+      <Modal
+        open={confirmOpen}
+        onClose={() => {
+          setConfirmOpen(false);
+          setDeleteId(null);
+        }}
+        title="تصدیق حذف"
+      >
+        <div className="space-y-4 text-right">
+          <p>کیا آپ واقعی اس تفویض کو حذف کرنا چاہتے ہیں؟</p>
+          <div className="flex items-center justify-end gap-2">
+            <button
+              onClick={() => {
+                setConfirmOpen(false);
+                setDeleteId(null);
+              }}
+              className="rounded border px-4 py-2 text-xs"
+            >
+              منسوخ کریں
+            </button>
+            <button
+              onClick={confirmRemove}
+              className="rounded bg-red-600 text-white px-4 py-2 text-xs font-semibold hover:bg-red-700"
+            >
+              حذف کریں
+            </button>
+          </div>
+        </div>
+      </Modal>
     </UsatazaLayout>
   );
 }
