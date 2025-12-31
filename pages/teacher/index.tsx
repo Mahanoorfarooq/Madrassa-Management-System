@@ -24,14 +24,30 @@ export default function TeacherDashboard() {
     upcomingExams: any[];
     notices: any[];
   } | null>(null);
+  const [selfSummary, setSelfSummary] = useState<{
+    totalDays: number;
+    present: number;
+    absent: number;
+    leave: number;
+    percent: number;
+  } | null>(null);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const [m, c, d] = await Promise.all([
+        const end = new Date();
+        const start = new Date();
+        start.setDate(end.getDate() - 30);
+        const toStr = end.toISOString().slice(0, 10);
+        const fromStr = start.toISOString().slice(0, 10);
+
+        const [m, c, d, sa] = await Promise.all([
           api.get("/api/teacher/me"),
           api.get("/api/teacher/classes"),
           api.get("/api/teacher/dashboard"),
+          api.get("/api/teacher/self-attendance", {
+            params: { from: fromStr, to: toStr },
+          }),
         ]);
         setMe(m.data || null);
         setClasses(c.data?.classes || []);
@@ -42,6 +58,18 @@ export default function TeacherDashboard() {
           upcomingExams: d.data?.upcomingExams || [],
           notices: d.data?.notices || [],
         });
+        const s = sa.data?.summary || {
+          totalDays: 0,
+          present: 0,
+          absent: 0,
+          leave: 0,
+        };
+        const denom = Math.max(
+          1,
+          (s.present || 0) + (s.absent || 0) + (s.leave || 0)
+        );
+        const percent = Math.round(((s.present || 0) / denom) * 100);
+        setSelfSummary({ ...s, percent });
       } catch (error) {
         console.error("Error loading data:", error);
       }
@@ -204,7 +232,7 @@ export default function TeacherDashboard() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {/* Classes Card */}
           <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg hover:shadow-xl transition-shadow">
             <div className="flex items-center justify-between mb-4">
@@ -261,6 +289,35 @@ export default function TeacherDashboard() {
               <span>کل طلبہ کی تعداد</span>
             </div>
           </div>
+
+          {/* My Attendance (last 30 days) */}
+          <Link
+            href="/teacher/my-attendance"
+            className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg hover:shadow-xl transition-shadow block"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-sky-500 flex items-center justify-center">
+                <Calendar className="w-6 h-6 text-white" />
+              </div>
+              <div className="text-right">
+                <p className="text-sm text-gray-600 mb-1">میری حاضری (30 دن)</p>
+                <p className="text-3xl font-bold text-gray-800">
+                  {selfSummary ? `${selfSummary.percent}%` : "—"}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center justify-end gap-3 text-xs">
+              <span className="px-2 py-1 rounded-full bg-green-50 text-green-700 border border-green-200">
+                حاضر: {selfSummary?.present ?? 0}
+              </span>
+              <span className="px-2 py-1 rounded-full bg-red-50 text-red-700 border border-red-200">
+                غائب: {selfSummary?.absent ?? 0}
+              </span>
+              <span className="px-2 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+                رخصت: {selfSummary?.leave ?? 0}
+              </span>
+            </div>
+          </Link>
         </div>
 
         {/* Pending Requests Summary */}

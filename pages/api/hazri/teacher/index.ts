@@ -33,6 +33,11 @@ export default async function handler(
   }
 
   if (req.method === "POST") {
+    if (user.role !== "admin") {
+      return res
+        .status(403)
+        .json({ message: "صرف ایڈمن حاضری محفوظ کر سکتا ہے" });
+    }
     const body = req.body as any;
     const date = new Date(body.date);
     date.setHours(0, 0, 0, 0);

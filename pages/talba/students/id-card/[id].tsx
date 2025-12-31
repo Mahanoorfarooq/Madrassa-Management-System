@@ -34,6 +34,15 @@ export default function AdminStudentIdCard() {
   const sectionLabel =
     student?.sectionId?.sectionName || student?.section || "—";
 
+  // Cache-busted photo URL to reflect latest uploaded image in print
+  const photoSrc = student?.photoUrl
+    ? `${student.photoUrl}${
+        student.updatedAt
+          ? `?t=${new Date(student.updatedAt).getTime()}`
+          : `?t=${Date.now()}`
+      }`
+    : null;
+
   return (
     <TalbaLayout title="طالب علم ID کارڈ">
       <div className="max-w-3xl mx-auto" dir="rtl">
@@ -68,10 +77,10 @@ export default function AdminStudentIdCard() {
                 <div className="p-4">
                   <div className="flex items-start gap-3">
                     <div className="w-20 h-24 rounded-lg border border-gray-200 bg-gray-50 overflow-hidden flex items-center justify-center">
-                      {student.photoUrl ? (
+                      {photoSrc ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
-                          src={student.photoUrl}
+                          src={photoSrc}
                           alt={student.fullName}
                           className="w-full h-full object-cover"
                         />
@@ -123,8 +132,15 @@ export default function AdminStudentIdCard() {
 
               <style jsx global>{`
                 @media print {
+                  @page {
+                    size: auto;
+                    margin: 8mm;
+                  }
+                  html,
                   body {
-                    background: #fff;
+                    background: #fff !important;
+                    -webkit-print-color-adjust: exact;
+                    print-color-adjust: exact;
                   }
                   .print\\:hidden {
                     display: none !important;

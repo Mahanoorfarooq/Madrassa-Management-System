@@ -28,9 +28,9 @@ export function TalbaLayout({ children, title }: TalbaLayoutProps) {
   };
 
   return (
-    <div className="flex min-h-screen bg-lightBg">
+    <div className="min-h-screen bg-lightBg">
       <TalbaSidebar />
-      <div className="flex-1 flex flex-col">
+      <div className="md:pr-64">
         <Topbar
           userName="ایڈمن"
           roleLabel="طلبہ ماڈیول"

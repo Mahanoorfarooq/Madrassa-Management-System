@@ -16,7 +16,6 @@ export default async function handler(
   const me = requireAuth(req, res, ["admin", "teacher", "staff", "student"]);
   if (!me) return;
 
-  // Only non-student roles must have explicit permission
   if (me.role !== "student") {
     const ok = await requirePermission(req, res, me, "manage_students");
     if (!ok) return;
@@ -150,18 +149,13 @@ export default async function handler(
   const margin = 40;
   const contentWidth = pageWidth - margin * 2;
 
-  // ==================== FIXED Y POSITIONS ====================
   let y = 50;
 
-  // ==================== OUTER BORDER ====================
   doc.rect(margin, margin, contentWidth, pageHeight - margin * 2).stroke();
 
-  // ==================== HEADER SECTION ====================
-
-  // Photo box at top right corner
   const photoWidth = 85;
   const photoHeight = 100;
-  const photoX = pageWidth - margin - photoWidth - 10;
+  const photoX = margin + 10;
   const photoY = 50;
 
   doc.rect(photoX, photoY, photoWidth, photoHeight).stroke();
@@ -190,13 +184,14 @@ export default async function handler(
       });
   }
 
-  // Institution name and address (left of photo)
+  // Institution name and address (right of photo in RTL)
   const headerWidth = contentWidth - photoWidth - 20;
+  const headerX = margin + photoWidth + 20;
 
   doc
     .fontSize(16)
     .font(titleFont)
-    .text(jamiaDoc?.name || "Central Jamia", margin + 10, y, {
+    .text(jamiaDoc?.name || "Central Jamia", headerX, y, {
       width: headerWidth,
       align: "center",
     });
@@ -205,7 +200,7 @@ export default async function handler(
     doc
       .fontSize(9)
       .font(normalFont)
-      .text(jamiaDoc.address, margin + 10, y + 22, {
+      .text(jamiaDoc.address, headerX, y + 22, {
         width: headerWidth,
         align: "center",
       });
@@ -266,27 +261,31 @@ export default async function handler(
 
   // Helper function to draw field row without text wrapping issues
   const drawRow = (label: string, value: string) => {
-    // Draw borders
-    doc.rect(margin, y, labelWidth, rowHeight).stroke();
-    doc.rect(margin + labelWidth, y, valueWidth, rowHeight).stroke();
+    // In RTL, label box on the right, value box on the left
+    const labelX = margin + contentWidth - labelWidth;
+    const valueX = margin;
 
-    // Draw label (right aligned)
+    // Draw borders
+    doc.rect(labelX, y, labelWidth, rowHeight).stroke();
+    doc.rect(valueX, y, valueWidth, rowHeight).stroke();
+
+    // Draw label (right aligned inside right box)
     doc
       .fontSize(9)
       .font(normalFont)
       .fillColor("black")
-      .text(label, margin + 5, y + 6, {
+      .text(label, labelX + 5, y + 6, {
         width: labelWidth - 10,
         align: "right",
         lineBreak: false,
       });
 
-    // Draw value (right aligned)
+    // Draw value (right aligned inside left box so it lines up near the middle)
     const displayValue = value || "________________";
     doc
       .fontSize(9)
       .font(normalFont)
-      .text(displayValue, margin + labelWidth + 5, y + 6, {
+      .text(displayValue, valueX + 5, y + 6, {
         width: valueWidth - 10,
         align: "right",
         lineBreak: false,
@@ -393,19 +392,22 @@ export default async function handler(
   // ==================== SIGNATURE BOXES ====================
   const sigBoxWidth = (contentWidth - 40) / 3;
   const sigBoxHeight = 55;
+  const sigGap = 10;
 
-  // Draw three signature boxes
-  doc.rect(margin + 10, y, sigBoxWidth, sigBoxHeight).stroke();
-  doc.rect(margin + 20 + sigBoxWidth, y, sigBoxWidth, sigBoxHeight).stroke();
-  doc
-    .rect(margin + 30 + sigBoxWidth * 2, y, sigBoxWidth, sigBoxHeight)
-    .stroke();
+  // Draw three signature boxes in RTL (right to left)
+  const sigRightX = margin + contentWidth - sigGap - sigBoxWidth;
+  const sigMiddleX = sigRightX - sigGap - sigBoxWidth;
+  const sigLeftX = sigMiddleX - sigGap - sigBoxWidth;
 
-  // Labels
+  doc.rect(sigRightX, y, sigBoxWidth, sigBoxHeight).stroke();
+  doc.rect(sigMiddleX, y, sigBoxWidth, sigBoxHeight).stroke();
+  doc.rect(sigLeftX, y, sigBoxWidth, sigBoxHeight).stroke();
+
+  // Labels (RTL ordering)
   doc
     .fontSize(9)
     .font(normalFont)
-    .text("سرپرست کے دستخط", margin + 10, y + sigBoxHeight - 18, {
+    .text("سرپرست کے دستخط", sigRightX, y + sigBoxHeight - 18, {
       width: sigBoxWidth,
       align: "center",
       lineBreak: false,
@@ -414,7 +416,7 @@ export default async function handler(
   doc
     .fontSize(9)
     .font(normalFont)
-    .text("دفتر کے دستخط", margin + 20 + sigBoxWidth, y + sigBoxHeight - 18, {
+    .text("دفتر کے دستخط", sigMiddleX, y + sigBoxHeight - 18, {
       width: sigBoxWidth,
       align: "center",
       lineBreak: false,
@@ -423,7 +425,7 @@ export default async function handler(
   doc
     .fontSize(9)
     .font(normalFont)
-    .text("تاریخ", margin + 30 + sigBoxWidth * 2, y + sigBoxHeight - 18, {
+    .text("تاریخ", sigLeftX, y + sigBoxHeight - 18, {
       width: sigBoxWidth,
       align: "center",
       lineBreak: false,
