@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import api from "@/utils/api";
 import { TeacherLayout } from "@/components/layout/TeacherLayout";
 import { Users, RefreshCw, CheckCircle2, X, UserCheck } from "lucide-react";
@@ -22,6 +23,7 @@ export default function TeacherSectionStudents() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [ok, setOk] = useState<string | null>(null);
+  const [locked, setLocked] = useState<boolean>(false);
   const [selectedStudent, setSelectedStudent] = useState<any | null>(null);
   const [notes, setNotes] = useState<any[]>([]);
   const [notesLoading, setNotesLoading] = useState(false);
@@ -110,8 +112,12 @@ export default function TeacherSectionStudents() {
         marks,
       });
       setOk("حاضری محفوظ ہو گئی");
+      setLocked(false);
     } catch (e: any) {
       setError(e?.response?.data?.message || "محفوظ کرنے میں مسئلہ");
+      setLocked(
+        Boolean(e?.response?.status === 403 && e?.response?.data?.locked)
+      );
     } finally {
       setLoading(false);
     }
@@ -224,9 +230,23 @@ export default function TeacherSectionStudents() {
 
         {/* Alerts */}
         {error && (
-          <div className="mb-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 shadow-sm flex items-center gap-2">
-            <X className="w-4 h-4" />
-            {error}
+          <div className="mb-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 shadow-sm">
+            <div className="flex items-center gap-2">
+              <X className="w-4 h-4" />
+              <span>{error}</span>
+            </div>
+            {locked && (
+              <div className="mt-2 text-right">
+                <Link
+                  href={`/teacher/attendance-edit-requests?classId=${classId}&sectionId=${sectionId}&date=${date}${
+                    lecture ? `&lecture=${encodeURIComponent(lecture)}` : ""
+                  }`}
+                  className="inline-flex items-center gap-2 mt-2 rounded-lg border border-amber-300 bg-amber-50 text-amber-800 px-3 py-1.5 text-xs font-semibold hover:bg-amber-100"
+                >
+                  Attendance Edit Request کھولیں
+                </Link>
+              </div>
+            )}
           </div>
         )}
         {ok && (

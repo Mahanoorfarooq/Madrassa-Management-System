@@ -34,11 +34,9 @@ export default function NewFinanceTransactionPage() {
   const [departments, setDepartments] = useState<any[]>([]);
   const [department, setDepartment] = useState<string>("");
 
-  const [studentQ, setStudentQ] = useState<string>("");
   const [students, setStudents] = useState<any[]>([]);
   const [student, setStudent] = useState<string>("");
 
-  const [teacherQ, setTeacherQ] = useState<string>("");
   const [teachers, setTeachers] = useState<any[]>([]);
   const [teacher, setTeacher] = useState<string>("");
 
@@ -53,24 +51,25 @@ export default function NewFinanceTransactionPage() {
   }, []);
 
   useEffect(() => {
-    const t = setTimeout(async () => {
-      const res = await api.get("/api/students", {
-        params: { q: studentQ || undefined },
-      });
-      setStudents(res.data?.students || []);
-    }, 300);
-    return () => clearTimeout(t);
-  }, [studentQ]);
-
-  useEffect(() => {
-    const t = setTimeout(async () => {
-      const res = await api.get("/api/teachers", {
-        params: { q: teacherQ || undefined },
-      });
-      setTeachers(res.data?.teachers || []);
-    }, 300);
-    return () => clearTimeout(t);
-  }, [teacherQ]);
+    const loadPeople = async () => {
+      try {
+        const [sRes, tRes] = await Promise.all([
+          api.get("/api/students", {
+            params: { departmentId: department || undefined },
+          }),
+          api.get("/api/teachers", {
+            params: { departmentId: department || undefined },
+          }),
+        ]);
+        setStudents(sRes.data?.students || []);
+        setTeachers(tRes.data?.teachers || []);
+      } catch (e) {
+        setStudents([]);
+        setTeachers([]);
+      }
+    };
+    loadPeople();
+  }, [department]);
 
   const canSubmit = useMemo(
     () => type && amount > 0 && date,
@@ -214,12 +213,6 @@ export default function NewFinanceTransactionPage() {
                 <label className="block text-xs font-medium text-gray-700 mb-1.5">
                   طالب علم
                 </label>
-                <input
-                  value={studentQ}
-                  onChange={(e) => setStudentQ(e.target.value)}
-                  placeholder="نام / رول نمبر تلاش کریں"
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 mb-2"
-                />
                 <select
                   value={student}
                   onChange={(e) => setStudent(e.target.value)}
@@ -238,12 +231,6 @@ export default function NewFinanceTransactionPage() {
                 <label className="block text-xs font-medium text-gray-700 mb-1.5">
                   استاد
                 </label>
-                <input
-                  value={teacherQ}
-                  onChange={(e) => setTeacherQ(e.target.value)}
-                  placeholder="نام / عہدہ تلاش کریں"
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 mb-2"
-                />
                 <select
                   value={teacher}
                   onChange={(e) => setTeacher(e.target.value)}

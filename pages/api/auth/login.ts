@@ -3,6 +3,7 @@ import { serialize } from "cookie";
 import { connectDB } from "@/lib/db";
 import { User } from "@/schemas/User";
 import { comparePassword, signToken } from "@/lib/auth";
+import { logActivity } from "@/lib/activityLogger";
 
 export default async function handler(
   req: NextApiRequest,
@@ -57,6 +58,25 @@ export default async function handler(
       maxAge: 60 * 60 * 24 * 7, // 7 days
     })
   );
+
+  // Log login activity (best-effort)
+  try {
+    await logActivity({
+      actorUserId: String(user._id),
+      action: "login",
+      entityType: "auth",
+      entityId: user._id,
+      meta: {
+        username: user.username,
+        role: user.role,
+        ua: req.headers["user-agent"] || "",
+        ip:
+          (req.headers["x-forwarded-for"] as string) ||
+          (req.socket && req.socket.remoteAddress) ||
+          "",
+      },
+    });
+  } catch {}
 
   return res.status(200).json({
     message: "کامیابی سے لاگ اِن ہو گئے۔",

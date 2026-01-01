@@ -98,13 +98,14 @@ export default function ActivityLogsPage() {
                 <th className="px-3 py-2">صارف</th>
                 <th className="px-3 py-2">Entity</th>
                 <th className="px-3 py-2">Action</th>
+                <th className="px-3 py-2">تفصیلات</th>
               </tr>
             </thead>
             <tbody>
               {loading && (
                 <tr>
                   <td
-                    colSpan={4}
+                    colSpan={5}
                     className="px-3 py-6 text-center text-gray-400"
                   >
                     لوڈ ہو رہا ہے...
@@ -114,7 +115,7 @@ export default function ActivityLogsPage() {
               {!loading && items.length === 0 && (
                 <tr>
                   <td
-                    colSpan={4}
+                    colSpan={5}
                     className="px-3 py-6 text-center text-gray-400"
                   >
                     کوئی ریکارڈ نہیں
@@ -133,6 +134,28 @@ export default function ActivityLogsPage() {
                   </td>
                   <td className="px-3 py-2">{r.entityType}</td>
                   <td className="px-3 py-2">{r.action}</td>
+                  <td
+                    className="px-3 py-2 max-w-xs truncate"
+                    title={(() => {
+                      try {
+                        return JSON.stringify(
+                          r.meta || r.metadata || {},
+                          null,
+                          2
+                        );
+                      } catch {
+                        return "";
+                      }
+                    })()}
+                  >
+                    {(() => {
+                      try {
+                        return JSON.stringify(r.meta || r.metadata || {});
+                      } catch {
+                        return "";
+                      }
+                    })()}
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -93,7 +93,7 @@ export default async function handler(
       key: "student_attendance",
     })
       .select("cutoffTime isLockedEnabled")
-      .lean()) || { cutoffTime: "22:00", isLockedEnabled: true };
+      .lean()) || { cutoffTime: "22:00", isLockedEnabled: false };
 
     if (me.role !== "super_admin") {
       const now = new Date();
@@ -101,7 +101,7 @@ export default async function handler(
       today.setHours(0, 0, 0, 0);
       const isToday = day.getTime() === today.getTime();
 
-      if ((policy as any).isLockedEnabled) {
+      if (false) {
         const parts = String((policy as any).cutoffTime || "22:00").split(":");
         const hh = Number(parts[0] || 22);
         const mm = Number(parts[1] || 0);

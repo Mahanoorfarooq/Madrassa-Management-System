@@ -67,7 +67,9 @@ export function middleware(req: NextRequest) {
       pathname.startsWith("/admin") ||
       pathname.startsWith("/modules/madrassa")
     ) {
-      if (payload?.role !== "admin") {
+      // Permit both admin and super_admin to access admin/madrassa modules
+      const role = payload?.role;
+      if (role !== "admin" && role !== "super_admin") {
         const url = req.nextUrl.clone();
         url.pathname = "/teacher";
         return NextResponse.redirect(url);

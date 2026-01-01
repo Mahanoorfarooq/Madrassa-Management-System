@@ -15,12 +15,14 @@ export default function ActivityLogsPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await api.get("/api/admin/activity-logs", {
-        params: {
-          from: from || undefined,
-          to: to || undefined,
-        },
-      });
+      const params = {
+        entityType: entityType || undefined,
+        action: action || undefined,
+        from: from || undefined,
+        to: to || undefined,
+      } as any;
+
+      const res = await api.get("/api/admin/activity-logs", { params });
       setItems(res.data?.logs || []);
     } catch (e: any) {
       setError(e?.response?.data?.message || "لوڈ کرنے میں مسئلہ پیش آیا");
@@ -130,8 +132,29 @@ export default function ActivityLogsPage() {
                     </td>
                     <td className="px-3 py-2">{item.entityType}</td>
                     <td className="px-3 py-2">{item.action}</td>
-                    <td className="px-3 py-2 max-w-xs truncate">
-                      {JSON.stringify(item.meta || item.metadata || {})}
+                    <td
+                      className="px-3 py-2 max-w-xs truncate"
+                      title={(() => {
+                        try {
+                          return JSON.stringify(
+                            item.meta || item.metadata || {},
+                            null,
+                            2
+                          );
+                        } catch {
+                          return "";
+                        }
+                      })()}
+                    >
+                      {(() => {
+                        try {
+                          return JSON.stringify(
+                            item.meta || item.metadata || {}
+                          );
+                        } catch {
+                          return "";
+                        }
+                      })()}
                     </td>
                   </tr>
                 ))
