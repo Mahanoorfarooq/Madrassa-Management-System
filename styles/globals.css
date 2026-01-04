@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "AlQalam Taj Nastaleeq";
+  src: url("/fonts/alqalam-taj-nastaleeq/AlQalam Taj Nastaleeq Regular.ttf")
+    format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+html,
+body {
+  direction: rtl;
+  font-family: "AlQalam Taj Nastaleeq", "Noto Nastaliq Urdu",
+    "Jameel Noori Nastaleeq", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  font-size: 18px;
+  background-color: #f8f9fa;
+}
+
+body {
+  @apply text-gray-900;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Hide scrollbars but keep scroll behaviour (used for teacher sidebar, etc.) */
+.scrollbar-none {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}

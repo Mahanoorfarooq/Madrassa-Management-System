@@ -1,0 +1,217 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import api from "@/utils/api";
+
+interface SettingsDoc {
+  notifications?: { sms?: any; whatsapp?: any; email?: any };
+  payments?: any;
+  templates?: { idCard?: any; feeReceipt?: any; certificate?: any };
+  backup?: { info?: string };
+}
+
+export default function SASettingsPage() {
+  const [doc, setDoc] = useState<SettingsDoc>({});
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        setLoading(true);
+        const res = await api.get("/api/super-admin/settings");
+        setDoc(res.data?.settings || {});
+      } catch (e: any) {
+        setError(e?.response?.data?.message || "سیٹنگز لوڈ کرنے میں مسئلہ");
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  const save = async () => {
+    try {
+      setSaving(true);
+      setSaved(false);
+      await api.put("/api/super-admin/settings", doc);
+      setSaved(true);
+    } catch (e: any) {
+      setError(e?.response?.data?.message || "محفوظ کرنے میں مسئلہ");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <h1 className="text-xl font-semibold text-right">سسٹم سیٹنگز</h1>
+      {error && (
+        <div className="bg-red-50 text-red-700 px-3 py-2 rounded text-sm text-right">
+          {error}
+        </div>
+      )}
+      {saved && (
+        <div className="bg-emerald-50 text-emerald-700 px-3 py-2 rounded text-sm text-right">
+          محفوظ ہو گیا
+        </div>
+      )}
+
+      <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
+        <h2 className="font-medium text-right">نوٹیفکیشن گیٹ ویز</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <input
+            className="border rounded px-3 py-2 text-sm text-right"
+            placeholder="SMS API Key"
+            value={doc.notifications?.sms?.apiKey || ""}
+            onChange={(e) =>
+              setDoc({
+                ...doc,
+                notifications: {
+                  ...(doc.notifications || {}),
+                  sms: {
+                    ...(doc.notifications?.sms || {}),
+                    apiKey: e.target.value,
+                  },
+                },
+              })
+            }
+          />
+          <input
+            className="border rounded px-3 py-2 text-sm text-right"
+            placeholder="WhatsApp Token"
+            value={doc.notifications?.whatsapp?.token || ""}
+            onChange={(e) =>
+              setDoc({
+                ...doc,
+                notifications: {
+                  ...(doc.notifications || {}),
+                  whatsapp: {
+                    ...(doc.notifications?.whatsapp || {}),
+                    token: e.target.value,
+                  },
+                },
+              })
+            }
+          />
+          <input
+            className="border rounded px-3 py-2 text-sm text-right"
+            placeholder="SMTP Host"
+            value={doc.notifications?.email?.host || ""}
+            onChange={(e) =>
+              setDoc({
+                ...doc,
+                notifications: {
+                  ...(doc.notifications || {}),
+                  email: {
+                    ...(doc.notifications?.email || {}),
+                    host: e.target.value,
+                  },
+                },
+              })
+            }
+          />
+        </div>
+      </section>
+
+      <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
+        <h2 className="font-medium text-right">پیمنٹ گیٹ وے</h2>
+        <input
+          className="border rounded px-3 py-2 text-sm text-right"
+          placeholder="Provider"
+          value={doc.payments?.provider || ""}
+          onChange={(e) =>
+            setDoc({
+              ...doc,
+              payments: { ...(doc.payments || {}), provider: e.target.value },
+            })
+          }
+        />
+      </section>
+
+      <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
+        <h2 className="font-medium text-right">گلوبل ٹیمپلیٹس</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <input
+            className="border rounded px-3 py-2 text-sm text-right"
+            placeholder="ID Card Template"
+            value={doc.templates?.idCard?.name || ""}
+            onChange={(e) =>
+              setDoc({
+                ...doc,
+                templates: {
+                  ...(doc.templates || {}),
+                  idCard: {
+                    ...(doc.templates?.idCard || {}),
+                    name: e.target.value,
+                  },
+                },
+              })
+            }
+          />
+          <input
+            className="border rounded px-3 py-2 text-sm text-right"
+            placeholder="Fee Receipt Template"
+            value={doc.templates?.feeReceipt?.name || ""}
+            onChange={(e) =>
+              setDoc({
+                ...doc,
+                templates: {
+                  ...(doc.templates || {}),
+                  feeReceipt: {
+                    ...(doc.templates?.feeReceipt || {}),
+                    name: e.target.value,
+                  },
+                },
+              })
+            }
+          />
+          <input
+            className="border rounded px-3 py-2 text-sm text-right"
+            placeholder="Certificate Template"
+            value={doc.templates?.certificate?.name || ""}
+            onChange={(e) =>
+              setDoc({
+                ...doc,
+                templates: {
+                  ...(doc.templates || {}),
+                  certificate: {
+                    ...(doc.templates?.certificate || {}),
+                    name: e.target.value,
+                  },
+                },
+              })
+            }
+          />
+        </div>
+      </section>
+
+      <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
+        <h2 className="font-medium text-right">بیک اپ / ریسٹور</h2>
+        <input
+          className="border rounded px-3 py-2 text-sm text-right"
+          placeholder="Info"
+          value={doc.backup?.info || ""}
+          onChange={(e) =>
+            setDoc({
+              ...doc,
+              backup: { ...(doc.backup || {}), info: e.target.value },
+            })
+          }
+        />
+      </section>
+
+      <div className="flex justify-end">
+        <button
+          onClick={save}
+          disabled={saving}
+          className="px-4 py-2 rounded bg-emerald-600 text-white disabled:opacity-60"
+        >
+          {saving ? "محفوظ ہو رہا ہے…" : "محفوظ کریں"}
+        </button>
+      </div>
+    </div>
+  );
+}
