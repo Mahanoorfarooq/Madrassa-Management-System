@@ -27,6 +27,8 @@ export default function TalbaDepartmentsPage() {
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [deleteId, setDeleteId] = useState<string>("");
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const load = async () => {
     const res = await api.get("/api/departments");
@@ -65,11 +67,23 @@ export default function TalbaDepartmentsPage() {
     load();
   };
 
-  const remove = async (id: string) => {
-    if (!confirm("کیا آپ واقعی اس شعبہ کو حذف کرنا چاہتے ہیں؟")) return;
-    await api.delete(`/api/departments/${id}`);
-    load();
+  const remove = (id: string) => {
+    setDeleteId(id);
   };
+
+  const confirmRemove = async () => {
+    if (!deleteId) return;
+    try {
+      setDeleteLoading(true);
+      await api.delete(`/api/departments/${deleteId}`);
+      await load();
+    } finally {
+      setDeleteLoading(false);
+      setDeleteId("");
+    }
+  };
+
+  const cancelRemove = () => setDeleteId("");
 
   const getDeptColor = (code: string) => {
     const c = code.toUpperCase();
@@ -317,6 +331,44 @@ export default function TalbaDepartmentsPage() {
           </div>
         </div>
       </div>
+
+      {deleteId && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+          dir="rtl"
+          onClick={cancelRemove}
+        >
+          <div
+            className="bg-white rounded-xl shadow-xl w-full max-w-md p-5"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="text-right space-y-2">
+              <h3 className="text-base font-semibold text-gray-900">
+                حذف کی تصدیق
+              </h3>
+              <p className="text-sm text-gray-600">
+                کیا آپ واقعی اس شعبہ کو حذف کرنا چاہتے ہیں؟ یہ عمل واپس نہیں لیا
+                جا سکے گا۔
+              </p>
+            </div>
+            <div className="mt-4 flex items-center justify-between gap-2">
+              <button
+                onClick={cancelRemove}
+                className="px-4 py-2 rounded-lg text-xs font-semibold border border-gray-200 hover:bg-gray-50"
+              >
+                منسوخ کریں
+              </button>
+              <button
+                onClick={confirmRemove}
+                disabled={deleteLoading}
+                className="px-4 py-2 rounded-lg text-xs font-semibold bg-red-600 text-white hover:bg-red-700 disabled:opacity-60"
+              >
+                {deleteLoading ? "حذف ہو رہا ہے..." : "ہاں، حذف کریں"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </TalbaLayout>
   );
 }

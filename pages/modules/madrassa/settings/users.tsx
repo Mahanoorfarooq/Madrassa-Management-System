@@ -140,7 +140,12 @@ export default function MadrassaUsersSettingsPage() {
   };
 
   return (
-    <MadrassaSettingsLayout title="یوزر مینجمنٹ">
+    <MadrassaSettingsLayout
+      title="یوزر مینجمنٹ"
+      linksOverride={[
+        { href: "/modules/madrassa/settings/users", label: "یوزر مینجمنٹ" },
+      ]}
+    >
       <div className="space-y-4" dir="rtl">
         {error && (
           <div className="mb-3 rounded bg-red-100 text-red-700 text-sm px-3 py-2 text-right">

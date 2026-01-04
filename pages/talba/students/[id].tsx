@@ -24,6 +24,7 @@ export default function TalbaStudentDetail() {
     title: string;
     url: string;
   }>({ type: "birth_certificate", title: "", url: "" });
+  const [newDocFile, setNewDocFile] = useState<File | null>(null);
 
   const [transferLoading, setTransferLoading] = useState(false);
   const [transferError, setTransferError] = useState<string | null>(null);
@@ -277,16 +278,41 @@ export default function TalbaStudentDetail() {
     try {
       setDocsLoading(true);
       setDocsError(null);
+      let fileUrl = newDoc.url.trim();
+      if (newDocFile) {
+        const base64 = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            try {
+              const result = String(reader.result || "");
+              const b64 = result.includes(",") ? result.split(",")[1] : result;
+              resolve(b64);
+            } catch (e) {
+              reject(e);
+            }
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(newDocFile);
+        });
+        const up = await api.post("/api/upload/student-document", {
+          fileName: newDocFile.name,
+          contentType: newDocFile.type || "application/octet-stream",
+          base64,
+        });
+        fileUrl = (up as any)?.data?.url || "";
+      }
+
       const res = await api.post("/api/admin/student-documents", {
         studentId: id,
         type: newDoc.type,
         title: newDoc.title.trim(),
-        url: newDoc.url.trim() || undefined,
+        url: fileUrl || undefined,
         verified: false,
       });
       const created = res.data?.document;
       if (created) setDocuments((prev) => [created, ...prev]);
       setNewDoc((p) => ({ ...p, title: "", url: "" }));
+      setNewDocFile(null);
     } catch (e: any) {
       setDocsError(e?.response?.data?.message || "دستاویز محفوظ نہیں ہو سکی۔");
     } finally {
@@ -345,13 +371,6 @@ export default function TalbaStudentDetail() {
       )}
       {initial && (
         <div className="space-y-6">
-          <StudentForm
-            deptCode={dept}
-            initial={initial}
-            onSubmit={onSubmit}
-            submitLabel="اپ ڈیٹ کریں"
-          />
-
           <div className="flex justify-end gap-2" dir="rtl">
             <a
               href={`/talba/students/admission-form/${id}`}
@@ -366,6 +385,13 @@ export default function TalbaStudentDetail() {
               ID کارڈ پرنٹ
             </a>
           </div>
+
+          <StudentForm
+            deptCode={dept}
+            initial={initial}
+            onSubmit={onSubmit}
+            submitLabel="اپ ڈیٹ کریں"
+          />
 
           <div
             className="bg-white rounded-xl shadow-sm border border-gray-100 p-4"
@@ -427,15 +453,16 @@ export default function TalbaStudentDetail() {
               </div>
               <div className="text-right md:col-span-2">
                 <label className="block text-xs text-gray-600 mb-1">
-                  لنک (URL)
+                  فائل اپلوڈ
                 </label>
                 <input
-                  value={newDoc.url}
-                  onChange={(e) =>
-                    setNewDoc((p) => ({ ...p, url: e.target.value }))
-                  }
-                  className="w-full rounded border px-3 py-2 text-xs"
-                  placeholder="https://..."
+                  type="file"
+                  accept=".pdf,image/png,image/jpeg"
+                  onChange={(e) => {
+                    const f = e.target.files && e.target.files[0];
+                    setNewDocFile(f || null);
+                  }}
+                  className="w-full rounded border px-3 py-2 text-xs bg-white"
                 />
               </div>
               <div className="md:col-span-4 flex justify-end">
@@ -520,14 +547,58 @@ export default function TalbaStudentDetail() {
                     </div>
                     <div className="text-right">
                       <label className="block text-[11px] text-gray-600 mb-1">
-                        لنک (URL)
+                        فائل تبدیل کریں
                       </label>
                       <input
-                        defaultValue={d.pdfPath || ""}
-                        onBlur={(e) =>
-                          updateDocument(d._id, { url: e.target.value })
-                        }
-                        className="w-full rounded border px-3 py-2 text-xs"
+                        type="file"
+                        accept=".pdf,image/png,image/jpeg"
+                        onChange={async (e) => {
+                          const f = e.target.files && e.target.files[0];
+                          if (!f) return;
+                          try {
+                            setDocsLoading(true);
+                            setDocsError(null);
+                            const base64 = await new Promise<string>(
+                              (resolve, reject) => {
+                                const reader = new FileReader();
+                                reader.onload = () => {
+                                  try {
+                                    const result = String(reader.result || "");
+                                    const b64 = result.includes(",")
+                                      ? result.split(",")[1]
+                                      : result;
+                                    resolve(b64);
+                                  } catch (err) {
+                                    reject(err);
+                                  }
+                                };
+                                reader.onerror = reject;
+                                reader.readAsDataURL(f);
+                              }
+                            );
+                            const up = await api.post(
+                              "/api/upload/student-document",
+                              {
+                                fileName: f.name,
+                                contentType:
+                                  f.type || "application/octet-stream",
+                                base64,
+                              }
+                            );
+                            const fileUrl = (up as any)?.data?.url || "";
+                            if (fileUrl) {
+                              await updateDocument(d._id, { url: fileUrl });
+                            }
+                          } catch (err: any) {
+                            setDocsError(
+                              err?.response?.data?.message ||
+                                "اپ لوڈ نہیں ہو سکا۔"
+                            );
+                          } finally {
+                            setDocsLoading(false);
+                          }
+                        }}
+                        className="w-full rounded border px-3 py-2 text-xs bg-white"
                       />
                     </div>
                   </div>

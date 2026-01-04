@@ -57,7 +57,12 @@ export default function AdminNotificationsPage() {
   };
 
   return (
-    <MadrassaSettingsLayout title="اعلانات / نوٹیفیکیشنز">
+    <MadrassaSettingsLayout
+      title="اعلانات / نوٹیفیکیشنز"
+      linksOverride={[
+        { href: "/modules/madrassa/settings/notifications", label: "اعلانات" },
+      ]}
+    >
       <div className="space-y-4" dir="rtl">
         {error && (
           <div className="rounded bg-red-100 text-red-700 text-xs px-3 py-2 text-right">

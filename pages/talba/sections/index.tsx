@@ -56,6 +56,8 @@ export default function SectionsPage() {
   const [q, setQ] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [deleteId, setDeleteId] = useState<string>("");
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const currentTab = DEPT_TABS.find((d) => d.code === deptCode);
   const selectedClass = classes.find((c) => c._id === classId);
@@ -111,14 +113,26 @@ export default function SectionsPage() {
     }
   };
 
-  const removeSection = async (id: string) => {
-    if (!confirm("کیا آپ واقعی اس سیکشن کو حذف کرنا چاہتے ہیں؟")) return;
-    await api.delete(`/api/sections/${id}`);
-    const res = await api.get("/api/sections", {
-      params: { departmentId, classId },
-    });
-    setSections(res.data?.sections || []);
+  const removeSection = (id: string) => {
+    setDeleteId(id);
   };
+
+  const confirmRemove = async () => {
+    if (!deleteId) return;
+    try {
+      setDeleteLoading(true);
+      await api.delete(`/api/sections/${deleteId}`);
+      const res = await api.get("/api/sections", {
+        params: { departmentId, classId },
+      });
+      setSections(res.data?.sections || []);
+    } finally {
+      setDeleteLoading(false);
+      setDeleteId("");
+    }
+  };
+
+  const cancelRemove = () => setDeleteId("");
 
   return (
     <TalbaLayout>
@@ -345,6 +359,44 @@ export default function SectionsPage() {
           </div>
         </div>
       </div>
+
+      {deleteId && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+          dir="rtl"
+          onClick={cancelRemove}
+        >
+          <div
+            className="bg-white rounded-xl shadow-xl w-full max-w-md p-5"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="text-right space-y-2">
+              <h3 className="text-base font-semibold text-gray-900">
+                حذف کی تصدیق
+              </h3>
+              <p className="text-sm text-gray-600">
+                کیا آپ واقعی اس سیکشن کو حذف کرنا چاہتے ہیں؟ یہ عمل واپس نہیں
+                لیا جا سکے گا۔
+              </p>
+            </div>
+            <div className="mt-4 flex items-center justify-between gap-2">
+              <button
+                onClick={cancelRemove}
+                className="px-4 py-2 rounded-lg text-xs font-semibold border border-gray-200 hover:bg-gray-50"
+              >
+                منسوخ کریں
+              </button>
+              <button
+                onClick={confirmRemove}
+                disabled={deleteLoading}
+                className="px-4 py-2 rounded-lg text-xs font-semibold bg-red-600 text-white hover:bg-red-700 disabled:opacity-60"
+              >
+                {deleteLoading ? "حذف ہو رہا ہے..." : "ہاں، حذف کریں"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </TalbaLayout>
   );
 }

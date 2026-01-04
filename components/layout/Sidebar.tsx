@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 
 interface SidebarProps {
   role: "admin" | "teacher" | "staff" | "student";
+  linksOverride?: { href: string; label: string }[];
+  hideNav?: boolean;
 }
 
 const roleLinks: Record<string, { href: string; label: string }[]> = {
@@ -41,33 +43,35 @@ const roleLinks: Record<string, { href: string; label: string }[]> = {
   ],
 };
 
-export function Sidebar({ role }: SidebarProps) {
+export function Sidebar({ role, linksOverride, hideNav }: SidebarProps) {
   const router = useRouter();
-  const links = roleLinks[role] || [];
+  const links = (linksOverride ?? roleLinks[role]) || [];
 
   return (
     <aside className="w-64 min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white px-4 py-6 border-l border-slate-800/80 shadow-inner flex flex-col">
       <div className="mb-6 text-xl font-semibold text-secondary text-right">
         مدرسہ مینجمنٹ
       </div>
-      <nav className="space-y-1 text-right text-sm">
-        {links.map((link) => {
-          const active = router.pathname.startsWith(link.href);
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 text-xs md:text-sm ${
-                active
-                  ? "bg-primary/90 text-white shadow-md"
-                  : "hover:bg-slate-800/80 text-slate-200"
-              }`}
-            >
-              {link.label}
-            </Link>
-          );
-        })}
-      </nav>
+      {!hideNav && (
+        <nav className="space-y-1 text-right text-sm">
+          {links.map((link) => {
+            const active = router.pathname.startsWith(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 text-xs md:text-sm ${
+                  active
+                    ? "bg-primary/90 text-white shadow-md"
+                    : "hover:bg-slate-800/80 text-slate-200"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+        </nav>
+      )}
     </aside>
   );
 }

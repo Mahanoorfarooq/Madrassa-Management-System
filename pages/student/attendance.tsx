@@ -40,6 +40,8 @@ export default function StudentAttendance() {
   const [attachmentUrl, setAttachmentUrl] = useState<string>("");
   const [leaveSubmitting, setLeaveSubmitting] = useState(false);
   const [leaveError, setLeaveError] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   const submitLeave = async (e: FormEvent) => {
     e.preventDefault();
@@ -179,6 +181,56 @@ export default function StudentAttendance() {
 
     loadLeaves();
   }, []);
+
+  const fileToBase64 = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        const comma = result.indexOf(",");
+        resolve(comma >= 0 ? result.substring(comma + 1) : result);
+      };
+      reader.onerror = () => reject(reader.error || new Error("read error"));
+      reader.readAsDataURL(file);
+    });
+
+  const onSelectAttachment = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUploadError(null);
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const allowed = ["application/pdf", "image/png", "image/jpeg"];
+    if (!allowed.includes(file.type)) {
+      setUploadError("صرف PDF، JPG یا PNG فائل اپ لوڈ کریں");
+      e.currentTarget.value = "";
+      return;
+    }
+    const max = 5 * 1024 * 1024;
+    if (file.size > max) {
+      setUploadError("زیادہ سے زیادہ 5MB فائل کی اجازت ہے");
+      e.currentTarget.value = "";
+      return;
+    }
+
+    try {
+      setUploading(true);
+      const base64 = await fileToBase64(file);
+      const res = await api.post("/api/upload/leave-attachment", {
+        fileName: file.name,
+        contentType: file.type,
+        base64,
+      });
+      const url = res.data?.url as string | undefined;
+      if (url) setAttachmentUrl(url);
+    } catch (err: any) {
+      setUploadError(
+        err?.response?.data?.message || "فائل اپ لوڈ کرنے میں مسئلہ پیش آیا"
+      );
+    } finally {
+      setUploading(false);
+      e.currentTarget.value = "";
+    }
+  };
 
   return (
     <StudentLayout>
@@ -328,6 +380,48 @@ export default function StudentAttendance() {
                   onChange={(e) => setAttachmentUrl(e.target.value)}
                   className="w-full rounded-lg border-2 border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
                 />
+              </div>
+
+              <div>
+                <label className="block mb-2 text-sm font-medium text-gray-700">
+                  یا فائل اپ لوڈ کریں (اختیاری)
+                </label>
+                <input
+                  type="file"
+                  accept="application/pdf,image/png,image/jpeg"
+                  onChange={onSelectAttachment}
+                  disabled={uploading}
+                  className="w-full rounded-lg border-2 border-gray-300 px-3 py-2 text-sm bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                />
+                {uploading && (
+                  <div className="mt-1 text-xs text-gray-500">
+                    اپ لوڈ ہو رہا ہے…
+                  </div>
+                )}
+                {uploadError && (
+                  <div className="mt-2 rounded bg-red-50 border border-red-200 text-red-700 text-xs px-3 py-2">
+                    {uploadError}
+                  </div>
+                )}
+                {attachmentUrl && (
+                  <div className="mt-2 flex items-center justify-end gap-2 text-xs">
+                    <a
+                      href={attachmentUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="px-2 py-1 rounded bg-blue-100 text-blue-700 hover:bg-blue-200"
+                    >
+                      اٹیچمنٹ دیکھیں
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => setAttachmentUrl("")}
+                      className="px-2 py-1 rounded bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    >
+                      ہٹائیں
+                    </button>
+                  </div>
+                )}
               </div>
 
               {leaveError && (

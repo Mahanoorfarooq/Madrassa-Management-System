@@ -6,9 +6,13 @@ import { Topbar } from "@/components/layout/Topbar";
 export function MadrassaSettingsLayout({
   title,
   children,
+  linksOverride,
+  hideNav,
 }: {
   title?: string;
   children: ReactNode;
+  linksOverride?: { href: string; label: string }[];
+  hideNav?: boolean;
 }) {
   const router = useRouter();
 
@@ -51,26 +55,35 @@ export function MadrassaSettingsLayout({
         <div className="mb-6 text-xl font-semibold text-secondary text-right">
           ایڈمن سیٹنگز
         </div>
-        <nav className="space-y-1 text-right text-sm">
-          <NavLink
-            href="/modules/madrassa/settings/notifications"
-            label="اعلانات"
-          />
-          <NavLink
-            href="/modules/madrassa/settings/activity-logs"
-            label="آڈٹ لاگز"
-          />
-          <NavLink
-            href="/modules/madrassa/settings/users"
-            label="یوزر مینجمنٹ"
-          />
-          <button
-            onClick={handleLogout}
-            className="w-full text-right mt-3 rounded px-3 py-2 text-sm text-red-500 hover:bg-red-50"
-          >
-            لاگ آؤٹ
-          </button>
-        </nav>
+        {!hideNav && (
+          <nav className="space-y-1 text-right text-sm">
+            {(linksOverride && linksOverride.length > 0
+              ? linksOverride
+              : [
+                  {
+                    href: "/modules/madrassa/settings/notifications",
+                    label: "اعلانات",
+                  },
+                  {
+                    href: "/modules/madrassa/settings/activity-logs",
+                    label: "آڈٹ لاگز",
+                  },
+                  {
+                    href: "/modules/madrassa/settings/users",
+                    label: "یوزر مینجمنٹ",
+                  },
+                ]
+            ).map((l) => (
+              <NavLink key={l.href} href={l.href} label={l.label} />
+            ))}
+            <button
+              onClick={handleLogout}
+              className="w-full text-right mt-3 rounded px-3 py-2 text-sm text-red-500 hover:bg-red-50"
+            >
+              لاگ آؤٹ
+            </button>
+          </nav>
+        )}
       </div>
       <div className="md:pr-64">
         <Topbar roleLabel="ایڈمن سیٹنگز" onLogout={handleLogout} />

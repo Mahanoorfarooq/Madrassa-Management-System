@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
 import api from "@/utils/api";
@@ -93,7 +92,10 @@ export default function AdminTicketsPage() {
 
   return (
     <div className="min-h-screen bg-lightBg flex" dir="rtl">
-      <Sidebar role="admin" />
+      <Sidebar
+        role="admin"
+        linksOverride={[{ href: "/admin/tickets", label: "شکایات" }]}
+      />
       <div className="flex-1 flex flex-col">
         <Topbar userName="ایڈمن" roleLabel="ایڈمن" />
         <main className="flex-1 px-4 py-4 md:px-6 md:py-6">
@@ -106,14 +108,6 @@ export default function AdminTicketsPage() {
                 <p className="text-xs text-gray-500">
                   یہاں سے طلبہ کی شکایات دیکھیں اور سٹیٹس اپ ڈیٹ کریں۔
                 </p>
-                <div className="mt-1 text-[11px]">
-                  <Link
-                    href="/modules/madrassa/settings/notifications"
-                    className="text-primary hover:underline"
-                  >
-                    اعلانات / نوٹیفیکیشنز پینل کھولیں
-                  </Link>
-                </div>
               </div>
               <button
                 onClick={() => {
@@ -124,29 +118,6 @@ export default function AdminTicketsPage() {
               >
                 ریفریش
               </button>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-                <div className="text-xs text-gray-500 text-right">Open</div>
-                <div className="text-right text-2xl font-bold text-amber-700">
-                  {summary ? summary.open : "—"}
-                </div>
-              </div>
-              <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-                <div className="text-xs text-gray-500 text-right">
-                  InProgress
-                </div>
-                <div className="text-right text-2xl font-bold text-blue-700">
-                  {summary ? summary.inProgress : "—"}
-                </div>
-              </div>
-              <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-                <div className="text-xs text-gray-500 text-right">Resolved</div>
-                <div className="text-right text-2xl font-bold text-emerald-700">
-                  {summary ? summary.resolved : "—"}
-                </div>
-              </div>
             </div>
 
             {error && (
