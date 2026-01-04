@@ -14,6 +14,12 @@ export default async function handler(
 
   const { id } = req.query as { id: string };
 
+  if (req.method === "GET") {
+    const classDoc = await ClassModel.findById(id).lean();
+    if (!classDoc) return res.status(404).json({ message: "کلاس نہیں ملی" });
+    return res.status(200).json({ class: classDoc });
+  }
+
   if (req.method === "PUT") {
     try {
       const { className, title, departmentId } = req.body;

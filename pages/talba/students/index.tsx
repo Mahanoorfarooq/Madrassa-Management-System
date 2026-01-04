@@ -8,6 +8,7 @@ import {
   Search,
   Filter,
   UserPlus,
+  Printer,
   Eye,
   GraduationCap,
   Layers,
@@ -212,11 +213,10 @@ export default function TalbaStudentsList() {
                     pathname: "/talba/students",
                     query: { dept: d.code },
                   }}
-                  className={`text-sm font-semibold rounded-xl px-6 py-3 transition-all duration-200 transform hover:scale-105 ${
-                    active
-                      ? `${d.color} text-white shadow-lg`
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
+                  className={`text-sm font-semibold rounded-xl px-6 py-3 transition-all duration-200 transform hover:scale-105 ${active
+                    ? `${d.color} text-white shadow-lg`
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
                 >
                   {d.title}
                 </Link>
@@ -227,10 +227,44 @@ export default function TalbaStudentsList() {
 
         {/* Filters */}
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-          <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b">
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Filter className="w-5 h-5 text-gray-600" />
               <h2 className="text-lg font-bold text-gray-800">فلٹرز</h2>
+            </div>
+            <div className="flex items-center gap-2">
+              <Link
+                href={{
+                  pathname: "/talba/students/print-report",
+                  query: {
+                    departmentId,
+                    classId,
+                    sectionId,
+                    q: search,
+                    status
+                  },
+                }}
+                target="_blank"
+                className="inline-flex items-center gap-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg px-4 py-2 text-sm font-semibold shadow transition-all"
+              >
+                <Printer className="w-4 h-4" />
+                فہرست پرنٹ کریں
+              </Link>
+              {classId && (
+                <Link
+                  href={{
+                    pathname: "/talba/students/bulk-roll-no-slips",
+                    query: {
+                      className: classes.find(c => c._id === classId)?.label || "",
+                    },
+                  }}
+                  target="_blank"
+                  className="inline-flex items-center gap-2 bg-emerald-600 text-white hover:bg-emerald-700 rounded-lg px-4 py-2 text-sm font-semibold shadow transition-all"
+                >
+                  <Printer className="w-4 h-4" />
+                  بلک سلپ پرنٹ
+                </Link>
+              )}
             </div>
           </div>
 
@@ -351,9 +385,8 @@ export default function TalbaStudentsList() {
                   {students.map((s, index) => (
                     <tr
                       key={s._id}
-                      className={`hover:bg-blue-50 transition-colors ${
-                        index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
-                      }`}
+                      className={`hover:bg-blue-50 transition-colors ${index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
+                        }`}
                     >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
@@ -385,18 +418,16 @@ export default function TalbaStudentsList() {
                       </td>
                       <td className="px-6 py-4">
                         <span
-                          className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold ${
-                            s.status === "Active"
-                              ? "bg-emerald-100 text-emerald-700"
-                              : "bg-gray-100 text-gray-600"
-                          }`}
+                          className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold ${s.status === "Active"
+                            ? "bg-emerald-100 text-emerald-700"
+                            : "bg-gray-100 text-gray-600"
+                            }`}
                         >
                           <div
-                            className={`w-2 h-2 rounded-full ${
-                              s.status === "Active"
-                                ? "bg-emerald-500"
-                                : "bg-gray-400"
-                            }`}
+                            className={`w-2 h-2 rounded-full ${s.status === "Active"
+                              ? "bg-emerald-500"
+                              : "bg-gray-400"
+                              }`}
                           ></div>
                           {s.status === "Active" ? "فعال" : "نکل چکے"}
                         </span>
@@ -411,6 +442,14 @@ export default function TalbaStudentsList() {
                         >
                           <Eye className="w-4 h-4" />
                           تفصیل
+                        </Link>
+                        <Link
+                          href={`/talba/students/roll-no-slip/${s._id}`}
+                          className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-medium hover:underline mr-4"
+                          target="_blank"
+                        >
+                          <Printer className="w-4 h-4" />
+                          سلپ
                         </Link>
                       </td>
                     </tr>

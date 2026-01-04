@@ -28,6 +28,7 @@ interface NamedOption {
 
 export interface StudentFormValues {
   fullName: string;
+  rollNumber?: string;
   gender?: "male" | "female" | "other";
   fatherName?: string;
   dateOfBirth?: string;
@@ -82,7 +83,7 @@ const InputField = ({
   onKeyPress,
 }: any) => (
   <div className="group">
-    <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+    <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
       <Icon className="w-4 h-4 text-emerald-600" />
       {label}
     </label>
@@ -109,7 +110,7 @@ const SelectField = ({
   placeholder = "منتخب کریں",
 }: any) => (
   <div className="group">
-    <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+    <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
       <Icon className="w-4 h-4 text-emerald-600" />
       {label}
     </label>
@@ -148,6 +149,7 @@ export default function StudentForm({
 
   const [values, setValues] = useState<StudentFormValues>({
     fullName: initial?.fullName || "",
+    rollNumber: initial?.rollNumber || "",
     gender: (initial as any)?.gender || "male",
     fatherName: initial?.fatherName || "",
     dateOfBirth: initial?.dateOfBirth || "",
@@ -402,7 +404,7 @@ export default function StudentForm({
                 placeholder="مثال: 12345-1234567-1"
               />
               <div className="group">
-                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
                   <MapPin className="w-4 h-4 text-emerald-600" />
                   پتہ
                 </label>
@@ -464,7 +466,7 @@ export default function StudentForm({
               </div>
 
               <div className="group">
-                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
                   <Users className="w-4 h-4 text-emerald-600" />
                   ٹرانسپورٹ روٹ
                 </label>
@@ -536,7 +538,7 @@ export default function StudentForm({
                 onKeyPress={handleKeyPress}
               />
               <div className="group md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
                   <Home className="w-4 h-4 text-emerald-600" />
                   سرپرست کا پتہ
                 </label>
@@ -558,7 +560,7 @@ export default function StudentForm({
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="group">
-                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
                   <ImageIcon className="w-4 h-4 text-emerald-600" />
                   طالب علم کی تصویر
                 </label>
@@ -584,6 +586,15 @@ export default function StudentForm({
                   </p>
                 )}
               </div>
+              <InputField
+                icon={Hash}
+                label="رول نمبر (Roll No)"
+                name="rollNumber"
+                value={values.rollNumber || ""}
+                onChange={onChange}
+                onKeyPress={handleKeyPress}
+                placeholder="Unique ID"
+              />
               <InputField
                 icon={Hash}
                 label="داخلہ نمبر"
@@ -626,7 +637,7 @@ export default function StudentForm({
                 options={sections}
               />
               <div className="group">
-                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
                   <Users className="w-4 h-4 text-emerald-600" />
                   حلقہ
                 </label>
@@ -687,7 +698,7 @@ export default function StudentForm({
                 placeholder="اختیاری"
               />
               <div className="group md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
                   <AlertCircle className="w-4 h-4 text-emerald-600" />
                   نوٹس
                 </label>
@@ -727,18 +738,16 @@ export default function StudentForm({
                         createPortalAccount: !v.createPortalAccount,
                       }))
                     }
-                    className={`relative inline-flex h-7 w-14 flex-shrink-0 cursor-pointer rounded-full transition-colors duration-300 focus:outline-none ${
-                      values.createPortalAccount
-                        ? "bg-emerald-500"
-                        : "bg-gray-300"
-                    }`}
+                    className={`relative inline-flex h-7 w-14 flex-shrink-0 cursor-pointer rounded-full transition-colors duration-300 focus:outline-none ${values.createPortalAccount
+                      ? "bg-emerald-500"
+                      : "bg-gray-300"
+                      }`}
                   >
                     <span
-                      className={`inline-block h-6 w-6 transform rounded-full bg-white shadow-md transition-transform duration-300 ${
-                        values.createPortalAccount
-                          ? "translate-x-7"
-                          : "translate-x-1"
-                      }`}
+                      className={`inline-block h-6 w-6 transform rounded-full bg-white shadow-md transition-transform duration-300 ${values.createPortalAccount
+                        ? "translate-x-7"
+                        : "translate-x-1"
+                        }`}
                     />
                   </button>
                 </div>
@@ -746,7 +755,7 @@ export default function StudentForm({
                 {values.createPortalAccount && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="group">
-                      <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                      <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
                         <User className="w-5 h-5 text-emerald-600" />
                         یوزر نام
                       </label>
@@ -760,7 +769,7 @@ export default function StudentForm({
                       />
                     </div>
                     <div className="group">
-                      <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                      <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
                         <AlertCircle className="w-5 h-5 text-emerald-600" />
                         پاس ورڈ
                       </label>

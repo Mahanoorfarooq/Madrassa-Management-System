@@ -14,6 +14,12 @@ export default async function handler(
 
   const { id } = req.query as { id: string };
 
+  if (req.method === "GET") {
+    const department = await Department.findById(id).lean();
+    if (!department) return res.status(404).json({ message: "شعبہ نہیں ملا" });
+    return res.status(200).json({ department });
+  }
+
   if (req.method === "PUT") {
     const { name, code, type, description, isActive } = req.body;
     try {

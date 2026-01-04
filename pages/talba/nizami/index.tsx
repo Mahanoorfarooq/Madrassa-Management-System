@@ -177,13 +177,13 @@ export default function NizamiDashboard() {
                   </div>
                 </div>
                 <p className="text-sm text-gray-600 mb-1">{s.title}</p>
-                <p className={`text-3xl font-bold ${colors.text}`}>
+                <div className={`text-3xl font-bold ${colors.text}`}>
                   {loading ? (
                     <div className="w-16 h-8 bg-gray-200 animate-pulse rounded" />
                   ) : (
                     s.value
                   )}
-                </p>
+                </div>
               </div>
             );
           })}

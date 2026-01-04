@@ -23,13 +23,22 @@ export default async function handler(
 
   const student = await Student.findById(id)
     .populate({ path: "departmentId", select: "name code" })
-    .populate({ path: "classId", select: "className" })
-    .populate({ path: "sectionId", select: "sectionName" })
+    .populate({ path: "classId", select: "name" }) // Assuming Class model uses 'name' not 'className'
+    .populate({ path: "sectionId", select: "name" }) // Assuming Section model uses 'name' not 'sectionName'
     .lean();
 
   if (!student) {
     return res.status(404).json({ message: "طالب علم نہیں ملا" });
   }
 
-  return res.status(200).json({ student });
+  // Format the response to ensure simple string usage in frontend
+  const s = student as any;
+  const formattedStudent = {
+    ...s,
+    departmentName: s.departmentId?.name || "",
+    className: s.classId?.name || s.classId?.className || s.className || "",
+    // sectionName: s.sectionId?.name || s.sectionId?.sectionName || s.section || "",
+  };
+
+  return res.status(200).json({ student: formattedStudent });
 }

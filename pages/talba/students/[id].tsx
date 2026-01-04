@@ -62,6 +62,7 @@ export default function TalbaStudentDetail() {
         if (s) {
           setInitial({
             fullName: s.fullName,
+            rollNumber: s.rollNumber,
             gender: s.gender,
             fatherName: s.fatherName,
             dateOfBirth: s.dateOfBirth ? s.dateOfBirth.substring(0, 10) : "",
@@ -75,7 +76,7 @@ export default function TalbaStudentDetail() {
             guardianCNIC: s.guardianCNIC,
             guardianPhone: s.guardianPhone,
             guardianAddress: s.guardianAddress,
-            admissionNumber: s.admissionNumber,
+            admissionNumber: s.admissionNumber || s.rollNumber,
             admissionDate: s.admissionDate
               ? s.admissionDate.substring(0, 10)
               : "",
@@ -97,10 +98,15 @@ export default function TalbaStudentDetail() {
           const params: any = { departmentId: s.departmentId };
           if (s.sectionId) params.sectionId = s.sectionId;
           else if (s.classId) params.classId = s.classId;
-          const asg = await api.get("/api/teaching-assignments", { params });
-          setTeachers(
-            (asg.data?.assignments || []).map((a: any) => a.teacherId)
-          );
+          try {
+            const asgRes = await api.get("/api/teaching-assignments", { params });
+            setTeachers(
+              (asgRes.data?.assignments || []).map((a: any) => a.teacherId)
+            );
+          } catch (e) {
+            console.error("Teachers load error:", e);
+            setTeachers([]);
+          }
         }
       } catch (e: any) {
         setError(e?.response?.data?.message || "ریکارڈ نہیں ملا");
@@ -200,7 +206,7 @@ export default function TalbaStudentDetail() {
     if (!id) return;
     await api.put(`/api/students/${id}`, {
       ...values,
-      rollNumber: values.admissionNumber || "",
+      rollNumber: values.rollNumber || values.admissionNumber || "",
     });
     router.push({ pathname: "/talba/students", query: { dept } });
   };
@@ -355,7 +361,6 @@ export default function TalbaStudentDetail() {
           <div className="flex justify-end gap-2" dir="rtl">
             <a
               href={`/admission-form/${id}`}
-              target="_blank"
               className="rounded border border-gray-200 px-4 py-2 text-xs font-semibold hover:bg-gray-50"
             >
               داخلہ فارم پرنٹ
@@ -365,6 +370,12 @@ export default function TalbaStudentDetail() {
               className="rounded border border-gray-200 px-4 py-2 text-xs font-semibold hover:bg-gray-50"
             >
               ID کارڈ پرنٹ
+            </a>
+            <a
+              href={`/talba/students/roll-no-slip/${id}`}
+              className="rounded border border-gray-200 px-4 py-2 text-xs font-semibold hover:bg-gray-50"
+            >
+              رول نمبر سلپ
             </a>
           </div>
 
