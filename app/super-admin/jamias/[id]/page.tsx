@@ -24,7 +24,8 @@ interface JamiaDoc {
 }
 
 export default function JamiaEditPage() {
-  const { id } = useParams<{ id: string }>();
+  const params = useParams<{ id: string }>();
+  const id = params?.id;
   const router = useRouter();
   const [doc, setDoc] = useState<JamiaDoc | null>(null);
   const [loading, setLoading] = useState(false);
