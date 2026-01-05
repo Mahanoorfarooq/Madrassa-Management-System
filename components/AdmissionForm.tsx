@@ -13,7 +13,7 @@ const A4_HEIGHT_MM = 297;
 const urduFont = localFont({
   src: [
     {
-      path: "../../public/fonts/alqalam-taj-nastaleeq/AlQalam Taj Nastaleeq Regular.ttf",
+      path: "../public/fonts/alqalam-taj-nastaleeq/AlQalam Taj Nastaleeq Regular.ttf",
       style: "normal",
       weight: "400",
     },
@@ -33,7 +33,9 @@ export function AdmissionForm({ data }: Props) {
             تصویر
           </div>
           <div className="text-center flex-1">
-            <div className="text-3xl font-bold urdu-text leading-tight">داخلہ فارم</div>
+            <div className="text-3xl font-bold urdu-text leading-tight">
+              داخلہ فارم
+            </div>
             <div className="text-sm text-gray-700 urdu-text mt-1">
               الجامعۃ الاسلامیۃ السلفیۃ جامع مساجد اہلحدیث
             </div>
@@ -70,11 +72,16 @@ export function AdmissionForm({ data }: Props) {
           <span className="text-sm urdu-text">قواعد و ضوابط</span>
         </div>
         <div className="px-8 mt-4 text-[11pt] urdu-text text-gray-800 leading-7">
-          <ol className="list-decimal list-inside space-y-1" style={{direction:'rtl'}}>
+          <ol
+            className="list-decimal list-inside space-y-1"
+            style={{ direction: "rtl" }}
+          >
             <li>بالغ ہونے پر نماز باجماعت کی پابندی ضروری ہے۔</li>
             <li>تعلیمی نظم و ضبط کی مکمل پابندی لازم ہے۔</li>
             <li>اساتذہ کی عزت و احترام اور احکامات کی پابندی لازم ہے۔</li>
-            <li>جامعہ کے قوانین کے مطابق لباس اور ظاہری وضع قطع اختیار کریں۔</li>
+            <li>
+              جامعہ کے قوانین کے مطابق لباس اور ظاہری وضع قطع اختیار کریں۔
+            </li>
             <li>بلا اجازت غیرحاضری اور چھٹی ناقابلِ قبول ہے۔</li>
             <li>جامعہ کی املاک کی حفاظت طالب علم کی ذمہ داری ہے۔</li>
             <li>کسی بھی قسم کی سیاسی/غیر تعلیمی سرگرمی ممنوع ہے۔</li>
@@ -113,27 +120,56 @@ export function AdmissionForm({ data }: Props) {
           color: #111;
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
-          border: 1px solid #D1D5DB;
+          border: 1px solid #d1d5db;
         }
         .urdu-text {
           font-family: inherit;
         }
         @media print {
-          .no-print { display: none !important; }
-          html, body, #__next { height: auto; }
-          body { background: #fff; }
-          @page { size: A4; margin: 0; }
+          .no-print {
+            display: none !important;
+          }
+          html,
+          body,
+          #__next {
+            height: auto;
+          }
+          body {
+            background: #fff;
+          }
+          @page {
+            size: A4;
+            margin: 0;
+          }
         }
       `}</style>
     </div>
   );
 }
 
-function Row({ label, value, long = false, dotted = false }: { label: string; value?: string; long?: boolean; dotted?: boolean }) {
+function Row({
+  label,
+  value,
+  long = false,
+  dotted = false,
+}: {
+  label: string;
+  value?: string;
+  long?: boolean;
+  dotted?: boolean;
+}) {
   return (
-    <div className={`flex items-end gap-4 ${long ? 'mt-3' : 'mt-2'}`}>
-      <div className="shrink-0 w-48 text-sm text-gray-700 text-right">{label}</div>
-      <div className={`flex-1 pb-1 min-h-[22px] urdu-text text-[12pt] ${dotted ? 'border-b border-dotted border-gray-500' : 'border-b border-gray-400'}`}>
+    <div className={`flex items-end gap-4 ${long ? "mt-3" : "mt-2"}`}>
+      <div className="shrink-0 w-48 text-sm text-gray-700 text-right">
+        {label}
+      </div>
+      <div
+        className={`flex-1 pb-1 min-h-[22px] urdu-text text-[12pt] ${
+          dotted
+            ? "border-b border-dotted border-gray-500"
+            : "border-b border-gray-400"
+        }`}
+      >
         {value}
       </div>
     </div>
@@ -141,14 +177,19 @@ function Row({ label, value, long = false, dotted = false }: { label: string; va
 }
 
 function DateRow({ label, value }: { label: string; value?: string }) {
-  const digits = (value || '').replace(/[^0-9]/g, '').slice(0, 8); // DDMMYYYY expected
-  const boxes = new Array(8).fill('').map((_, i) => digits[i] || '');
+  const digits = (value || "").replace(/[^0-9]/g, "").slice(0, 8); // DDMMYYYY expected
+  const boxes = new Array(8).fill("").map((_, i) => digits[i] || "");
   return (
     <div className="flex items-center gap-4 mt-2">
-      <div className="shrink-0 w-48 text-sm text-gray-700 text-right">{label}</div>
+      <div className="shrink-0 w-48 text-sm text-gray-700 text-right">
+        {label}
+      </div>
       <div className="flex items-center gap-1">
         {boxes.map((ch, idx) => (
-          <div key={idx} className="w-6 h-7 border border-gray-500 rounded-[2px] flex items-center justify-center text-[11pt] urdu-text">
+          <div
+            key={idx}
+            className="w-6 h-7 border border-gray-500 rounded-[2px] flex items-center justify-center text-[11pt] urdu-text"
+          >
             {ch}
           </div>
         ))}

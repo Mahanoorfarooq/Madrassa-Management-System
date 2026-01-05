@@ -22,8 +22,8 @@ export default function TalbaStudentDetail() {
   const [newDoc, setNewDoc] = useState<{
     type: string;
     title: string;
-    url: string;
-  }>({ type: "birth_certificate", title: "", url: "" });
+  }>({ type: "birth_certificate", title: "" });
+  const [newDocFile, setNewDocFile] = useState<File | null>(null);
 
   const [transferLoading, setTransferLoading] = useState(false);
   const [transferError, setTransferError] = useState<string | null>(null);
@@ -99,7 +99,9 @@ export default function TalbaStudentDetail() {
           if (s.sectionId) params.sectionId = s.sectionId;
           else if (s.classId) params.classId = s.classId;
           try {
-            const asgRes = await api.get("/api/teaching-assignments", { params });
+            const asgRes = await api.get("/api/teaching-assignments", {
+              params,
+            });
             setTeachers(
               (asgRes.data?.assignments || []).map((a: any) => a.teacherId)
             );
@@ -225,7 +227,7 @@ export default function TalbaStudentDetail() {
             : undefined,
         toSectionId:
           transferForm.type === "SectionChange" ||
-            transferForm.type === "Promotion"
+          transferForm.type === "Promotion"
             ? transferForm.toSectionId
             : undefined,
         toHalaqahId:
@@ -283,22 +285,62 @@ export default function TalbaStudentDetail() {
     try {
       setDocsLoading(true);
       setDocsError(null);
+      let uploadedUrl: string | undefined = undefined;
+      if (newDocFile) {
+        const base64 = await fileToBase64(newDocFile);
+        const up = await api.post("/api/upload/student-document", {
+          fileName: newDocFile.name,
+          contentType: newDocFile.type || "application/octet-stream",
+          base64: base64.replace(/^data:[^;]+;base64,/, ""),
+        });
+        uploadedUrl = up.data?.url;
+      }
       const res = await api.post("/api/admin/student-documents", {
         studentId: id,
         type: newDoc.type,
         title: newDoc.title.trim(),
-        url: newDoc.url.trim() || undefined,
+        url: uploadedUrl || undefined,
         verified: false,
       });
       const created = res.data?.document;
       if (created) setDocuments((prev) => [created, ...prev]);
-      setNewDoc((p) => ({ ...p, title: "", url: "" }));
+      setNewDoc((p) => ({ ...p, title: "" }));
+      setNewDocFile(null);
     } catch (e: any) {
       setDocsError(e?.response?.data?.message || "دستاویز محفوظ نہیں ہو سکی۔");
     } finally {
       setDocsLoading(false);
     }
   };
+
+  const replaceDocumentFile = async (docId: string, file: File) => {
+    try {
+      setDocsLoading(true);
+      setDocsError(null);
+      const base64 = await fileToBase64(file);
+      const up = await api.post("/api/upload/student-document", {
+        fileName: file.name,
+        contentType: file.type || "application/octet-stream",
+        base64: base64.replace(/^data:[^;]+;base64,/, ""),
+      });
+      const url = up.data?.url as string | undefined;
+      if (url) {
+        await updateDocument(docId, { url });
+      }
+    } catch (e: any) {
+      setDocsError(e?.response?.data?.message || "فائل اپلوڈ نہیں ہو سکی۔");
+    } finally {
+      setDocsLoading(false);
+    }
+  };
+
+  const fileToBase64 = (file: File) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
 
   const updateDocument = async (docId: string, patch: any) => {
     try {
@@ -351,13 +393,6 @@ export default function TalbaStudentDetail() {
       )}
       {initial && (
         <div className="space-y-6">
-          <StudentForm
-            deptCode={dept}
-            initial={initial}
-            onSubmit={onSubmit}
-            submitLabel="اپ ڈیٹ کریں"
-          />
-
           <div className="flex justify-end gap-2" dir="rtl">
             <a
               href={`/admission-form/${id}`}
@@ -378,6 +413,13 @@ export default function TalbaStudentDetail() {
               رول نمبر سلپ
             </a>
           </div>
+
+          <StudentForm
+            deptCode={dept}
+            initial={initial}
+            onSubmit={onSubmit}
+            submitLabel="اپ ڈیٹ کریں"
+          />
 
           <div
             className="bg-white rounded-xl shadow-sm border border-gray-100 p-4"
@@ -439,15 +481,13 @@ export default function TalbaStudentDetail() {
               </div>
               <div className="text-right md:col-span-2">
                 <label className="block text-xs text-gray-600 mb-1">
-                  لنک (URL)
+                  فائل اپلوڈ کریں (PDF/JPG/PNG)
                 </label>
                 <input
-                  value={newDoc.url}
-                  onChange={(e) =>
-                    setNewDoc((p) => ({ ...p, url: e.target.value }))
-                  }
-                  className="w-full rounded border px-3 py-2 text-xs"
-                  placeholder="https://..."
+                  type="file"
+                  accept=".pdf,image/*"
+                  onChange={(e) => setNewDocFile(e.target.files?.[0] || null)}
+                  className="w-full rounded border px-3 py-2 text-xs bg-white"
                 />
               </div>
               <div className="md:col-span-4 flex justify-end">
@@ -532,14 +572,16 @@ export default function TalbaStudentDetail() {
                     </div>
                     <div className="text-right">
                       <label className="block text-[11px] text-gray-600 mb-1">
-                        لنک (URL)
+                        نئی فائل منتخب کریں
                       </label>
                       <input
-                        defaultValue={d.pdfPath || ""}
-                        onBlur={(e) =>
-                          updateDocument(d._id, { url: e.target.value })
-                        }
-                        className="w-full rounded border px-3 py-2 text-xs"
+                        type="file"
+                        accept=".pdf,image/*"
+                        onChange={(e) => {
+                          const f = e.target.files?.[0];
+                          if (f) replaceDocumentFile(d._id, f);
+                        }}
+                        className="w-full rounded border px-3 py-2 text-xs bg-white"
                       />
                     </div>
                   </div>
@@ -595,29 +637,29 @@ export default function TalbaStudentDetail() {
 
               {(transferForm.type === "Promotion" ||
                 transferForm.type === "SectionChange") && (
-                  <div className="text-right">
-                    <label className="block text-xs text-gray-600 mb-1">
-                      نیا سیکشن
-                    </label>
-                    <select
-                      value={transferForm.toSectionId}
-                      onChange={(e) =>
-                        setTransferForm((p) => ({
-                          ...p,
-                          toSectionId: e.target.value,
-                        }))
-                      }
-                      className="w-full rounded border px-3 py-2 text-sm bg-white"
-                    >
-                      <option value="">منتخب کریں</option>
-                      {sections.map((s) => (
-                        <option key={s._id} value={s._id}>
-                          {s.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
+                <div className="text-right">
+                  <label className="block text-xs text-gray-600 mb-1">
+                    نیا سیکشن
+                  </label>
+                  <select
+                    value={transferForm.toSectionId}
+                    onChange={(e) =>
+                      setTransferForm((p) => ({
+                        ...p,
+                        toSectionId: e.target.value,
+                      }))
+                    }
+                    className="w-full rounded border px-3 py-2 text-sm bg-white"
+                  >
+                    <option value="">منتخب کریں</option>
+                    {sections.map((s) => (
+                      <option key={s._id} value={s._id}>
+                        {s.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
               {transferForm.type === "Promotion" && (
                 <div className="text-right">
@@ -783,11 +825,11 @@ export default function TalbaStudentDetail() {
                         <td className="px-3 py-2">
                           {t.effectiveDate
                             ? new Date(t.effectiveDate).toLocaleDateString(
-                              "ur-PK"
-                            )
+                                "ur-PK"
+                              )
                             : t.createdAt
-                              ? new Date(t.createdAt).toLocaleDateString("ur-PK")
-                              : "—"}
+                            ? new Date(t.createdAt).toLocaleDateString("ur-PK")
+                            : "—"}
                         </td>
                         <td className="px-3 py-2">{t.reason || "—"}</td>
                       </tr>
