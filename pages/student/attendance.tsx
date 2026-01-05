@@ -38,6 +38,7 @@ export default function StudentAttendance() {
   const [to, setTo] = useState<string>("");
   const [reason, setReason] = useState<string>("");
   const [attachmentUrl, setAttachmentUrl] = useState<string>("");
+  const [attachmentFile, setAttachmentFile] = useState<File | null>(null);
   const [leaveSubmitting, setLeaveSubmitting] = useState(false);
   const [leaveError, setLeaveError] = useState<string | null>(null);
 
@@ -47,11 +48,21 @@ export default function StudentAttendance() {
     try {
       setLeaveSubmitting(true);
       setLeaveError(null);
+      let uploadedUrl: string | undefined = undefined;
+      if (attachmentFile) {
+        const base64 = await fileToBase64(attachmentFile);
+        const up = await api.post("/api/student/upload", {
+          fileName: attachmentFile.name,
+          contentType: attachmentFile.type || "application/octet-stream",
+          base64: base64.replace(/^data:[^;]+;base64,/, ""),
+        });
+        uploadedUrl = up.data?.url as string | undefined;
+      }
       const res = await api.post("/api/student/leave-requests", {
         from,
         to,
         reason,
-        attachmentUrl: attachmentUrl?.trim() || undefined,
+        attachmentUrl: uploadedUrl || attachmentUrl?.trim() || undefined,
       });
       const created = res.data?.request as any;
       if (created) {
@@ -68,6 +79,7 @@ export default function StudentAttendance() {
       setTo("");
       setReason("");
       setAttachmentUrl("");
+      setAttachmentFile(null);
     } catch (e: any) {
       setLeaveError(
         e?.response?.data?.message || "درخواست محفوظ کرنے میں مسئلہ پیش آیا۔"
@@ -76,6 +88,14 @@ export default function StudentAttendance() {
       setLeaveSubmitting(false);
     }
   };
+
+  const fileToBase64 = (file: File) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
 
   const filteredAttendance = attendance.filter((r) =>
     month ? r.date.startsWith(month) : true
@@ -319,15 +339,28 @@ export default function StudentAttendance() {
 
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-700">
-                  اٹیچمنٹ یو آر ایل (اختیاری)
+                  اٹیچمنٹ (اختیاری)
                 </label>
-                <input
-                  type="url"
-                  placeholder="https://..."
-                  value={attachmentUrl}
-                  onChange={(e) => setAttachmentUrl(e.target.value)}
-                  className="w-full rounded-lg border-2 border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <input
+                    type="file"
+                    accept=".pdf,image/*"
+                    onChange={(e) =>
+                      setAttachmentFile(e.target.files?.[0] || null)
+                    }
+                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2 text-sm bg-white"
+                  />
+                  <input
+                    type="url"
+                    placeholder="https://..."
+                    value={attachmentUrl}
+                    onChange={(e) => setAttachmentUrl(e.target.value)}
+                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                  />
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  PDF، JPG یا PNG اپلوڈ کریں یا URL درج کریں (اختیاری)
+                </p>
               </div>
 
               {leaveError && (

@@ -44,14 +44,19 @@ const roleLinks: Record<string, { href: string; label: string }[]> = {
 export function Sidebar({ role }: SidebarProps) {
   const router = useRouter();
   const links = roleLinks[role] || [];
+  const isAdminTickets =
+    role === "admin" && router.pathname.startsWith("/admin/tickets");
+  const filteredLinks = isAdminTickets
+    ? [{ href: "/admin/tickets", label: "شکایات / ٹکٹس" }]
+    : links;
 
   return (
-    <aside className="w-64 min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white px-4 py-6 border-l border-slate-800/80 shadow-inner flex flex-col">
+    <aside className="relative z-30 w-64 min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white px-4 py-6 border-l border-slate-800/80 shadow-inner flex flex-col">
       <div className="mb-6 text-xl font-semibold text-secondary text-right">
         مدرسہ مینجمنٹ
       </div>
       <nav className="space-y-1 text-right text-sm">
-        {links.map((link) => {
+        {filteredLinks.map((link) => {
           const active = router.pathname.startsWith(link.href);
           return (
             <Link

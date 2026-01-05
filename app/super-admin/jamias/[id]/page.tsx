@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import api from "@/utils/api";
 
 interface JamiaDoc {
-  _id: string;
+  _id: string;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
   name: string;
   logo?: string;
   address?: string;
@@ -24,7 +24,8 @@ interface JamiaDoc {
 }
 
 export default function JamiaEditPage() {
-  const { id } = useParams<{ id: string }>();
+  const params = useParams<{ id: string }>();
+  const id = params?.id as string;
   const router = useRouter();
   const [doc, setDoc] = useState<JamiaDoc | null>(null);
   const [loading, setLoading] = useState(false);
