@@ -20,7 +20,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const user = requireAuth(req, res, ["admin", "teacher", "staff"]);
+  const user = requireAuth(req, res, [
+    "admin",
+    "teacher",
+    "staff",
+    "mudeer",
+    "nazim",
+  ]);
   if (!user) return;
 
   const moduleOk = await ensureModuleEnabled(req, res, user, "admissions");

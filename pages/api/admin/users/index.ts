@@ -19,7 +19,7 @@ export default async function handler(
   if (req.method === "GET") {
     const { q, role, status, linkedId } = req.query as {
       q?: string;
-      role?: "admin" | "teacher" | "student" | "staff";
+      role?: "admin" | "teacher" | "student" | "staff" | "mudeer" | "nazim";
       status?: "active" | "disabled";
       linkedId?: string;
     };
@@ -47,7 +47,7 @@ export default async function handler(
         fullName: string;
         username: string;
         password: string;
-        role: "admin" | "teacher" | "student" | "staff";
+        role: "admin" | "teacher" | "student" | "staff" | "mudeer" | "nazim";
         linkedId?: string;
         status?: "active" | "disabled";
       };

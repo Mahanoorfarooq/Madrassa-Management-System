@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 interface SidebarProps {
-  role: "admin" | "teacher" | "staff" | "student";
+  role: "admin" | "teacher" | "staff" | "student" | "mudeer" | "nazim";
 }
 
 const roleLinks: Record<string, { href: string; label: string }[]> = {
@@ -18,6 +18,21 @@ const roleLinks: Record<string, { href: string; label: string }[]> = {
       href: "/modules/madrassa/settings/activity-logs",
       label: "Activity Logs",
     },
+  ],
+  mudeer: [
+    { href: "/mudeer", label: "مدیر ڈیش بورڈ" },
+    { href: "/students", label: "طلبہ" },
+    { href: "/teachers", label: "اساتذہ" },
+    { href: "/fees", label: "فیس اور مالیات" },
+    { href: "/talba", label: "طلبہ ماڈیول" },
+    { href: "/modules/madrassa/settings/notifications", label: "اعلانات" },
+  ],
+  nazim: [
+    { href: "/talba", label: "طلبہ ڈیش بورڈ" },
+    { href: "/talba/students", label: "طالب علم سرچ" },
+    { href: "/talba/attendance", label: "حاضری" },
+    { href: "/talba/reports", label: "رپورٹس" },
+    { href: "/modules/madrassa", label: "مین پورٹل" },
   ],
   teacher: [
     { href: "/teacher", label: "ڈیش بورڈ" },
@@ -57,11 +72,10 @@ export function Sidebar({ role }: SidebarProps) {
             <Link
               key={link.href}
               href={link.href}
-              className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 text-xs md:text-sm ${
-                active
+              className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 text-xs md:text-sm ${active
                   ? "bg-primary/90 text-white shadow-md"
                   : "hover:bg-slate-800/80 text-slate-200"
-              }`}
+                }`}
             >
               {link.label}
             </Link>

@@ -9,6 +9,8 @@ const PROTECTED: Array<{ prefix: string; login: string }> = [
   { prefix: "/dashboard", login: "/login" },
   { prefix: "/teacher", login: "/login" },
   { prefix: "/admin", login: "/login" },
+  { prefix: "/mudeer", login: "/login" },
+  { prefix: "/talba", login: "/login" },
   { prefix: "/modules/teacher", login: "/login" },
   { prefix: "/modules/madrassa", login: "/login" },
   { prefix: "/super-admin", login: "/login" },
@@ -53,6 +55,22 @@ export function middleware(req: NextRequest) {
       }
     }
 
+    if (pathname.startsWith("/mudeer")) {
+      if (payload?.role !== "mudeer" && payload?.role !== "admin") {
+        const url = req.nextUrl.clone();
+        url.pathname = "/login";
+        return NextResponse.redirect(url);
+      }
+    }
+
+    if (pathname.startsWith("/talba")) {
+      if (payload?.role !== "nazim" && payload?.role !== "admin" && payload?.role !== "mudeer") {
+        const url = req.nextUrl.clone();
+        url.pathname = "/login";
+        return NextResponse.redirect(url);
+      }
+    }
+
     if (
       pathname.startsWith("/teacher") ||
       pathname.startsWith("/modules/teacher")
@@ -67,7 +85,7 @@ export function middleware(req: NextRequest) {
       pathname.startsWith("/admin") ||
       pathname.startsWith("/modules/madrassa")
     ) {
-      if (payload?.role !== "admin") {
+      if (payload?.role !== "admin" && payload?.role !== "mudeer") {
         const url = req.nextUrl.clone();
         url.pathname = "/teacher";
         return NextResponse.redirect(url);

@@ -7,7 +7,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const user = requireAuth(req, res, ["admin"]);
+  const user = requireAuth(req, res, ["admin", "mudeer", "nazim"]);
   if (!user) return;
 
   if (req.method !== "GET") {

@@ -5,7 +5,9 @@ export type UserRole =
   | "teacher"
   | "staff"
   | "student"
-  | "super_admin";
+  | "super_admin"
+  | "mudeer"
+  | "nazim";
 
 export interface IUser extends Document {
   // اردو: صارف کا پورا نام
@@ -35,7 +37,15 @@ const UserSchema = new Schema<IUser>(
     passwordHash: { type: String, required: true },
     role: {
       type: String,
-      enum: ["admin", "teacher", "staff", "student", "super_admin"],
+      enum: [
+        "admin",
+        "teacher",
+        "staff",
+        "student",
+        "super_admin",
+        "mudeer",
+        "nazim",
+      ],
       required: true,
     },
     jamiaId: {

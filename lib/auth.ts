@@ -8,7 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "change_this_secret";
 
 export interface JwtUserPayload {
   id: string;
-  role: "admin" | "teacher" | "staff" | "student" | "super_admin";
+  role: "admin" | "teacher" | "staff" | "student" | "super_admin" | "mudeer" | "nazim";
   linkedId?: string;
 }
 
@@ -61,9 +61,15 @@ export function requireAuth(
     res.status(401).json(msg);
     return null;
   }
-  if (allowedRoles && !allowedRoles.includes(tokenUser.role)) {
-    res.status(403).json({ message: "Forbidden" });
-    return null;
+  if (allowedRoles) {
+    const roles = [...allowedRoles] as string[];
+    if (roles.includes("admin")) roles.push("mudeer");
+    if (roles.includes("teacher")) roles.push("nazim");
+
+    if (!roles.includes(tokenUser.role)) {
+      res.status(403).json({ message: "Forbidden" });
+      return null;
+    }
   }
   return tokenUser;
 }
@@ -75,7 +81,7 @@ export async function requirePermission(
   permission: string
 ): Promise<boolean> {
   if (!permission) return true;
-  if (tokenUser.role === "admin") return true;
+  if (tokenUser.role === "admin" || tokenUser.role === "mudeer") return true;
 
   await connectDB();
 
@@ -110,9 +116,15 @@ export function requireStrictAuth(
     res.status(401).json({ message: "Unauthorized" });
     return null;
   }
-  if (allowedRoles && !allowedRoles.includes(tokenUser.role)) {
-    res.status(403).json({ message: "Forbidden" });
-    return null;
+  if (allowedRoles) {
+    const roles = [...allowedRoles] as string[];
+    if (roles.includes("admin")) roles.push("mudeer");
+    if (roles.includes("teacher")) roles.push("nazim");
+
+    if (!roles.includes(tokenUser.role)) {
+      res.status(403).json({ message: "Forbidden" });
+      return null;
+    }
   }
   return tokenUser;
 }

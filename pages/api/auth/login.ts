@@ -71,14 +71,18 @@ export default async function handler(
         user.role === "super_admin"
           ? "/super-admin"
           : user.role === "admin"
-          ? "/modules/madrassa"
-          : user.role === "teacher"
-          ? "/teacher"
-          : user.role === "student"
-          ? "/student"
-          : user.role === "staff"
-          ? "/staff/dashboard"
-          : "/",
+            ? "/modules/madrassa"
+            : user.role === "mudeer"
+              ? "/mudeer"
+              : user.role === "nazim"
+                ? "/talba"
+                : user.role === "teacher"
+                  ? "/teacher"
+                  : user.role === "student"
+                    ? "/student"
+                    : user.role === "staff"
+                      ? "/staff/dashboard"
+                      : "/",
     },
   });
 }

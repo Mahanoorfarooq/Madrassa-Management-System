@@ -178,10 +178,10 @@ export default function TalbaDashboard() {
               <Sparkles className="w-10 h-10" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold mb-2">تمام شعبہ جات</h1>
+              <h1 className="text-3xl font-bold mb-2">ناظمِ طلبہ ڈیش بورڈ</h1>
               <p className="text-purple-100 text-sm max-w-2xl">
                 یہاں سے آپ تمام شعبہ جات کے طلبہ، کلاسز، سیکشنز، حاضری اور
-                رپورٹس کو منظم کر سکتے ہیں۔
+                رپورٹس کو منظم کر سکتے ہیں۔ ناظمِ طلبہ کے تمام انتظامی امور کا مرکزی پینل۔
               </p>
             </div>
           </div>

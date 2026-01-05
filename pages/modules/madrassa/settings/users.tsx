@@ -16,7 +16,7 @@ const PERMISSIONS = [
   { key: "manage_users", label: "یوزرز / پرمیشنز" },
 ];
 
-type Role = "admin" | "teacher" | "staff" | "student";
+type Role = "admin" | "teacher" | "staff" | "student" | "mudeer" | "nazim";
 
 type Status = "active" | "disabled";
 
@@ -32,6 +32,7 @@ interface UserRow {
 }
 
 export default function MadrassaUsersSettingsPage() {
+  console.log("MadrassaUsersSettingsPage v2-ROLES-LOADED");
   const [q, setQ] = useState("");
   const [role, setRole] = useState<Role | "">("");
   const [status, setStatus] = useState<Status | "">("");
@@ -153,7 +154,7 @@ export default function MadrassaUsersSettingsPage() {
           <div className="flex items-center justify-between mb-3">
             <div className="text-right">
               <h2 className="text-sm font-bold text-gray-800">
-                نیا یوزر / ایڈمن بنائیں
+                نیا یوزر / ایڈمن بنائیں (v2-DEBUG)
               </h2>
               <p className="text-xs text-gray-500">
                 یہاں سے نیا یوزر بنا کر فوراً admin یا کسی اور رول پر سیٹ کریں۔
@@ -199,7 +200,9 @@ export default function MadrassaUsersSettingsPage() {
                 onChange={(e) => setNewRole(e.target.value as Role)}
                 className="w-full rounded border px-3 py-2 text-sm bg-white"
               >
-                <option value="admin">ایڈمن</option>
+                <option value="admin">ایڈمن (پرنسپل) - v2</option>
+                <option value="mudeer">مدیر (Mudeer)</option>
+                <option value="nazim">ناظمِ طلبہ (Nazim)</option>
                 <option value="teacher">استاد</option>
                 <option value="staff">اسٹاف</option>
                 <option value="student">طالب علم</option>
@@ -245,7 +248,9 @@ export default function MadrassaUsersSettingsPage() {
                   className="rounded border px-3 py-2 text-sm bg-white"
                 >
                   <option value="">تمام کردار</option>
-                  <option value="admin">ایڈمن</option>
+                  <option value="admin">ایڈمن - v2</option>
+                  <option value="mudeer">مدیر</option>
+                  <option value="nazim">ناظمِ طلبہ</option>
                   <option value="teacher">استاد</option>
                   <option value="staff">اسٹاف</option>
                   <option value="student">طالب علم</option>
@@ -284,9 +289,8 @@ export default function MadrassaUsersSettingsPage() {
                   {items.map((u) => (
                     <tr
                       key={u._id}
-                      className={`border-b hover:bg-gray-50 ${
-                        selectedId === u._id ? "bg-emerald-50" : ""
-                      }`}
+                      className={`border-b hover:bg-gray-50 ${selectedId === u._id ? "bg-emerald-50" : ""
+                        }`}
                     >
                       <td className="px-3 py-2 font-semibold">{u.fullName}</td>
                       <td className="px-3 py-2 font-mono">{u.username}</td>

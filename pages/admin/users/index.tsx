@@ -16,7 +16,7 @@ const PERMISSIONS = [
   { key: "manage_users", label: "یوزرز / پرمیشنز" },
 ];
 
-type Role = "admin" | "teacher" | "staff" | "student";
+type Role = "admin" | "teacher" | "staff" | "student" | "mudeer" | "nazim";
 
 type Status = "active" | "disabled";
 
@@ -127,7 +127,9 @@ export default function AdminUsersPage() {
             className="rounded border px-3 py-2 text-sm bg-white"
           >
             <option value="">تمام کردار</option>
-            <option value="admin">ایڈمن</option>
+            <option value="admin">ایڈمن - v2</option>
+            <option value="mudeer">مدیر</option>
+            <option value="nazim">ناظمِ طلبہ</option>
             <option value="teacher">استاد</option>
             <option value="staff">اسٹاف</option>
             <option value="student">طالب علم</option>
@@ -172,9 +174,8 @@ export default function AdminUsersPage() {
                 {items.map((u) => (
                   <tr
                     key={u._id}
-                    className={`border-b hover:bg-gray-50 ${
-                      selectedId === u._id ? "bg-emerald-50" : ""
-                    }`}
+                    className={`border-b hover:bg-gray-50 ${selectedId === u._id ? "bg-emerald-50" : ""
+                      }`}
                   >
                     <td className="px-3 py-2 font-semibold">{u.fullName}</td>
                     <td className="px-3 py-2 font-mono">{u.username}</td>

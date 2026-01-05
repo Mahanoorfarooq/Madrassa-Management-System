@@ -7,7 +7,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const user = requireAuth(req, res, ["admin", "teacher"]);
+  const user = requireAuth(req, res, ["admin", "teacher", "mudeer", "nazim"]);
   if (!user) return;
 
   await connectDB();
