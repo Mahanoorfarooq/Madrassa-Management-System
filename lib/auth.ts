@@ -10,6 +10,7 @@ export interface JwtUserPayload {
   id: string;
   role: "admin" | "teacher" | "staff" | "student" | "super_admin" | "mudeer" | "nazim";
   linkedId?: string;
+  jamiaId?: string;
 }
 
 export function signToken(user: JwtUserPayload) {

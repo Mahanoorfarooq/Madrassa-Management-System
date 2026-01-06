@@ -9,10 +9,22 @@ export default function CertificatesDoc() {
 
   useEffect(() => {
     const load = async () => {
-      const s = await api.get("/api/students/me");
-      setStudent(s.data?.student || null);
+      try {
+        const s = await api.get("/api/students/me");
+        setStudent(s.data?.student || null);
+      } catch (error) {
+        console.error("Failed to load student data", error);
+      }
       // If you have a real certificates API, call it here. Placeholder empty list for now.
-      setCerts([]);
+      // Add a manual link to the premium Sanad template
+      setCerts([
+        {
+          title: "سند فراغت (Sanad-e-Faraghat)",
+          description: "دورہ تجوید و قرائت کی تکمیل پر جاری کردہ سند",
+          date: new Date(),
+          url: "/student/docs/sanad"
+        }
+      ]);
     };
     load();
   }, []);

@@ -51,3 +51,4 @@ export { ProfileCorrection } from "@/schemas/ProfileCorrection";
 export { UniformItem } from "@/schemas/UniformItem";
 export { UniformIssue } from "@/schemas/UniformIssue";
 export { Jamia } from "@/schemas/Jamia";
+export { DocumentRequest } from "@/schemas/DocumentRequest";

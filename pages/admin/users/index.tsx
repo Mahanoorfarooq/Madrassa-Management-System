@@ -127,7 +127,7 @@ export default function AdminUsersPage() {
             className="rounded border px-3 py-2 text-sm bg-white"
           >
             <option value="">تمام کردار</option>
-            <option value="admin">ایڈمن - v2</option>
+            <option value="admin">ایڈمن</option>
             <option value="mudeer">مدیر</option>
             <option value="nazim">ناظمِ طلبہ</option>
             <option value="teacher">استاد</option>

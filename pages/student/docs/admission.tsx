@@ -15,8 +15,12 @@ export default function AdmissionFormDoc() {
 
   useEffect(() => {
     const load = async () => {
-      const res = await api.get("/api/students/me");
-      setStudent(res.data?.student || null);
+      try {
+        const res = await api.get("/api/students/me");
+        setStudent(res.data?.student || null);
+      } catch (error) {
+        console.error("Failed to load student admission data", error);
+      }
     };
     load();
   }, []);

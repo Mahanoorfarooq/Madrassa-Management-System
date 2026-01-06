@@ -40,6 +40,7 @@ export default async function handler(
   const token = signToken({
     id: user._id.toString(),
     role: user.role,
+    jamiaId: user.jamiaId ? String(user.jamiaId) : undefined,
     linkedId: (user as any)?.linkedId
       ? String((user as any).linkedId)
       : undefined,

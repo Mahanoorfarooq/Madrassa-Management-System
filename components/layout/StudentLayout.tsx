@@ -56,19 +56,6 @@ export function StudentLayout({
     loadJamia();
   }, [router]);
 
-  // ✅ Wheel scroll without scrollbar
-  useEffect(() => {
-    const sidebar = sidebarRef.current;
-    if (!sidebar) return;
-
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      sidebar.scrollTop += e.deltaY;
-    };
-
-    sidebar.addEventListener("wheel", onWheel, { passive: false });
-    return () => sidebar.removeEventListener("wheel", onWheel);
-  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("madrassa_token");
@@ -92,11 +79,10 @@ export function StudentLayout({
     return (
       <Link
         href={href}
-        className={`block rounded-xl px-3 py-2.5 text-sm text-right transition-colors duration-200 text-slate-200 ${
-          active
-            ? "bg-primary/90 text-white shadow-md"
-            : "hover:bg-slate-800/80"
-        }`}
+        className={`block rounded-xl px-3 py-2.5 text-sm text-right transition-colors duration-200 text-slate-200 ${active
+          ? "bg-primary/90 text-white shadow-md"
+          : "hover:bg-slate-800/80"
+          }`}
       >
         {label}
       </Link>
@@ -107,7 +93,7 @@ export function StudentLayout({
     <div className="min-h-screen bg-lightBg">
       {/* Sidebar */}
       <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white px-4 py-6">
-        <div ref={sidebarRef} className="h-full overflow-y-auto sidebar-scroll">
+        <div ref={sidebarRef} className="h-full overflow-y-auto custom-scrollbar">
           <div className="mb-1 text-xl font-semibold text-secondary text-right">
             طالب علم پورٹل
           </div>
@@ -203,17 +189,6 @@ export function StudentLayout({
           {children}
         </main>
       </div>
-      <style jsx global>{`
-        /* Sidebar: hide scrollbar but keep scroll functional */
-        .sidebar-scroll {
-          scrollbar-width: none; /* Firefox */
-        }
-        .sidebar-scroll::-webkit-scrollbar {
-          width: 0;
-          height: 0;
-          display: none; /* Chrome, Safari */
-        }
-      `}</style>
     </div>
   );
 }
