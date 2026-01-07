@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import api from "@/utils/api";
 import { FinanceLayout } from "@/components/layout/FinanceLayout";
+import { Modal } from "@/components/ui/Modal";
 
 export default function FinanceAdjustmentsPage() {
   const [items, setItems] = useState<any[]>([]);
@@ -43,20 +44,32 @@ export default function FinanceAdjustmentsPage() {
     [items]
   );
 
+  const [decision, setDecision] = useState<{
+    open: boolean;
+    id: string | null;
+    status: "approved" | "rejected" | null;
+    note: string;
+  }>({ open: false, id: null, status: null, note: "" });
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const decide = async (id: string, newStatus: "approved" | "rejected") => {
-    const note =
-      newStatus === "approved"
-        ? window.prompt("منظوری نوٹ (اختیاری)") || ""
-        : window.prompt("نامنظوری نوٹ (اختیاری)") || "";
+    setDecision({ open: true, id, status: newStatus, note: "" });
+  };
+
+  const submitDecision = async () => {
+    if (!decision.id || !decision.status) return;
     try {
       setLoading(true);
-      await api.patch(`/api/finance/adjustments/${id}`, {
-        status: newStatus,
-        decisionNote: note || undefined,
+      await api.patch(`/api/finance/adjustments/${decision.id}`, {
+        status: decision.status,
+        decisionNote: decision.note || undefined,
       });
       await load();
+      setSuccessMsg("حیثیت اپ ڈیٹ ہو گئی");
+      setDecision({ open: false, id: null, status: null, note: "" });
     } catch (e: any) {
-      alert(
+      setErrorMsg(
         e?.response?.data?.message || "حیثیت اپ ڈیٹ کرنے میں مسئلہ پیش آیا"
       );
     } finally {
@@ -232,6 +245,76 @@ export default function FinanceAdjustmentsPage() {
           </table>
         </div>
       </div>
+      {/* Decision Modal */}
+      <Modal
+        open={decision.open}
+        title={decision.status === "approved" ? "منظوری نوٹ" : "نامنظوری نوٹ"}
+        onClose={() =>
+          setDecision({ open: false, id: null, status: null, note: "" })
+        }
+      >
+        <div className="space-y-3">
+          <textarea
+            value={decision.note}
+            onChange={(e) =>
+              setDecision((d) => ({ ...d, note: e.target.value }))
+            }
+            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+            rows={4}
+            placeholder="نوٹ درج کریں (اختیاری)"
+          />
+          <div className="flex justify-end gap-2">
+            <button
+              onClick={() =>
+                setDecision({ open: false, id: null, status: null, note: "" })
+              }
+              className="px-3 py-1.5 text-xs rounded-lg bg-gray-100 hover:bg-gray-200"
+            >
+              منسوخ
+            </button>
+            <button
+              onClick={submitDecision}
+              className="px-3 py-1.5 text-xs rounded-lg bg-primary text-white"
+            >
+              محفوظ کریں
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Success */}
+      <Modal
+        open={!!successMsg}
+        title="کامیابی"
+        onClose={() => setSuccessMsg(null)}
+      >
+        <div className="space-y-3">
+          <p className="text-sm text-emerald-700">{successMsg}</p>
+          <div className="text-right">
+            <button
+              onClick={() => setSuccessMsg(null)}
+              className="px-3 py-1.5 text-xs rounded-lg bg-emerald-600 text-white"
+            >
+              ٹھیک ہے
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Error */}
+      <Modal open={!!errorMsg} title="غلطی" onClose={() => setErrorMsg(null)}>
+        <div className="space-y-3">
+          <p className="text-sm text-red-600">{errorMsg}</p>
+          <div className="text-right">
+            <button
+              onClick={() => setErrorMsg(null)}
+              className="px-3 py-1.5 text-xs rounded-lg bg-red-600 text-white"
+            >
+              بند کریں
+            </button>
+          </div>
+        </div>
+      </Modal>
     </FinanceLayout>
   );
 }

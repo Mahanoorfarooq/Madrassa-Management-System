@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import api from "@/utils/api";
 import { TeacherLayout } from "@/components/layout/TeacherLayout";
+import { Modal } from "@/components/ui/Modal";
 
 interface EntryRow {
   studentId: string;
@@ -121,11 +122,13 @@ export default function TeacherExamMarksPage() {
         entries: payload,
       });
       await loadEntries();
-      alert("محفوظ ہو گیا");
+      setSuccessMsg("محفوظ ہو گیا");
     } finally {
       setLoading(false);
     }
   };
+
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   const exportCsv = () => {
     const header = [
@@ -157,184 +160,205 @@ export default function TeacherExamMarksPage() {
   };
 
   return (
-    <TeacherLayout>
-      <div className="space-y-6" dir="rtl">
-        <div className="bg-gradient-to-r from-indigo-600 to-blue-600 rounded-xl p-5 text-white shadow-md">
-          <h1 className="text-xl font-bold">مارکس درج کریں</h1>
-          <p className="text-indigo-100 text-xs">
-            درجہ اور مضمون منتخب کر کے طلبہ کے نمبر درج کریں
-          </p>
-        </div>
+    <>
+      <TeacherLayout>
+        <div className="space-y-6" dir="rtl">
+          <div className="bg-gradient-to-r from-indigo-600 to-blue-600 rounded-xl p-5 text-white shadow-md">
+            <h1 className="text-xl font-bold">مارکس درج کریں</h1>
+            <p className="text-indigo-100 text-xs">
+              درجہ اور مضمون منتخب کر کے طلبہ کے نمبر درج کریں
+            </p>
+          </div>
 
-        {/* Filters */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-md p-5 grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div>
-            <label className="block text-xs text-gray-700 mb-1">کلاس</label>
-            <select
-              value={classId}
-              onChange={(e) => {
-                setClassId(e.target.value);
-                setSectionId("");
-              }}
-              className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-600"
-            >
-              <option value="">منتخب کریں</option>
-              {classes.map((c: any) => (
-                <option key={c.classId} value={c.classId}>
-                  {c.className || "کلاس"}
-                </option>
-              ))}
-            </select>
+          {/* Filters */}
+          <div className="bg-white rounded-xl border border-gray-200 shadow-md p-5 grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+              <label className="block text-xs text-gray-700 mb-1">کلاس</label>
+              <select
+                value={classId}
+                onChange={(e) => {
+                  setClassId(e.target.value);
+                  setSectionId("");
+                }}
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-600"
+              >
+                <option value="">منتخب کریں</option>
+                {classes.map((c: any) => (
+                  <option key={c.classId} value={c.classId}>
+                    {c.className || "کلاس"}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs text-gray-700 mb-1">سیکشن</label>
+              <select
+                value={sectionId}
+                onChange={(e) => setSectionId(e.target.value)}
+                disabled={!classId}
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-600 disabled:bg-gray-100"
+              >
+                <option value="">منتخب کریں</option>
+                {sections.map((s: any) => (
+                  <option key={s.sectionId} value={s.sectionId}>
+                    {s.sectionName || "سیکشن"}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-xs text-gray-700 mb-1">مضمون</label>
+              <select
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-600"
+              >
+                <option value="">منتخب کریں</option>
+                {subjects.map((s: string) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-          <div>
-            <label className="block text-xs text-gray-700 mb-1">سیکشن</label>
-            <select
-              value={sectionId}
-              onChange={(e) => setSectionId(e.target.value)}
-              disabled={!classId}
-              className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-600 disabled:bg-gray-100"
-            >
-              <option value="">منتخب کریں</option>
-              {sections.map((s: any) => (
-                <option key={s.sectionId} value={s.sectionId}>
-                  {s.sectionName || "سیکشن"}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="md:col-span-2">
-            <label className="block text-xs text-gray-700 mb-1">مضمون</label>
-            <select
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-600"
-            >
-              <option value="">منتخب کریں</option>
-              {subjects.map((s: string) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
 
-        {/* Table */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-md overflow-hidden">
-          {!classId || !sectionId || !subject ? (
-            <div className="text-center py-10 text-gray-500 text-sm">
-              پہلے کلاس، سیکشن اور مضمون منتخب کریں
-            </div>
-          ) : loading ? (
-            <div className="text-center py-10 text-gray-500 text-sm">
-              لوڈ ہو رہا ہے…
-            </div>
-          ) : entries.length === 0 ? (
-            <div className="text-center py-10 text-gray-500 text-sm">
-              طلبہ نہیں ملے
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full text-sm">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-5 py-3 text-right font-semibold text-gray-700">
-                      طالب علم
-                    </th>
-                    <th className="px-5 py-3 text-right font-semibold text-gray-700">
-                      رول نمبر
-                    </th>
-                    <th className="px-5 py-3 text-right font-semibold text-gray-700">
-                      حاصل نمبر
-                    </th>
-                    <th className="px-5 py-3 text-right font-semibold text-gray-700">
-                      کل نمبر
-                    </th>
-                    <th className="px-5 py-3 text-right font-semibold text-gray-700">
-                      گریڈ
-                    </th>
-                    <th className="px-5 py-3 text-right font-semibold text-gray-700">
-                      ریمارکس
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {entries.map((e, idx) => (
-                    <tr key={e.studentId} className="bg-white">
-                      <td className="px-5 py-3 text-gray-800">{e.fullName}</td>
-                      <td className="px-5 py-3 text-gray-700">
-                        {e.rollNumber || "—"}
-                      </td>
-                      <td className="px-5 py-3">
-                        <input
-                          type="number"
-                          value={e.marksObtained ?? ""}
-                          onChange={(ev) =>
-                            setField(
-                              idx,
-                              "marksObtained",
-                              ev.target.value === ""
-                                ? null
-                                : Number(ev.target.value)
-                            )
-                          }
-                          className="w-28 rounded-lg border-2 border-gray-200 px-2 py-1 text-sm text-right focus:outline-none focus:border-indigo-600"
-                        />
-                      </td>
-                      <td className="px-5 py-3">
-                        <input
-                          type="number"
-                          value={e.totalMarks ?? ""}
-                          onChange={(ev) =>
-                            setField(
-                              idx,
-                              "totalMarks",
-                              ev.target.value === ""
-                                ? null
-                                : Number(ev.target.value)
-                            )
-                          }
-                          className="w-28 rounded-lg border-2 border-gray-200 px-2 py-1 text-sm text-right focus:outline-none focus:border-indigo-600"
-                        />
-                      </td>
-                      <td className="px-5 py-3 text-gray-700">
-                        {e.grade ?? "—"}
-                      </td>
-                      <td className="px-5 py-3">
-                        <input
-                          value={e.remarks ?? ""}
-                          onChange={(ev) =>
-                            setField(idx, "remarks", ev.target.value)
-                          }
-                          className="w-64 rounded-lg border-2 border-gray-200 px-2 py-1 text-sm text-right focus:outline-none focus:border-indigo-600"
-                        />
-                      </td>
+          {/* Table */}
+          <div className="bg-white rounded-xl border border-gray-200 shadow-md overflow-hidden">
+            {!classId || !sectionId || !subject ? (
+              <div className="text-center py-10 text-gray-500 text-sm">
+                پہلے کلاس، سیکشن اور مضمون منتخب کریں
+              </div>
+            ) : loading ? (
+              <div className="text-center py-10 text-gray-500 text-sm">
+                لوڈ ہو رہا ہے…
+              </div>
+            ) : entries.length === 0 ? (
+              <div className="text-center py-10 text-gray-500 text-sm">
+                طلبہ نہیں ملے
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full text-sm">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-5 py-3 text-right font-semibold text-gray-700">
+                        طالب علم
+                      </th>
+                      <th className="px-5 py-3 text-right font-semibold text-gray-700">
+                        رول نمبر
+                      </th>
+                      <th className="px-5 py-3 text-right font-semibold text-gray-700">
+                        حاصل نمبر
+                      </th>
+                      <th className="px-5 py-3 text-right font-semibold text-gray-700">
+                        کل نمبر
+                      </th>
+                      <th className="px-5 py-3 text-right font-semibold text-gray-700">
+                        گریڈ
+                      </th>
+                      <th className="px-5 py-3 text-right font-semibold text-gray-700">
+                        ریمارکس
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {entries.map((e, idx) => (
+                      <tr key={e.studentId} className="bg-white">
+                        <td className="px-5 py-3 text-gray-800">
+                          {e.fullName}
+                        </td>
+                        <td className="px-5 py-3 text-gray-700">
+                          {e.rollNumber || "—"}
+                        </td>
+                        <td className="px-5 py-3">
+                          <input
+                            type="number"
+                            value={e.marksObtained ?? ""}
+                            onChange={(ev) =>
+                              setField(
+                                idx,
+                                "marksObtained",
+                                ev.target.value === ""
+                                  ? null
+                                  : Number(ev.target.value)
+                              )
+                            }
+                            className="w-28 rounded-lg border-2 border-gray-200 px-2 py-1 text-sm text-right focus:outline-none focus:border-indigo-600"
+                          />
+                        </td>
+                        <td className="px-5 py-3">
+                          <input
+                            type="number"
+                            value={e.totalMarks ?? ""}
+                            onChange={(ev) =>
+                              setField(
+                                idx,
+                                "totalMarks",
+                                ev.target.value === ""
+                                  ? null
+                                  : Number(ev.target.value)
+                              )
+                            }
+                            className="w-28 rounded-lg border-2 border-gray-200 px-2 py-1 text-sm text-right focus:outline-none focus:border-indigo-600"
+                          />
+                        </td>
+                        <td className="px-5 py-3 text-gray-700">
+                          {e.grade ?? "—"}
+                        </td>
+                        <td className="px-5 py-3">
+                          <input
+                            value={e.remarks ?? ""}
+                            onChange={(ev) =>
+                              setField(idx, "remarks", ev.target.value)
+                            }
+                            className="w-64 rounded-lg border-2 border-gray-200 px-2 py-1 text-sm text-right focus:outline-none focus:border-indigo-600"
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
 
-        {/* Actions */}
-        <div className="flex items-center justify-end gap-2">
-          <button
-            onClick={exportCsv}
-            disabled={!entries.length}
-            className="px-4 py-2 rounded-lg bg-gray-100 text-gray-800 text-sm hover:bg-gray-200 disabled:opacity-60"
-          >
-            CSV ایکسپورٹ
-          </button>
-          <button
-            onClick={saveAll}
-            disabled={loading || !entries.length}
-            className="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-700 disabled:opacity-60"
-          >
-            محفوظ کریں
-          </button>
+          {/* Actions */}
+          <div className="flex items-center justify-end gap-2">
+            <button
+              onClick={exportCsv}
+              disabled={!entries.length}
+              className="px-4 py-2 rounded-lg bg-gray-100 text-gray-800 text-sm hover:bg-gray-200 disabled:opacity-60"
+            >
+              CSV ایکسپورٹ
+            </button>
+            <button
+              onClick={saveAll}
+              disabled={loading || !entries.length}
+              className="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-700 disabled:opacity-60"
+            >
+              محفوظ کریں
+            </button>
+          </div>
         </div>
-      </div>
-    </TeacherLayout>
+      </TeacherLayout>
+      <Modal
+        open={!!successMsg}
+        title="کامیابی"
+        onClose={() => setSuccessMsg(null)}
+      >
+        <div className="space-y-3">
+          <p className="text-sm text-emerald-700">{successMsg}</p>
+          <div className="text-right">
+            <button
+              onClick={() => setSuccessMsg(null)}
+              className="px-3 py-1.5 text-xs rounded-lg bg-emerald-600 text-white"
+            >
+              ٹھیک ہے
+            </button>
+          </div>
+        </div>
+      </Modal>
+    </>
   );
 }

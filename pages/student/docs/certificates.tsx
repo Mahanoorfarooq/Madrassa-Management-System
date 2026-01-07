@@ -22,8 +22,8 @@ export default function CertificatesDoc() {
           title: "سند فراغت (Sanad-e-Faraghat)",
           description: "دورہ تجوید و قرائت کی تکمیل پر جاری کردہ سند",
           date: new Date(),
-          url: "/student/docs/sanad"
-        }
+          url: "/student/docs/sanad",
+        },
       ]);
     };
     load();
@@ -127,8 +127,6 @@ export default function CertificatesDoc() {
                       {c.url && (
                         <a
                           href={c.url}
-                          target="_blank"
-                          rel="noreferrer"
                           className="flex-shrink-0 w-9 h-9 bg-amber-100 rounded-lg flex items-center justify-center hover:bg-amber-200 transition-colors print:hidden"
                           title="ڈاؤن لوڈ"
                         >

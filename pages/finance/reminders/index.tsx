@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import api from "@/utils/api";
 import { FinanceLayout } from "@/components/layout/FinanceLayout";
+import { Modal } from "@/components/ui/Modal";
 
 export default function FinanceRemindersPage() {
   const [dues, setDues] = useState<any[]>([]);
@@ -38,19 +39,34 @@ export default function FinanceRemindersPage() {
   );
 
   const sendReminder = async (invoiceId: string) => {
-    const msg =
-      window.prompt("ری مائنڈر پیغام (اختیاری)") ||
-      "براہ کرم اپنی بقایا فیس ادا کریں";
+    setCompose({
+      open: true,
+      invoiceId,
+      message: "براہ کرم اپنی بقایا فیس ادا کریں",
+    });
+  };
+
+  const [compose, setCompose] = useState<{
+    open: boolean;
+    invoiceId: string | null;
+    message: string;
+  }>({ open: false, invoiceId: null, message: "" });
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const submitCompose = async () => {
+    if (!compose.invoiceId) return;
     try {
       setLoading(true);
       await api.post("/api/finance/reminders", {
-        invoiceId,
-        message: msg,
+        invoiceId: compose.invoiceId,
+        message: compose.message || undefined,
       });
       await loadReminders();
-      alert("ری مائنڈر لاگ ہو گیا");
+      setSuccessMsg("ری مائنڈر لاگ ہو گیا");
+      setCompose({ open: false, invoiceId: null, message: "" });
     } catch (e: any) {
-      alert(e?.response?.data?.message || "ری مائنڈر میں مسئلہ پیش آیا");
+      setErrorMsg(e?.response?.data?.message || "ری مائنڈر میں مسئلہ پیش آیا");
     } finally {
       setLoading(false);
     }
@@ -190,6 +206,76 @@ export default function FinanceRemindersPage() {
           </div>
         </div>
       </div>
+      {/* Compose Modal */}
+      <Modal
+        open={compose.open}
+        title="ری مائنڈر پیغام"
+        onClose={() =>
+          setCompose({ open: false, invoiceId: null, message: "" })
+        }
+      >
+        <div className="space-y-3">
+          <textarea
+            value={compose.message}
+            onChange={(e) =>
+              setCompose((c) => ({ ...c, message: e.target.value }))
+            }
+            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+            rows={4}
+            placeholder="پیغام درج کریں"
+          />
+          <div className="flex justify-end gap-2">
+            <button
+              onClick={() =>
+                setCompose({ open: false, invoiceId: null, message: "" })
+              }
+              className="px-3 py-1.5 text-xs rounded-lg bg-gray-100 hover:bg-gray-200"
+            >
+              منسوخ
+            </button>
+            <button
+              onClick={submitCompose}
+              className="px-3 py-1.5 text-xs rounded-lg bg-primary text-white"
+            >
+              بھیجیں
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Success */}
+      <Modal
+        open={!!successMsg}
+        title="کامیابی"
+        onClose={() => setSuccessMsg(null)}
+      >
+        <div className="space-y-3">
+          <p className="text-sm text-emerald-700">{successMsg}</p>
+          <div className="text-right">
+            <button
+              onClick={() => setSuccessMsg(null)}
+              className="px-3 py-1.5 text-xs rounded-lg bg-emerald-600 text-white"
+            >
+              ٹھیک ہے
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Error */}
+      <Modal open={!!errorMsg} title="غلطی" onClose={() => setErrorMsg(null)}>
+        <div className="space-y-3">
+          <p className="text-sm text-red-600">{errorMsg}</p>
+          <div className="text-right">
+            <button
+              onClick={() => setErrorMsg(null)}
+              className="px-3 py-1.5 text-xs rounded-lg bg-red-600 text-white"
+            >
+              بند کریں
+            </button>
+          </div>
+        </div>
+      </Modal>
     </FinanceLayout>
   );
 }
