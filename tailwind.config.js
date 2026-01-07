@@ -8,8 +8,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#059669",
-        secondary: "#fbbf24",
+        primary: "#f16700",
+        secondary: "#33675C",
         accent: "#0ea5e9",
         lightBg: "#f3f4f6",
         darkBg: "#020617",
@@ -19,6 +19,9 @@ module.exports = {
         success: "#16a34a",
         danger: "#dc2626",
         warning: "#f97316",
+        brandTeal: "#33675C",
+        brandForest: "#073F3A",
+        touchWhite: "#FFFFFF",
       },
       fontFamily: {
         urdu: [

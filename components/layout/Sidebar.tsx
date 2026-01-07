@@ -66,8 +66,8 @@ export function Sidebar({ role }: SidebarProps) {
     : links;
 
   return (
-    <aside className="sticky top-0 h-screen overflow-y-auto scrollbar-none relative z-30 w-64 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white px-4 py-6 border-l border-slate-800/80 shadow-inner flex flex-col">
-      <div className="mb-6 text-xl font-semibold text-secondary text-right">
+    <aside className="sticky top-0 h-screen overflow-y-auto scrollbar-none relative z-30 w-64 bg-gradient-to-b from-brandForest via-brandTeal to-brandForest text-touchWhite px-4 py-6 shadow-inner flex flex-col">
+      <div className="mb-6 text-xl font-semibold text-touchWhite text-right">
         مدرسہ مینجمنٹ
       </div>
       <nav className="space-y-1 text-right text-sm">
@@ -79,8 +79,8 @@ export function Sidebar({ role }: SidebarProps) {
               href={link.href}
               className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 text-xs md:text-sm ${
                 active
-                  ? "bg-primary/90 text-white shadow-md"
-                  : "hover:bg-slate-800/80 text-slate-200"
+                  ? "bg-primary text-touchWhite shadow-md"
+                  : "hover:bg-brandForest/70 text-touchWhite/90"
               }`}
             >
               {link.label}

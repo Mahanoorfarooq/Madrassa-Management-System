@@ -9,6 +9,18 @@ class MyDocument extends Document {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600&display=swap"
           />
+          {/* PWA: Manifest and Meta */}
+          <link rel="manifest" href="/manifest.webmanifest" />
+          <meta name="application-name" content="جامعہ مینجمنٹ سسٹم" />
+          <meta name="theme-color" content="#f16700" />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta
+            name="apple-mobile-web-app-status-bar-style"
+            content="black-translucent"
+          />
+          <meta name="apple-mobile-web-app-title" content="جامعہ" />
+          <link rel="apple-touch-icon" href="/logo.png" />
+          <link rel="icon" href="/logo.png" />
         </Head>
         <body className="font-urdu bg-lightBg">
           <title>جامعہ مینجمنٹ سسٹم</title>

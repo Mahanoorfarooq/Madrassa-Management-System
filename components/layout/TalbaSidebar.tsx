@@ -24,8 +24,8 @@ export function TalbaSidebar() {
   const router = useRouter();
 
   return (
-    <aside className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white px-4 py-6 overflow-y-auto scrollbar-none">
-      <div className="mb-6 text-xl font-semibold text-secondary text-right">
+    <aside className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-gradient-to-b from-brandForest via-brandTeal to-brandForest text-touchWhite px-4 py-6 overflow-y-auto scrollbar-none">
+      <div className="mb-6 text-xl font-semibold text-touchWhite text-right">
         طلبہ ماڈیول
       </div>
       <nav className="space-y-1 text-right text-sm">
@@ -37,8 +37,8 @@ export function TalbaSidebar() {
               href={link.href}
               className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 text-xs md:text-sm ${
                 active
-                  ? "bg-primary/90 text-white shadow-md"
-                  : "hover:bg-slate-800/80 text-slate-200"
+                  ? "bg-primary text-touchWhite shadow-md"
+                  : "hover:bg-brandForest/70 text-touchWhite/90"
               }`}
             >
               {link.label}

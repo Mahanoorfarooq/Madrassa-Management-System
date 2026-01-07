@@ -78,10 +78,10 @@ export function StudentLayout({
     return (
       <Link
         href={href}
-        className={`block rounded-xl px-3 py-2.5 text-sm text-right transition-colors duration-200 text-slate-200 ${
+        className={`block rounded-xl px-3 py-2.5 text-sm text-right transition-colors duration-200 text-touchWhite/90 ${
           active
-            ? "bg-primary/90 text-white shadow-md"
-            : "hover:bg-slate-800/80"
+            ? "bg-primary text-touchWhite shadow-md"
+            : "hover:bg-brandForest/70"
         }`}
       >
         {label}
@@ -92,13 +92,13 @@ export function StudentLayout({
   return (
     <div className="min-h-screen bg-lightBg">
       {/* Sidebar */}
-      <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white px-4 py-6">
+      <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-gradient-to-b from-brandForest via-brandTeal to-brandForest text-touchWhite px-4 py-6">
         <div ref={sidebarRef} className="h-full overflow-y-auto scrollbar-none">
-          <div className="mb-1 text-xl font-semibold text-secondary text-right">
+          <div className="mb-1 text-xl font-semibold text-touchWhite text-right">
             طالب علم پورٹل
           </div>
           {jamia && (
-            <div className="mb-4 text-xs text-slate-300 text-right">
+            <div className="mb-4 text-xs text-touchWhite/80 text-right">
               {jamia.name}
             </div>
           )}

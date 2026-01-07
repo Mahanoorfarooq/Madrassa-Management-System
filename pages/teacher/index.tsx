@@ -144,18 +144,18 @@ export default function TeacherDashboard() {
     <TeacherLayout>
       <div className="space-y-6">
         {/* Welcome Section */}
-        <div className="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl p-6 shadow-xl text-white">
+        <div className="bg-gradient-to-br from-primary via-brandTeal to-brandForest rounded-2xl p-6 shadow-xl text-touchWhite">
           <div className="flex items-center justify-between">
             <div className="text-right flex-1">
               <h1 className="text-2xl font-bold mb-2">
                 خوش آمدید، {me?.teacher?.fullName || "استاد"}
               </h1>
-              <p className="text-blue-100 text-sm">
+              <p className="text-touchWhite/80 text-sm">
                 آج کی تاریخ: {new Date().toLocaleDateString("ur-PK")}
               </p>
             </div>
             <div className="hidden md:block">
-              <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+              <div className="w-20 h-20 bg-touchWhite/20 rounded-full flex items-center justify-center backdrop-blur-sm">
                 <Award className="w-10 h-10" />
               </div>
             </div>
@@ -236,7 +236,7 @@ export default function TeacherDashboard() {
           {/* Classes Card */}
           <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg hover:shadow-xl transition-shadow">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-brandTeal flex items-center justify-center">
                 <BookOpen className="w-6 h-6 text-white" />
               </div>
               <div className="text-right">
@@ -246,7 +246,7 @@ export default function TeacherDashboard() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2 text-xs text-green-600">
+            <div className="flex items-center gap-2 text-xs text-brandTeal">
               <TrendingUp className="w-4 h-4" />
               <span>تفویض شدہ کلاسز</span>
             </div>
@@ -255,7 +255,7 @@ export default function TeacherDashboard() {
           {/* Sections Card */}
           <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg hover:shadow-xl transition-shadow">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brandTeal to-primary flex items-center justify-center">
                 <Calendar className="w-6 h-6 text-white" />
               </div>
               <div className="text-right">
@@ -265,7 +265,7 @@ export default function TeacherDashboard() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2 text-xs text-purple-600">
+            <div className="flex items-center gap-2 text-xs text-primary">
               <TrendingUp className="w-4 h-4" />
               <span>کل سیکشنز</span>
             </div>
@@ -274,7 +274,7 @@ export default function TeacherDashboard() {
           {/* Students Card */}
           <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg hover:shadow-xl transition-shadow">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brandTeal to-primary flex items-center justify-center">
                 <Users className="w-6 h-6 text-white" />
               </div>
               <div className="text-right">
@@ -284,7 +284,7 @@ export default function TeacherDashboard() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2 text-xs text-emerald-600">
+            <div className="flex items-center gap-2 text-xs text-brandTeal">
               <TrendingUp className="w-4 h-4" />
               <span>کل طلبہ کی تعداد</span>
             </div>
@@ -296,7 +296,7 @@ export default function TeacherDashboard() {
             className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg hover:shadow-xl transition-shadow block"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-sky-500 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brandTeal to-primary flex items-center justify-center">
                 <Calendar className="w-6 h-6 text-white" />
               </div>
               <div className="text-right">
@@ -368,7 +368,7 @@ export default function TeacherDashboard() {
                     <Link
                       key={`${c.classId}:${s.sectionId}`}
                       href={`/teacher/classes/${c.classId}/sections/${s.sectionId}`}
-                      className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 hover:bg-teal-50 hover:border-teal-300 transition-all"
+                      className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 hover:bg-brandTeal/10 hover:border-brandTeal/40 transition-all"
                     >
                       <div className="text-right">
                         <div className="text-sm font-semibold text-gray-800">
@@ -381,7 +381,7 @@ export default function TeacherDashboard() {
                             : "—"}
                         </div>
                       </div>
-                      <span className="text-xs text-teal-700">حاضری</span>
+                      <span className="text-xs text-brandTeal">حاضری</span>
                     </Link>
                   ))
                 )}
@@ -445,7 +445,7 @@ export default function TeacherDashboard() {
         {classChart.labels.length > 0 && (
           <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brandTeal to-primary flex items-center justify-center">
                 <TrendingUp className="w-5 h-5 text-white" />
               </div>
               <h2 className="text-xl font-bold text-gray-800">
@@ -462,9 +462,9 @@ export default function TeacherDashboard() {
 
         {/* No Classes Message */}
         {classes.length === 0 && (
-          <div className="bg-blue-50 border border-blue-200 rounded-2xl p-8 text-center">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <BookOpen className="w-8 h-8 text-blue-600" />
+          <div className="bg-primary/5 border border-primary/30 rounded-2xl p-8 text-center">
+            <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <BookOpen className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-lg font-semibold text-gray-800 mb-2">
               ابھی تک کوئی کلاس تفویض نہیں

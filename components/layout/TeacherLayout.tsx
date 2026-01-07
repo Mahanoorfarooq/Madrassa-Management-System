@@ -35,10 +35,10 @@ export function TeacherLayout({
     return (
       <Link
         href={href}
-        className={`block rounded-xl px-3 py-2.5 text-sm text-right transition-colors duration-200 text-slate-200 ${
+        className={`block rounded-xl px-3 py-2.5 text-sm text-right transition-colors duration-200 text-touchWhite/90 ${
           active
-            ? "bg-primary/90 text-white shadow-md"
-            : "hover:bg-slate-800/80"
+            ? "bg-primary text-touchWhite shadow-md"
+            : "hover:bg-brandForest/70"
         }`}
       >
         {label}
@@ -48,8 +48,8 @@ export function TeacherLayout({
 
   return (
     <div className="min-h-screen bg-lightBg">
-      <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white px-4 py-6 overflow-y-auto scrollbar-none">
-        <div className="mb-6 text-xl font-semibold text-secondary text-right">
+      <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-gradient-to-b from-brandForest via-brandTeal to-brandForest text-touchWhite px-4 py-6 overflow-y-auto scrollbar-none">
+        <div className="mb-6 text-xl font-semibold text-touchWhite text-right">
           استاد پورٹل
         </div>
         <nav className="space-y-1 text-right text-sm">
@@ -71,7 +71,7 @@ export function TeacherLayout({
           <NavLink href="/teacher/discipline" label="ڈسپلن نوٹس" />
           <button
             onClick={handleLogout}
-            className="w-full text-right mt-2 rounded px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+            className="w-full text-right mt-2 rounded px-3 py-2 text-sm text-red-400 hover:bg-red-950/40"
           >
             لاگ آؤٹ
           </button>

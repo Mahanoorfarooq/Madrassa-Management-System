@@ -4,15 +4,15 @@ import { useRouter } from "next/router";
 export function MessSidebar() {
   const router = useRouter();
   return (
-    <aside className="sticky top-0 h-screen overflow-y-auto scrollbar-none w-64 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white px-4 py-6 hidden md:block text-right">
-      <div className="mb-6 text-xl font-semibold text-secondary">میس</div>
+    <aside className="sticky top-0 h-screen overflow-y-auto scrollbar-none w-64 bg-gradient-to-b from-brandForest via-brandTeal to-brandForest text-touchWhite px-4 py-6 hidden md:block text-right">
+      <div className="mb-6 text-xl font-semibold text-touchWhite">میس</div>
       <nav className="space-y-1 text-sm">
         <Link
           href="/mess"
           className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 ${
             router.pathname === "/mess"
-              ? "bg-primary/90 text-white shadow-md"
-              : "hover:bg-slate-800/80 text-slate-200"
+              ? "bg-primary text-touchWhite shadow-md"
+              : "hover:bg-brandForest/70 text-touchWhite/90"
           }`}
         >
           ڈیش بورڈ
@@ -21,8 +21,8 @@ export function MessSidebar() {
           href="/mess/kitchens"
           className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 ${
             router.pathname === "/mess/kitchens"
-              ? "bg-primary/90 text-white shadow-md"
-              : "hover:bg-slate-800/80 text-slate-200"
+              ? "bg-primary text-touchWhite shadow-md"
+              : "hover:bg-brandForest/70 text-touchWhite/90"
           }`}
         >
           کچن
@@ -31,8 +31,8 @@ export function MessSidebar() {
           href="/mess/registrations"
           className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 ${
             router.pathname === "/mess/registrations"
-              ? "bg-primary/90 text-white shadow-md"
-              : "hover:bg-slate-800/80 text-slate-200"
+              ? "bg-primary text-touchWhite shadow-md"
+              : "hover:bg-brandForest/70 text-touchWhite/90"
           }`}
         >
           رجسٹریشن
@@ -41,8 +41,8 @@ export function MessSidebar() {
           href="/mess/schedules"
           className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 ${
             router.pathname === "/mess/schedules"
-              ? "bg-primary/90 text-white shadow-md"
-              : "hover:bg-slate-800/80 text-slate-200"
+              ? "bg-primary text-touchWhite shadow-md"
+              : "hover:bg-brandForest/70 text-touchWhite/90"
           }`}
         >
           ہفتہ وار شیڈول
@@ -51,8 +51,8 @@ export function MessSidebar() {
           href="/mess/records"
           className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 ${
             router.pathname === "/mess/records"
-              ? "bg-primary/90 text-white shadow-md"
-              : "hover:bg-slate-800/80 text-slate-200"
+              ? "bg-primary text-touchWhite shadow-md"
+              : "hover:bg-brandForest/70 text-touchWhite/90"
           }`}
         >
           ریکارڈ/اخراجات
