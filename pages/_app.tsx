@@ -11,15 +11,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       const isMac = navigator.platform.toUpperCase().includes("MAC");
       const ctrlOrMeta = isMac ? e.metaKey : e.ctrlKey;
       if (ctrlOrMeta && e.shiftKey && (e.key === "H" || e.key === "h")) {
-        fetch("/api/dev/impersonate-super-admin", { method: "POST" })
-          .then(async (res) => {
-            if (!res.ok) throw new Error(await res.text());
-            return res.json();
-          })
-          .then(() => {
-            router.push("/super-admin").catch(() => window.location.reload());
-          })
-          .catch(() => {});
+        router.push("/super-admin/auth").catch(() => window.location.reload());
       }
     }
 
@@ -27,5 +19,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [router]);
 
-  return <Component {...pageProps} />;
+  return (
+    <div className="font-urdu min-h-screen">
+      <Component {...pageProps} />
+    </div>
+  );
 }

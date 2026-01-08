@@ -8,28 +8,25 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#f16700",
-        secondary: "#33675C",
-        accent: "#0ea5e9",
-        lightBg: "#f3f4f6",
-        darkBg: "#020617",
+        primary: "#104338", // Deep Teal/Green from Logo
+        secondary: "#F16700", // Specific Orange requested (#F16700)
+        accent: "#166E5E", // Lighter Teal for accents
+        lightBg: "#f0fdf9", // Very light mint/white
+        darkBg: "#0a2b24", // Darker Deep Green for sidebars
         surface: "#ffffff",
         surfaceMuted: "#f9fafb",
         borderSoft: "#e5e7eb",
         success: "#16a34a",
         danger: "#dc2626",
         warning: "#f97316",
-        brandTeal: "#33675C",
-        brandForest: "#073F3A",
-        touchWhite: "#FFFFFF",
+        saPrimary: "#073F3A",
+        saAccent: "#33675C",
       },
       fontFamily: {
         urdu: [
-          "AlQalam Taj Nastaleeq",
+          "AlQalam",
           "Noto Nastaliq Urdu",
-          "Jameel Noori Nastaleeq",
-          "system-ui",
-          "sans-serif",
+          "serif",
         ],
       },
       keyframes: {

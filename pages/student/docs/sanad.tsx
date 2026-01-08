@@ -306,13 +306,12 @@ export default function StudentSanad() {
 
       <style jsx global>{`
         @font-face {
-          font-family: "AlQalam Taj Nastaleeq";
-          src: url("/fonts/alqalam-taj-nastaleeq/AlQalam Taj Nastaleeq Regular.ttf")
-            format("truetype");
+          font-family: "AlQalam";
+          src: url("/fonts/alqalam-taj-nastaleeq/AlQalam Regular.ttf") format("truetype");
         }
 
         .font-urdu {
-          font-family: "AlQalam Taj Nastaleeq", "Urdu", serif, system-ui;
+          font-family: "AlQalam", "Urdu", serif, system-ui;
         }
 
         .sanad-container {

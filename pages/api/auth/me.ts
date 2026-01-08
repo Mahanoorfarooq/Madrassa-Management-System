@@ -17,5 +17,19 @@ export default async function handler(
     return res.status(404).json({ message: "صارف نہیں ملا۔" });
   }
 
-  return res.status(200).json({ user });
+  // Real-time license check
+  const { License } = require("@/schemas/License");
+  const license = await License.findOne({ status: "active" });
+
+  if (!license && user.role !== "super_admin") {
+    return res.status(402).json({
+      message: "لائسنس ختم ہو چکا ہے یا موجود نہیں ہے۔",
+      licenseStatus: "missing"
+    });
+  }
+
+  return res.status(200).json({
+    user,
+    allowedModules: license?.allowedModules || ["all"]
+  });
 }

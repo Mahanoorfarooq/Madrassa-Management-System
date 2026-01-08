@@ -42,11 +42,10 @@ export function MadrassaSettingsLayout({
     return (
       <Link
         href={href}
-        className={`block rounded-xl px-3 py-2.5 text-sm text-right transition-colors duration-200 text-touchWhite/90 ${
-          active
-            ? "bg-primary text-touchWhite shadow-md"
-            : "hover:bg-brandForest/70"
-        }`}
+        className={`block rounded-xl px-3 py-2.5 text-sm text-right transition-colors duration-200 text-slate-200 ${active
+          ? "bg-secondary text-white shadow-md font-medium"
+          : "hover:bg-white/10"
+          }`}
       >
         {label}
       </Link>
@@ -55,8 +54,8 @@ export function MadrassaSettingsLayout({
 
   return (
     <div className="min-h-screen bg-lightBg">
-      <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-gradient-to-b from-brandForest via-brandTeal to-brandForest text-touchWhite px-4 py-6 overflow-y-auto scrollbar-none">
-        <div className="mb-6 text-xl font-semibold text-touchWhite text-right">
+      <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-darkBg text-white px-4 py-6 overflow-y-auto custom-scrollbar">
+        <div className="mb-6 text-xl font-semibold text-secondary text-right">
           ایڈمن سیٹنگز
         </div>
         <nav className="space-y-1 text-right text-sm">

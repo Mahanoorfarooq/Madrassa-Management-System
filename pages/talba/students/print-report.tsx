@@ -156,11 +156,11 @@ export default function StudentPrintReport() {
 
             <style jsx global>{`
                 @font-face {
-                    font-family: 'AlQalam Taj Nastaleeq';
+                    font-family: 'AlQalam';
                     src: url('/fonts/AlQalamTajNastaleeq.ttf') format('truetype');
                 }
                 .font-urdu {
-                    font-family: 'AlQalam Taj Nastaleeq', serif;
+                    font-family: 'AlQalam', serif;
                     line-height: 1.5 !important;
                 }
                 @media print {

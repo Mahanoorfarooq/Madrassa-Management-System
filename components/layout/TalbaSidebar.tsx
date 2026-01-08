@@ -24,8 +24,8 @@ export function TalbaSidebar() {
   const router = useRouter();
 
   return (
-    <aside className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-gradient-to-b from-brandForest via-brandTeal to-brandForest text-touchWhite px-4 py-6 overflow-y-auto scrollbar-none">
-      <div className="mb-6 text-xl font-semibold text-touchWhite text-right">
+    <aside className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-darkBg text-white px-4 py-6 overflow-y-auto custom-scrollbar">
+      <div className="mb-6 text-xl font-semibold text-secondary text-right">
         طلبہ ماڈیول
       </div>
       <nav className="space-y-1 text-right text-sm">
