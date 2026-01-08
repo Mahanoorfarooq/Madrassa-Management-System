@@ -384,7 +384,7 @@ export default function MudeerDashboard() {
             <style jsx global>{`
         @font-face {
           font-family: 'Urdu';
-          src: url('/fonts/alqalam-taj-nastaleeq/AlQalam Taj Nastaleeq Regular.ttf');
+          src: url('/fonts/alqalam-taj-nastaleeq/AlQalam Regular.ttf');
         }
         .font-urdu {
           font-family: 'Urdu', 'Inter', sans-serif;

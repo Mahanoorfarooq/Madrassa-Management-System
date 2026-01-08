@@ -13,6 +13,7 @@ import {
   LogOut,
   ArrowLeft,
   MessageSquare,
+  FileText,
 } from "lucide-react";
 
 const adminModules = [
@@ -73,6 +74,14 @@ const adminModules = [
     gradient: "from-green-500 to-emerald-500",
   },
   {
+    key: "exams",
+    title: "امتحانات",
+    description: "امتحانات، نتائج اور رول نمبر سلپس",
+    href: "/exams",
+    icon: FileText,
+    gradient: "from-sky-500 to-blue-600",
+  },
+  {
     key: "library",
     title: "لائبریری",
     description: "کتب، اجراء، واپسی اور جرمانہ مینجمنٹ",
@@ -116,24 +125,77 @@ const adminModules = [
 
 export default function MadrassaModules() {
   const [role, setRole] = useState<string | null>(null);
+  const [allowedModules, setAllowedModules] = useState<string[]>([]);
 
   useEffect(() => {
     (async () => {
       try {
+        // First check localStorage for fast initial load
+        const stored = localStorage.getItem("allowed_modules");
+        if (stored) {
+          try {
+            setAllowedModules(JSON.parse(stored));
+          } catch (e) { }
+        }
+
         const res = await api.get("/api/auth/me");
         const r = res.data?.user?.role as string | undefined;
+        const serverModules = res.data?.allowedModules;
+
         setRole(r || null);
+
+        // Update from server and sync to localStorage
+        if (serverModules) {
+          setAllowedModules(serverModules);
+          localStorage.setItem("allowed_modules", JSON.stringify(serverModules));
+        }
+
         if (r && r !== "admin") {
           window.location.href = "/teacher";
         }
-      } catch {
-        window.location.href = "/login";
+      } catch (e: any) {
+        console.error("Auth failed:", e);
+        if (e.response?.status === 402) {
+          localStorage.removeItem("allowed_modules");
+          window.location.href = "/activate";
+        } else {
+          window.location.href = "/login";
+        }
       }
     })();
   }, []);
 
+  const hasModule = (name: string) => {
+    return allowedModules.some(m =>
+      m === name ||
+      m === name + " پورٹل" ||
+      m.includes(name) ||
+      (name === "طلباء" && m.includes("طلبہ"))
+    );
+  };
+
+  const filteredModules = adminModules.filter(m => {
+    if (allowedModules.includes("all")) return true;
+
+    if (m.key === "talba") return hasModule("طلباء") || hasModule("طلبہ");
+    if (m.key === "usataza") return hasModule("اساتذہ");
+    if (m.key === "finance") return hasModule("فنانس");
+    if (m.key === "hostel") return hasModule("ہاسٹل");
+    if (m.key === "mess") return hasModule("میس");
+    if (m.key === "nisab") return hasModule("نصاب");
+    if (m.key === "hazri") return hasModule("حاضری") || hasModule("اساتذہ") || hasModule("طلباء");
+    if (m.key === "library") return hasModule("لائبریری");
+    if (m.key === "exams") return hasModule("امتحانات");
+    if (m.key === "tickets") return hasModule("شکایات");
+    if (m.key === "notifications") return hasModule("اعلانات") || hasModule("نوٹیفیکیشنز");
+    if (m.key === "auditLogs") return hasModule("آڈٹ لاگز") || hasModule("لاگز");
+    if (m.key === "userManagement") return hasModule("یوزر مینجمنٹ") || hasModule("یوزر");
+
+    return false;
+  });
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50 to-blue-50 font-urdu">
       {/* Decorative Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-20 w-72 h-72 bg-green-200/30 rounded-full blur-3xl"></div>
@@ -141,7 +203,7 @@ export default function MadrassaModules() {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-200/20 rounded-full blur-3xl"></div>
       </div>
 
-      <header className="relative w-full border-b bg-white/90 backdrop-blur-xl shadow-sm">
+      <header className="relative w-full border-b bg-white/90 backdrop-blur-xl shadow-sm font-urdu">
         <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-blue-600 flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform">
@@ -192,7 +254,7 @@ export default function MadrassaModules() {
 
           {/* Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {adminModules.map((m, index) => {
+            {filteredModules.map((m, index) => {
               const IconComponent = m.icon;
               const isTickets = m.key === "tickets";
               return (

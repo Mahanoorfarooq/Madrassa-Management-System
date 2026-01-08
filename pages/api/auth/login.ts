@@ -48,20 +48,33 @@ export default async function handler(
 
   // Set http-only cookie for global auth
   const isProd = process.env.NODE_ENV === "production";
+
+  // Fetch license info
+  const { License } = require("@/schemas/License");
+  const license = await License.findOne({ status: "active" });
+
   res.setHeader(
     "Set-Cookie",
-    serialize("auth_token", token, {
-      httpOnly: true,
-      secure: isProd,
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-    })
+    [
+      serialize("auth_token", token, {
+        httpOnly: true,
+        secure: isProd,
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+      }),
+      // If we found a valid license, ensure the activation cookie is there
+      ...(license ? [serialize("software_activated", "true", {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 365,
+      })] : [])
+    ]
   );
 
   return res.status(200).json({
     message: "کامیابی سے لاگ اِن ہو گئے۔",
     token,
+    allowedModules: license?.allowedModules || ["all"],
     user: {
       id: user._id,
       fullName: user.fullName,

@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// Public paths that never require auth
-const PUBLIC_PATHS = ["/", "/_next", "/favicon.ico", "/login", "/login/"];
-
 // Map of protected prefixes to their login routes
 const PROTECTED: Array<{ prefix: string; login: string }> = [
   { prefix: "/dashboard", login: "/login" },
@@ -13,28 +10,55 @@ const PROTECTED: Array<{ prefix: string; login: string }> = [
   { prefix: "/talba", login: "/login" },
   { prefix: "/modules/teacher", login: "/login" },
   { prefix: "/modules/madrassa", login: "/login" },
-  { prefix: "/super-admin", login: "/login" },
-  // Add more modules here if you want global enforcement
-  // { prefix: "/finance", login: "/login/finance" },
-  // { prefix: "/hostel", login: "/login/hostel" },
-  // { prefix: "/mess", login: "/login/mess" },
-  // { prefix: "/nisab", login: "/login/nisab" },
-  // { prefix: "/library", login: "/login/library" },
-  // { prefix: "/hazri", login: "/login/hazri" },
 ];
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Allow public assets and login pages
+  // 1. Allow Essential Assets
   if (
-    PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/")) ||
-    pathname.startsWith("/api") // APIs are protected individually
+    pathname.startsWith("/_next") ||
+    pathname.includes("favicon.ico") ||
+    pathname.startsWith("/fonts") ||
+    pathname.startsWith("/api/license")
   ) {
     return NextResponse.next();
   }
 
-  // If path matches a protected prefix, require auth cookie
+  // 2. Global License & SA Check
+  const isActivated = req.cookies.get("software_activated")?.value === "true";
+  const isSAVerified = req.cookies.get("sa_verified")?.value === "true";
+
+  // Protection for Super Admin Dashboard
+  if (pathname.startsWith("/super-admin") && pathname !== "/super-admin/auth" && !pathname.includes("/api/")) {
+    if (!isSAVerified) {
+      return NextResponse.redirect(new URL("/super-admin/auth", req.url));
+    }
+  }
+
+  // If NOT activated, ONLY allow /activate and /super-admin/auth
+  if (!isActivated) {
+    if (!pathname.startsWith("/activate") && !pathname.startsWith("/super-admin") && !pathname.includes("/api/")) {
+      const url = req.nextUrl.clone();
+      url.pathname = "/activate";
+      return NextResponse.redirect(url);
+    }
+  }
+  // If ALREADY activated, redirect from /activate to /login
+  else if (pathname.startsWith("/activate")) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+
+  // 3. Handle Root Redirect
+  if (pathname === "/") {
+    const url = req.nextUrl.clone();
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+
+  // 4. Auth Logic for Protected Modules
   const match = PROTECTED.find((m) => pathname.startsWith(m.prefix));
   if (match) {
     const token = req.cookies.get("auth_token")?.value;
@@ -47,49 +71,18 @@ export function middleware(req: NextRequest) {
 
     const payload = decodeJwt(token);
 
-    if (pathname.startsWith("/super-admin")) {
-      if (payload?.role !== "super_admin") {
-        const url = req.nextUrl.clone();
-        url.pathname = "/modules/madrassa";
-        return NextResponse.redirect(url);
-      }
+    // Basic role protection
+    if (pathname.startsWith("/mudeer") && !["admin", "mudeer"].includes(payload?.role)) {
+      return NextResponse.redirect(new URL("/login", req.url));
     }
-
-    if (pathname.startsWith("/mudeer")) {
-      if (payload?.role !== "mudeer" && payload?.role !== "admin") {
-        const url = req.nextUrl.clone();
-        url.pathname = "/login";
-        return NextResponse.redirect(url);
-      }
+    if (pathname.startsWith("/talba") && !["nazim", "admin", "mudeer"].includes(payload?.role)) {
+      return NextResponse.redirect(new URL("/login", req.url));
     }
-
-    if (pathname.startsWith("/talba")) {
-      if (payload?.role !== "nazim" && payload?.role !== "admin" && payload?.role !== "mudeer") {
-        const url = req.nextUrl.clone();
-        url.pathname = "/login";
-        return NextResponse.redirect(url);
-      }
+    if ((pathname.startsWith("/teacher") || pathname.startsWith("/modules/teacher")) && payload?.role !== "teacher") {
+      return NextResponse.redirect(new URL("/modules/madrassa", req.url));
     }
-
-    if (
-      pathname.startsWith("/teacher") ||
-      pathname.startsWith("/modules/teacher")
-    ) {
-      if (payload?.role !== "teacher") {
-        const url = req.nextUrl.clone();
-        url.pathname = "/modules/madrassa";
-        return NextResponse.redirect(url);
-      }
-    }
-    if (
-      pathname.startsWith("/admin") ||
-      pathname.startsWith("/modules/madrassa")
-    ) {
-      if (payload?.role !== "admin" && payload?.role !== "mudeer") {
-        const url = req.nextUrl.clone();
-        url.pathname = "/teacher";
-        return NextResponse.redirect(url);
-      }
+    if ((pathname.startsWith("/admin") || pathname.startsWith("/modules/madrassa")) && !["admin", "mudeer"].includes(payload?.role)) {
+      return NextResponse.redirect(new URL("/teacher", req.url));
     }
   }
 
@@ -97,10 +90,7 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    // Run middleware on all paths except static files. We'll early-return for PUBLIC/API.
-    "/((?!_next/static|_next/image|favicon.ico).*)",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
 
 function decodeJwt(token: string): any | null {
@@ -108,10 +98,7 @@ function decodeJwt(token: string): any | null {
     const part = token.split(".")[1];
     if (!part) return null;
     const base64 = part.replace(/-/g, "+").replace(/_/g, "/");
-    const json =
-      typeof atob !== "undefined"
-        ? atob(base64)
-        : Buffer.from(base64, "base64").toString("utf-8");
+    const json = typeof atob !== "undefined" ? atob(base64) : Buffer.from(base64, "base64").toString("utf-8");
     return JSON.parse(json);
   } catch {
     return null;

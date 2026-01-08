@@ -1,86 +1,133 @@
+import Head from "next/head";
+import SuperAdminLayout from "@/components/layout/SuperAdminLayout";
+import { FileCheck, AlertCircle, Key, Activity } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import api from "@/utils/api";
 
 interface DashboardStats {
-  totalJamias: number;
-  activeJamias: number;
-  inactiveJamias: number;
+  totalLicenses: number;
+  activeLicenses: number;
+  expiredLicenses: number;
+  suspendedLicenses: number;
 }
 
-export default function SuperAdminDashboardPage() {
-  const router = useRouter();
+export default function SuperAdminDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Basic guard in case middleware is bypassed somehow
-    const token =
-      typeof window !== "undefined"
-        ? localStorage.getItem("madrassa_token")
-        : null;
-    if (!token) {
-      router.replace("/login");
-    }
-  }, [router]);
-
-  useEffect(() => {
-    const load = async () => {
+    const loadStats = async () => {
       try {
         setLoading(true);
-        setError(null);
-        const res = await api.get("/api/super-admin/jamias");
-        const jamias = (res.data?.jamias || []) as any[];
-        const total = jamias.length;
-        const active = jamias.filter((j) => j.isActive && !j.isDeleted).length;
-        const inactive = jamias.filter(
-          (j) => !j.isActive && !j.isDeleted
-        ).length;
+        const res = await api.get("/api/super-admin/dashboard/stats");
         setStats({
-          totalJamias: total,
-          activeJamias: active,
-          inactiveJamias: inactive,
+          totalLicenses: res.data.totalLicenses || res.data.totalJamias || 0,
+          activeLicenses: res.data.activeLicenses || 0,
+          expiredLicenses: res.data.expiredLicenses || 0,
+          suspendedLicenses: (res.data.totalLicenses || res.data.totalJamias || 0) - (res.data.activeLicenses || 0)
         });
-      } catch (e: any) {
-        setError(e?.response?.data?.message || "ڈیش بورڈ لوڈ کرنے میں مسئلہ");
+      } catch (e) {
+        console.error(e);
       } finally {
         setLoading(false);
       }
     };
-    load();
+    loadStats();
   }, []);
 
   return (
-    <div className="min-h-screen bg-lightBg p-4 space-y-4">
-      <h1 className="text-2xl font-semibold text-right">
-        Super Admin ڈیش بورڈ
-      </h1>
+    <SuperAdminLayout>
+      <Head>
+        <title>سپر ایڈمن ڈیش بورڈ</title>
+      </Head>
 
-      {error && (
-        <div className="bg-red-100 text-red-700 px-3 py-2 rounded text-sm text-right">
-          {error}
+      <div className="mb-6 text-right font-urdu">
+        <h1 className="text-2xl font-black text-saPrimary">سپر ایڈمن پینل</h1>
+        <p className="text-xs text-slate-500">سسٹم کے لائسنس اور ماڈیولز کا مکمل کنٹرول</p>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 dir-rtl font-urdu">
+        <StatCard
+          title="کل لائسنس"
+          value={stats?.totalLicenses || 0}
+          icon={Key}
+          color="bg-secondary"
+        />
+        <StatCard
+          title="فعال لائسنس"
+          value={stats?.activeLicenses || 0}
+          icon={FileCheck}
+          color="bg-secondary"
+        />
+        <StatCard
+          title="ایکسپائرڈ لائسنس"
+          value={stats?.expiredLicenses || 0}
+          icon={AlertCircle}
+          color="bg-secondary"
+        />
+        <StatCard
+          title="غیر فعال"
+          value={stats?.suspendedLicenses || 0}
+          icon={Activity}
+          color="bg-secondary"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 text-right font-urdu">
+        <div className="bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100">
+          <h3 className="text-base font-bold mb-3 text-saPrimary border-b pb-1.5">سسٹم انتباہ</h3>
+          <div className="space-y-3">
+            <div className="p-4 bg-orange-50 border border-orange-100 rounded-2xl flex flex-row-reverse gap-4">
+              <div className="bg-orange-100 p-2.5 rounded-xl shrink-0">
+                <AlertCircle className="text-orange-600 h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-base font-bold text-orange-800 leading-tight">لائسنس چیک کریں</p>
+                <p className="text-[10px] text-orange-600 mt-1">سسٹم کے تمام لائسنسوں کی نگرانی کے لیے لائسنس مینجمنٹ دیکھیں</p>
+              </div>
+            </div>
+            <div className="p-4 bg-blue-50 border border-blue-100 rounded-2xl flex flex-row-reverse gap-4">
+              <div className="bg-blue-100 p-2.5 rounded-xl shrink-0">
+                <Activity className="text-blue-600 h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-base font-bold text-blue-800 leading-tight">سسٹم اپ ڈیٹ</p>
+                <p className="text-[10px] text-blue-600 mt-1">تمام ماڈیولز فی الحال درست طریقے سے کام کر رہے ہیں</p>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
 
-      {loading && <p className="text-right text-sm">لوڈ ہو رہا ہے...</p>}
-
-      {stats && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard label="کل جامعات" value={stats.totalJamias} />
-          <StatCard label="فعال جامعات" value={stats.activeJamias} />
-          <StatCard label="غیر فعال جامعات" value={stats.inactiveJamias} />
+        <div className="bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100">
+          <h3 className="text-base font-bold mb-3 text-saPrimary border-b pb-1.5">سسٹم پورٹلز کا معائنہ</h3>
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+            {[
+              'طلباء پورٹل', 'اساتذہ پورٹل', 'فنانس پورٹل',
+              'ہاسٹل پورٹل', 'لائبریری پورٹل', 'نصاب پورٹل',
+              'حاضری پورٹل', 'امتحانات پورٹل', 'مدارس پورٹل'
+            ].map(mod => (
+              <div key={mod} className="bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-sm font-bold text-slate-700 text-center shadow-sm">
+                {mod}
+              </div>
+            ))}
+          </div>
         </div>
-      )}
-    </div>
+      </div>
+    </SuperAdminLayout>
   );
 }
 
-function StatCard({ label, value }: { label: string; value: number | string }) {
+function StatCard({ title, value, icon: Icon, color }: any) {
   return (
-    <div className="bg-white rounded-xl shadow-sm p-4 text-right">
-      <div className="text-xs text-gray-500 mb-1">{label}</div>
-      <div className="text-2xl font-bold text-gray-800">{value}</div>
+    <div className="bg-white p-4 rounded-[1.5rem] shadow-sm border border-slate-100 flex flex-row-reverse items-center gap-4 transition-all hover:shadow-lg font-urdu">
+      <div className={`${color} p-3 rounded-xl text-white shadow-md shrink-0`}>
+        <Icon className="h-5 w-5" />
+      </div>
+      <div className="flex-1">
+        <p className="text-[10px] text-slate-500 font-bold mb-0.5">{title}</p>
+        <p className="text-xl font-black text-saPrimary">{value}</p>
+      </div>
     </div>
   );
 }
