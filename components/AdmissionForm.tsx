@@ -13,7 +13,7 @@ const A4_HEIGHT_MM = 297;
 const urduFont = localFont({
   src: [
     {
-      path: "../public/fonts/alqalam-taj-nastaleeq/AlQalam.ttf",
+      path: "../public/fonts/alqalam-taj-nastaleeq/AlQalamTajNastaleeq.ttf",
       style: "normal",
       weight: "400",
     },
@@ -164,10 +164,11 @@ function Row({
         {label}
       </div>
       <div
-        className={`flex-1 pb-1 min-h-[22px] urdu-text text-[12pt] ${dotted
+        className={`flex-1 pb-1 min-h-[22px] urdu-text text-[12pt] ${
+          dotted
             ? "border-b border-dotted border-gray-500"
             : "border-b border-gray-400"
-          }`}
+        }`}
       >
         {value}
       </div>
