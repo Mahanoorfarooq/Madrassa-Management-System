@@ -91,9 +91,9 @@ export default function TeacherDisciplineNotesPage() {
   return (
     <TeacherLayout>
       <div className="space-y-6" dir="rtl">
-        <div className="bg-gradient-to-r from-rose-600 to-red-600 rounded-xl p-5 text-white shadow-md">
+        <div className="bg-secondary rounded-xl p-5 text-white shadow-md">
           <h1 className="text-xl font-bold">ڈسپلن نوٹس</h1>
-          <p className="text-rose-100 text-xs">انتظامیہ کو نوٹس جمع کرائیں</p>
+          <p className="text-white/80 text-xs">انتظامیہ کو نوٹس جمع کرائیں</p>
         </div>
 
         {/* Form */}
@@ -112,7 +112,7 @@ export default function TeacherDisciplineNotesPage() {
                   setSectionId("");
                   setStudentId("");
                 }}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-rose-600"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary"
               >
                 <option value="">(اختیاری)</option>
                 {classes.map((c: any) => (
@@ -131,7 +131,7 @@ export default function TeacherDisciplineNotesPage() {
                   setStudentId("");
                 }}
                 disabled={!classId}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-rose-600 disabled:bg-gray-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary disabled:bg-gray-100"
               >
                 <option value="">(اختیاری)</option>
                 {sections.map((s: any) => (
@@ -148,7 +148,7 @@ export default function TeacherDisciplineNotesPage() {
               <select
                 value={studentId}
                 onChange={(e) => setStudentId(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-rose-600"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary"
               >
                 <option value="">منتخب کریں</option>
                 {students.map((s: any) => (
@@ -164,7 +164,7 @@ export default function TeacherDisciplineNotesPage() {
               <input
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-rose-600"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary"
               />
             </div>
             <div className="md:col-span-2">
@@ -173,7 +173,7 @@ export default function TeacherDisciplineNotesPage() {
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 rows={3}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-rose-600"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary"
                 required
               />
             </div>
@@ -182,7 +182,7 @@ export default function TeacherDisciplineNotesPage() {
               <select
                 value={severity}
                 onChange={(e) => setSeverity(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-rose-600"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary"
               >
                 <option value="Low">کم</option>
                 <option value="Medium">درمیانہ</option>
@@ -193,7 +193,7 @@ export default function TeacherDisciplineNotesPage() {
               <button
                 type="submit"
                 disabled={loading || !studentId || !note}
-                className="inline-flex items-center gap-2 rounded-lg bg-rose-600 hover:bg-rose-700 text-white px-5 py-2.5 text-sm font-semibold disabled:opacity-60"
+                className="inline-flex items-center gap-2 rounded-lg bg-secondary hover:opacity-90 text-white px-5 py-2.5 text-sm font-semibold disabled:opacity-60"
               >
                 محفوظ کریں
               </button>

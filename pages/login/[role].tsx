@@ -66,17 +66,34 @@ export default function RoleLoginPage() {
     setLoading(true);
     try {
       const res = await axios.post("/api/auth/login", { username, password });
-      const { token, user } = res.data;
+      const { token, user, allowedModules } = res.data || {};
       if (token && user) {
         if (typeof window !== "undefined") {
+          // Persist token for client and middleware
           localStorage.setItem("madrassa_token", token);
+          document.cookie = `auth_token=${token}; Path=/; SameSite=Lax`;
+          if (allowedModules) {
+            try {
+              localStorage.setItem(
+                "allowed_modules",
+                JSON.stringify(allowedModules)
+              );
+            } catch {}
+          }
         }
 
         const userRole = user.role as string;
         const currentKey = typeof role === "string" ? role : undefined;
-
-        // Single dashboard after login
-        router.push("/dashboard");
+        // Prefer explicit next param
+        const params = new URLSearchParams(window.location.search);
+        const nextParam = params.get("next");
+        const fallback =
+          (userRole && dashboardByRole[userRole]) ||
+          (currentKey && moduleDashboardByKey[currentKey]) ||
+          "/";
+        const target =
+          nextParam && nextParam.startsWith("/") ? nextParam : fallback;
+        router.replace(target);
       } else {
         setError("لاگ اِن میں مسئلہ پیش آیا، دوبارہ کوشش کریں۔");
       }

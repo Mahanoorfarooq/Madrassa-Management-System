@@ -82,13 +82,13 @@ export default function TeacherAttendanceReport() {
     <TeacherLayout>
       <div className="p-6 max-w-5xl mx-auto" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl p-5 text-white shadow-md mb-6 flex items-center gap-3">
+        <div className="bg-secondary rounded-xl p-5 text-white shadow-md mb-6 flex items-center gap-3">
           <div className="w-11 h-11 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
             <BarChart2 className="w-5 h-5" />
           </div>
           <div className="text-right">
             <h2 className="text-xl font-bold">کلاس کی حاضری رپورٹ</h2>
-            <p className="text-emerald-100 text-sm">
+            <p className="text-white/80 text-sm">
               کلاس، سیکشن اور تاریخ کا دورانیہ منتخب کریں اور رپورٹ دیکھیں
             </p>
           </div>
@@ -114,7 +114,7 @@ export default function TeacherAttendanceReport() {
                   setClassId(e.target.value);
                   setSectionId("");
                 }}
-                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all"
+                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
               >
                 <option value="">انتخاب کریں</option>
                 {classes.map((c: any) => (
@@ -133,7 +133,7 @@ export default function TeacherAttendanceReport() {
               <select
                 value={sectionId}
                 onChange={(e) => setSectionId(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
                 disabled={!classId}
               >
                 <option value="">انتخاب کریں</option>
@@ -156,7 +156,7 @@ export default function TeacherAttendanceReport() {
                 type="date"
                 value={from}
                 onChange={(e) => setFrom(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all"
+                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
               />
             </div>
 
@@ -169,7 +169,7 @@ export default function TeacherAttendanceReport() {
                 type="date"
                 value={to}
                 onChange={(e) => setTo(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all"
+                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
               />
             </div>
 
@@ -178,7 +178,7 @@ export default function TeacherAttendanceReport() {
               <button
                 onClick={loadReport}
                 disabled={!classId || !sectionId || !from || !to || loading}
-                className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-6 py-2.5 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:from-emerald-700 hover:to-teal-700 transition-all"
+                className="inline-flex items-center gap-2 rounded-lg bg-secondary text-white px-6 py-2.5 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:opacity-90 transition-all"
               >
                 <CalendarDays className="w-4 h-4" />
                 <span>{loading ? "لوڈ ہو رہا ہے..." : "رپورٹ دیکھیں"}</span>
@@ -188,11 +188,11 @@ export default function TeacherAttendanceReport() {
 
           {report && (
             <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-gray-600">
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary">
                 <CalendarDays className="w-3 h-3" />
                 مدت: {formatDate(report.from)} تا {formatDate(report.to)}
               </span>
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-secondary/10 border border-secondary/30 text-secondary">
                 دنوں کی تعداد: {report.totalDays}
               </span>
               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gray-50 border border-gray-200 text-gray-700">
@@ -207,7 +207,7 @@ export default function TeacherAttendanceReport() {
           <div className="bg-white border border-gray-200 rounded-xl shadow-md overflow-hidden">
             <div className="flex items-center justify-between px-5 py-3 border-b bg-gray-50">
               <div className="flex items-center gap-2">
-                <Users className="w-4 h-4 text-teal-600" />
+                <Users className="w-4 h-4 text-secondary" />
                 <span className="text-sm font-semibold text-gray-800">
                   طلبہ کی حاضری خلاصہ
                 </span>
@@ -238,7 +238,7 @@ export default function TeacherAttendanceReport() {
                     <th className="px-4 py-2 font-semibold text-gray-700">
                       کل دن
                     </th>
-                    <th className="px-4 py-2 font-semibold text-emerald-700">
+                    <th className="px-4 py-2 font-semibold text-primary">
                       حاضری ٪
                     </th>
                   </tr>
@@ -279,7 +279,7 @@ export default function TeacherAttendanceReport() {
                         <td className="px-4 py-2 text-center text-gray-700">
                           {effectiveTotal}
                         </td>
-                        <td className="px-4 py-2 text-center text-emerald-700 font-semibold">
+                        <td className="px-4 py-2 text-center text-primary font-semibold">
                           {percent}%
                         </td>
                       </tr>

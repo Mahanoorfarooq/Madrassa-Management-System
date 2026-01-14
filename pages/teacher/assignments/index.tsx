@@ -15,7 +15,7 @@ export default function TeacherAssignmentsPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState<string>("");
-  const [attachments, setAttachments] = useState<string>(""); // comma-separated URLs
+  const [attachments, setAttachments] = useState<string>("");
   const [classId, setClassId] = useState<string>("");
   const [sectionId, setSectionId] = useState<string>("");
   const [subject, setSubject] = useState<string>("");
@@ -94,9 +94,9 @@ export default function TeacherAssignmentsPage() {
     <TeacherLayout>
       <div className="space-y-6" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl p-5 text-white shadow-md">
+        <div className="bg-secondary rounded-xl p-5 text-white shadow-md">
           <h1 className="text-xl font-bold">اسائنمنٹس</h1>
-          <p className="text-pink-100 text-xs">
+          <p className="text-white/80 text-xs">
             ہوم ورک / اسائنمنٹس بنائیں اور سبمشن دیکھیں
           </p>
         </div>
@@ -113,7 +113,7 @@ export default function TeacherAssignmentsPage() {
               <input
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-600"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary"
                 required
               />
             </div>
@@ -125,7 +125,7 @@ export default function TeacherAssignmentsPage() {
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-600"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary"
               />
             </div>
             <div className="md:col-span-2">
@@ -133,7 +133,7 @@ export default function TeacherAssignmentsPage() {
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-600"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary"
                 rows={3}
               />
             </div>
@@ -145,7 +145,7 @@ export default function TeacherAssignmentsPage() {
                   setClassId(e.target.value);
                   setSectionId("");
                 }}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-600"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary"
               >
                 <option value="">(اختیاری)</option>
                 {classes.map((c: any) => (
@@ -161,7 +161,7 @@ export default function TeacherAssignmentsPage() {
                 value={sectionId}
                 onChange={(e) => setSectionId(e.target.value)}
                 disabled={!classId}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-600 disabled:bg-gray-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary disabled:bg-gray-100"
               >
                 <option value="">(اختیاری)</option>
                 {sections.map((s: any) => (
@@ -177,7 +177,7 @@ export default function TeacherAssignmentsPage() {
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 placeholder="مثلاً: عربی"
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-600"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary"
               />
             </div>
             <div>
@@ -188,14 +188,14 @@ export default function TeacherAssignmentsPage() {
                 value={attachments}
                 onChange={(e) => setAttachments(e.target.value)}
                 placeholder="https://a.pdf, https://b.mp4"
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-600"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary"
               />
             </div>
             <div className="md:col-span-2 flex justify-end">
               <button
                 type="submit"
                 disabled={loading}
-                className="inline-flex items-center gap-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white px-5 py-2.5 text-sm font-semibold disabled:opacity-60"
+                className="inline-flex items-center gap-2 rounded-lg bg-secondary hover:opacity-90 text-white px-5 py-2.5 text-sm font-semibold disabled:opacity-60"
               >
                 محفوظ کریں
               </button>
@@ -245,7 +245,7 @@ export default function TeacherAssignmentsPage() {
                         <div className="flex items-center gap-2 justify-end">
                           <Link
                             href={`/teacher/assignments/${a._id}`}
-                            className="px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-700 text-xs hover:bg-emerald-200"
+                            className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-xs hover:bg-primary/20"
                           >
                             سبمشنز
                           </Link>

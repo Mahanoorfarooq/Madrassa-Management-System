@@ -494,7 +494,7 @@ export default function TalbaStudentDetail() {
                 <button
                   disabled={docsLoading}
                   onClick={addDocument}
-                  className="rounded bg-primary text-white px-5 py-2 text-xs font-semibold hover:bg-emerald-700 disabled:opacity-60"
+                  className="rounded bg-secondary hover:opacity-90 text-white px-5 py-2 text-xs font-semibold disabled:opacity-60"
                 >
                   نیا ڈاکومنٹ شامل کریں
                 </button>
@@ -529,7 +529,7 @@ export default function TalbaStudentDetail() {
                           href={d.pdfPath}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-xs text-emerald-700 hover:underline break-all"
+                          className="text-xs text-primary hover:underline break-all"
                         >
                           {d.pdfPath}
                         </a>

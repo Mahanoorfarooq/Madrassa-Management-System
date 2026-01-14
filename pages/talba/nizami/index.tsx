@@ -139,14 +139,14 @@ export default function NizamiDashboard() {
     <TalbaLayout>
       <div className="space-y-6" dir="rtl">
         {/* Header Banner */}
-        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl shadow-lg p-6 text-white">
+        <div className="bg-secondary rounded-2xl shadow-lg p-6 text-white">
           <div className="flex items-center gap-4">
             <div className="bg-white/20 backdrop-blur-sm rounded-full p-4">
               <BookOpen className="w-10 h-10" />
             </div>
             <div>
               <h1 className="text-2xl font-bold mb-1">شعبہ درس نظامی</h1>
-              <p className="text-indigo-100 text-sm">
+              <p className="text-white/80 text-sm">
                 خوش آمدید! یہاں آپ کی تمام معلومات موجود ہیں
               </p>
             </div>
@@ -165,19 +165,18 @@ export default function NizamiDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((s) => {
             const Icon = s.icon;
-            const colors = getColorClasses(s.color);
             return (
               <div
                 key={s.title}
-                className={`bg-white rounded-xl shadow-md border-2 ${colors.border} p-6 hover:shadow-lg transition-all duration-200 transform hover:scale-105`}
+                className={`bg-white rounded-xl shadow-md border border-gray-200 p-6 hover:shadow-lg transition-all duration-200 transform hover:scale-105`}
               >
                 <div className="flex items-center justify-between mb-3">
-                  <div className={`${colors.bg} rounded-full p-3`}>
-                    <Icon className={`w-6 h-6 ${colors.text}`} />
+                  <div className={`bg-secondary/10 rounded-full p-3`}>
+                    <Icon className={`w-6 h-6 text-secondary`} />
                   </div>
                 </div>
                 <p className="text-sm text-gray-600 mb-1">{s.title}</p>
-                <div className={`text-3xl font-bold ${colors.text}`}>
+                <div className={`text-3xl font-bold text-primary`}>
                   {loading ? (
                     <div className="w-16 h-8 bg-gray-200 animate-pulse rounded" />
                   ) : (
@@ -193,10 +192,10 @@ export default function NizamiDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Quick Links */}
           <div className="lg:col-span-2 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b">
+            <div className="bg-gray-50 px-6 py-4 border-b">
               <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-                <div className="bg-indigo-100 rounded-full p-2">
-                  <ArrowLeft className="w-5 h-5 text-indigo-600" />
+                <div className="bg-secondary/10 rounded-full p-2">
+                  <ArrowLeft className="w-5 h-5 text-secondary" />
                 </div>
                 فوری روابط
               </h2>
@@ -209,20 +208,20 @@ export default function NizamiDashboard() {
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="group relative overflow-hidden rounded-xl border-2 border-gray-200 bg-gradient-to-br from-white to-gray-50 hover:border-indigo-400 transition-all duration-300 shadow-sm hover:shadow-md p-5"
+                      className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white hover:border-secondary transition-all duration-300 shadow-sm hover:shadow-md p-5"
                     >
                       <div className="flex items-center gap-4">
                         <div
-                          className={`${link.color} rounded-lg p-3 group-hover:scale-110 transition-transform duration-300`}
+                          className={`bg-secondary rounded-lg p-3 group-hover:scale-110 transition-transform duration-300`}
                         >
                           <Icon className="w-6 h-6 text-white" />
                         </div>
                         <div className="flex-1">
-                          <p className="text-sm font-medium text-gray-800 group-hover:text-indigo-700 transition-colors">
+                          <p className="text-sm font-medium text-gray-800 group-hover:text-primary transition-colors">
                             {link.label}
                           </p>
                         </div>
-                        <ArrowLeft className="w-5 h-5 text-gray-400 group-hover:text-indigo-600 group-hover:translate-x-1 transition-all duration-300" />
+                        <ArrowLeft className="w-5 h-5 text-gray-400 group-hover:text-secondary group-hover:translate-x-1 transition-all duration-300" />
                       </div>
                     </Link>
                   );
@@ -234,8 +233,8 @@ export default function NizamiDashboard() {
           {/* Chart */}
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="bg-indigo-100 rounded-full p-2">
-                <TrendingUp className="w-5 h-5 text-indigo-600" />
+              <div className="bg-secondary/10 rounded-full p-2">
+                <TrendingUp className="w-5 h-5 text-secondary" />
               </div>
               <h2 className="text-lg font-bold text-gray-800">شعبہ کا خلاصہ</h2>
             </div>

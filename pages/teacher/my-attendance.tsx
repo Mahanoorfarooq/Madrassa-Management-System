@@ -79,13 +79,13 @@ export default function MyAttendance() {
     <TeacherLayout>
       <div className="p-6 max-w-4xl mx-auto" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-indigo-500 to-sky-600 rounded-xl p-5 text-white shadow-md mb-6 flex items-center gap-3">
+        <div className="bg-secondary rounded-xl p-5 text-white shadow-md mb-6 flex items-center gap-3">
           <div className="w-11 h-11 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
             <CalendarDays className="w-5 h-5" />
           </div>
           <div className="text-right">
             <h2 className="text-xl font-bold">میری حاضری</h2>
-            <p className="text-indigo-100 text-sm">
+            <p className="text-white/80 text-sm">
               اپنی حاضری دیکھیں اور ریکارڈ ڈاؤنلوڈ کریں
             </p>
           </div>
@@ -108,7 +108,7 @@ export default function MyAttendance() {
                 type="date"
                 value={from}
                 onChange={(e) => setFrom(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
+                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
               />
             </div>
             <div>
@@ -119,14 +119,14 @@ export default function MyAttendance() {
                 type="date"
                 value={to}
                 onChange={(e) => setTo(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all"
+                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
               />
             </div>
             <div className="flex items-end justify-end">
               <button
                 onClick={load}
                 disabled={loading}
-                className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-600 to-sky-600 text-white px-6 py-2.5 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:from-indigo-700 hover:to-sky-700 transition-all"
+                className="inline-flex items-center gap-2 rounded-lg bg-secondary text-white px-6 py-2.5 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:opacity-90 transition-all"
               >
                 {loading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

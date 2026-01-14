@@ -125,7 +125,7 @@ export default function AttendancePage() {
       <TalbaLayout>
         <div className="space-y-4" dir="rtl">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-md p-5 text-white">
+          <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
@@ -133,7 +133,7 @@ export default function AttendancePage() {
                 </div>
                 <div>
                   <h1 className="text-xl font-bold">حاضری کا اندراج</h1>
-                  <p className="text-blue-100 text-xs">
+                  <p className="text-white/80 text-xs">
                     طلباء کی حاضری مارک کریں
                   </p>
                 </div>
@@ -166,7 +166,7 @@ export default function AttendancePage() {
           {/* Filters */}
           <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4">
             <div className="flex items-center gap-2 mb-3">
-              <Filter className="w-4 h-4 text-gray-600" />
+              <Filter className="w-4 h-4 text-secondary" />
               <h2 className="text-sm font-bold text-gray-800">فلٹرز</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
@@ -180,7 +180,7 @@ export default function AttendancePage() {
                     setDeptCode(e.target.value as DeptCode);
                     setClassId("");
                   }}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   {DEPT_TABS.map((d) => (
                     <option key={d.code} value={d.code}>
@@ -196,7 +196,7 @@ export default function AttendancePage() {
                 <select
                   value={classId}
                   onChange={(e) => setClassId(e.target.value)}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   <option value="">کلاس منتخب کریں</option>
                   {classes.map((c) => (
@@ -214,14 +214,14 @@ export default function AttendancePage() {
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
               </div>
               <div className="flex items-end">
                 <button
                   onClick={saveAttendance}
                   disabled={loading || students.length === 0}
-                  className={`w-full inline-flex items-center justify-center gap-2 rounded-lg ${currentTab?.color} text-white px-4 py-2.5 text-sm font-semibold shadow-md hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all`}
+                  className={`w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary text-white px-4 py-2.5 text-sm font-semibold shadow-md hover:shadow-lg hover:bg-primary/90 disabled:opacity-60 disabled:cursor-not-allowed transition-all`}
                 >
                   {loading ? (
                     <>
@@ -265,7 +265,7 @@ export default function AttendancePage() {
             ) : (
               <div className="overflow-x-auto">
                 <table className="min-w-full text-sm">
-                  <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                  <thead className="bg-gray-50 border-b-2 border-gray-200">
                     <tr>
                       <th className="px-5 py-3 text-right font-bold text-gray-700">
                         نام طالب علم
@@ -279,14 +279,14 @@ export default function AttendancePage() {
                     {students.map((s, index) => (
                       <tr
                         key={s._id}
-                        className={`hover:bg-blue-50 transition-colors ${
+                        className={`hover:bg-gray-50 transition-colors ${
                           index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                         }`}
                       >
                         <td className="px-5 py-3">
                           <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center">
-                              <span className="text-blue-600 font-bold text-xs">
+                            <div className="w-9 h-9 rounded-full bg-secondary/10 flex items-center justify-center">
+                              <span className="text-secondary font-bold text-xs">
                                 {s.fullName.charAt(0)}
                               </span>
                             </div>

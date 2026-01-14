@@ -75,15 +75,15 @@ export default function TalbaReportsPage() {
   );
 
   return (
-    <TalbaLayout >
+    <TalbaLayout>
       <div className="space-y-6" dir="rtl">
         {/* Header Section */}
-        <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl shadow-lg p-6 text-white">
+        <div className="bg-secondary rounded-2xl shadow-lg p-6 text-white">
           <div className="flex items-center justify-start gap-3">
             <BarChart3 className="w-8 h-8" />
             <div>
               <h1 className="text-2xl font-bold mb-2">رپورٹس اور تجزیہ</h1>
-              <p className="text-purple-100 text-sm max-w-2xl">
+              <p className="text-white/80 text-sm max-w-2xl">
                 یہاں آپ کو ہر شعبہ میں رجسٹرڈ طلبہ اور کلاسز کا خلاصہ نظر آئے
                 گا، ساتھ ہی گراف کی صورت میں موازنہ بھی۔
               </p>
@@ -93,42 +93,42 @@ export default function TalbaReportsPage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-xl shadow-md border-2 border-blue-100 p-6 hover:shadow-lg transition-shadow">
+          <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
-              <div className="bg-blue-100 rounded-full p-4">
-                <ClipboardCheck className="w-8 h-8 text-blue-600" />
+              <div className="bg-secondary/10 rounded-full p-4">
+                <ClipboardCheck className="w-8 h-8 text-secondary" />
               </div>
               <div className="text-right flex-1">
                 <p className="text-sm text-gray-600 mb-1">کل شعبہ جات</p>
-                <p className="text-3xl font-bold text-blue-600">
+                <p className="text-3xl font-bold text-primary">
                   {stats.length}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md border-2 border-green-100 p-6 hover:shadow-lg transition-shadow">
+          <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
-              <div className="bg-green-100 rounded-full p-4">
-                <Users className="w-8 h-8 text-green-600" />
+              <div className="bg-primary/10 rounded-full p-4">
+                <Users className="w-8 h-8 text-primary" />
               </div>
               <div className="text-right flex-1">
                 <p className="text-sm text-gray-600 mb-1">کل طلبہ</p>
-                <p className="text-3xl font-bold text-green-600">
+                <p className="text-3xl font-bold text-primary">
                   {totalStudents}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md border-2 border-orange-100 p-6 hover:shadow-lg transition-shadow">
+          <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
-              <div className="bg-orange-100 rounded-full p-4">
-                <GraduationCap className="w-8 h-8 text-orange-600" />
+              <div className="bg-primary/10 rounded-full p-4">
+                <GraduationCap className="w-8 h-8 text-primary" />
               </div>
               <div className="text-right flex-1">
                 <p className="text-sm text-gray-600 mb-1">کل کلاسز</p>
-                <p className="text-3xl font-bold text-orange-600">
+                <p className="text-3xl font-bold text-primary">
                   {totalClasses}
                 </p>
               </div>
@@ -139,8 +139,8 @@ export default function TalbaReportsPage() {
         {/* Chart Section */}
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
           <div className="flex items-center gap-3 mb-6">
-            <div className="bg-purple-100 rounded-full p-2">
-              <TrendingUp className="w-5 h-5 text-purple-600" />
+            <div className="bg-primary/10 rounded-full p-2">
+              <TrendingUp className="w-5 h-5 text-primary" />
             </div>
             <h2 className="text-lg font-bold text-gray-800">
               شعبہ وار طلبہ کی تعداد
@@ -155,10 +155,10 @@ export default function TalbaReportsPage() {
 
         {/* Detailed Table */}
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-          <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b flex items-center justify-between">
+          <div className="bg-gray-50 px-6 py-4 border-b flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="bg-purple-100 rounded-full p-2">
-                <FileText className="w-5 h-5 text-purple-600" />
+              <div className="bg-secondary/10 rounded-full p-2">
+                <FileText className="w-5 h-5 text-secondary" />
               </div>
               <h2 className="text-lg font-bold text-gray-800">
                 تفصیلی رپورٹ (شعبہ وار)
@@ -170,7 +170,7 @@ export default function TalbaReportsPage() {
                   <span className="text-xs text-gray-600">
                     لوڈ ہو رہا ہے...
                   </span>
-                  <div className="w-4 h-4 border-2 border-purple-600 border-t-transparent rounded-full animate-spin" />
+                  <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                 </div>
               )}
             </div>
@@ -187,15 +187,15 @@ export default function TalbaReportsPage() {
 
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
-              <thead className="bg-gradient-to-r from-purple-50 to-pink-50">
+              <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-purple-200">
+                  <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-gray-200">
                     شعبہ
                   </th>
-                  <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-purple-200">
+                  <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-gray-200">
                     کل طلبہ
                   </th>
-                  <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-purple-200">
+                  <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-gray-200">
                     کل کلاسز
                   </th>
                 </tr>
@@ -204,7 +204,7 @@ export default function TalbaReportsPage() {
                 {stats.map((d, index) => (
                   <tr
                     key={d._id}
-                    className={`border-b hover:bg-purple-50 transition-colors ${
+                    className={`border-b hover:bg-gray-50 transition-colors ${
                       index % 2 === 0 ? "bg-white" : "bg-gray-50"
                     }`}
                   >
@@ -212,13 +212,13 @@ export default function TalbaReportsPage() {
                       {d.name}
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <span className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                      <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold">
                         <span>{d.studentCount}</span>
                         <Users className="w-3 h-3" />
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <span className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-semibold">
+                      <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold">
                         <span>{d.classCount}</span>
                         <GraduationCap className="w-3 h-3" />
                       </span>

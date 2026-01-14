@@ -35,14 +35,14 @@ export default function TeacherAttendanceLanding() {
     <TeacherLayout>
       <div className="p-6 max-w-3xl mx-auto" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-teal-500 to-cyan-600 rounded-xl p-5 text-white shadow-md mb-6">
+        <div className="bg-secondary rounded-xl p-5 text-white shadow-md mb-6">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
               <CalendarDays className="w-5 h-5" />
             </div>
             <div>
               <h2 className="text-xl font-bold">آج کی حاضری</h2>
-              <p className="text-teal-100 text-sm">کلاس اور سیکشن منتخب کریں</p>
+              <p className="text-white/70 text-sm">کلاس اور سیکشن منتخب کریں</p>
             </div>
           </div>
         </div>
@@ -58,14 +58,14 @@ export default function TeacherAttendanceLanding() {
           {/* Stats Bar */}
           <div className="flex items-center justify-between mb-5 pb-4 border-b border-gray-200">
             <div className="flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-teal-600" />
+              <BookOpen className="w-5 h-5 text-secondary" />
               <span className="text-sm font-semibold text-gray-700">
                 میری کلاسیں
               </span>
             </div>
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-teal-50 rounded-lg border border-teal-200">
-              <Users className="w-4 h-4 text-teal-600" />
-              <span className="text-sm font-semibold text-teal-700">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-secondary/10 rounded-lg border border-secondary/30">
+              <Users className="w-4 h-4 text-secondary" />
+              <span className="text-sm font-semibold text-secondary">
                 {classes.length}
               </span>
             </div>
@@ -85,7 +85,7 @@ export default function TeacherAttendanceLanding() {
                     setClassId(e.target.value);
                     setSectionId("");
                   }}
-                  className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition-all"
+                  className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 >
                   <option value="">انتخاب کریں</option>
                   {classes.map((c: any) => (
@@ -104,7 +104,7 @@ export default function TeacherAttendanceLanding() {
                 <select
                   value={sectionId}
                   onChange={(e) => setSectionId(e.target.value)}
-                  className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 outline-none transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
                   disabled={!classId}
                 >
                   <option value="">انتخاب کریں</option>
@@ -118,8 +118,8 @@ export default function TeacherAttendanceLanding() {
             </div>
 
             {/* Info Box */}
-            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-              <div className="text-sm text-blue-700 leading-relaxed">
+            <div className="bg-primary/5 rounded-lg p-4 border border-primary/20">
+              <div className="text-sm text-primary leading-relaxed">
                 پہلے کلاس منتخب کریں، پھر اس کے متعلقہ سیکشن کو منتخب کریں، اور
                 &quot;جائیں&quot; پر کلک کریں تاکہ طلبہ کی حاضری کا صفحہ کھل
                 جائے۔
@@ -131,7 +131,7 @@ export default function TeacherAttendanceLanding() {
               <button
                 onClick={go}
                 disabled={!classId || !sectionId}
-                className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-teal-600 to-cyan-600 text-white px-8 py-2.5 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:from-teal-700 hover:to-cyan-700 transition-all"
+                className="flex items-center gap-2 rounded-lg bg-secondary text-white px-8 py-2.5 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:opacity-90 transition-all"
               >
                 <span>جائیں</span>
                 <ArrowLeft className="w-4 h-4" />

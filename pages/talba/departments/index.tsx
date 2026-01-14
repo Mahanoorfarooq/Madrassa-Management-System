@@ -73,27 +73,25 @@ export default function TalbaDepartmentsPage() {
 
   const getDeptColor = (code: string) => {
     const c = code.toUpperCase();
-    if (c === "HIFZ")
-      return "bg-emerald-100 text-emerald-700 border-emerald-300";
-    if (c === "NIZAMI")
-      return "bg-indigo-100 text-indigo-700 border-indigo-300";
-    if (c === "TAJWEED") return "bg-cyan-100 text-cyan-700 border-cyan-300";
-    if (c === "WAFAQ") return "bg-amber-100 text-amber-700 border-amber-300";
-    return "bg-gray-100 text-gray-700 border-gray-300";
+    if (c === "HIFZ") return "bg-primary/10 text-primary border-gray-200";
+    if (c === "NIZAMI") return "bg-primary/10 text-primary border-gray-200";
+    if (c === "TAJWEED") return "bg-primary/10 text-primary border-gray-200";
+    if (c === "WAFAQ") return "bg-primary/10 text-primary border-gray-200";
+    return "bg-gray-100 text-gray-700 border-gray-200";
   };
 
   return (
     <TalbaLayout>
       <div className="space-y-6" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-violet-600 to-purple-600 rounded-2xl shadow-lg p-6 text-white">
+        <div className="bg-secondary rounded-2xl shadow-lg p-6 text-white">
           <div className="flex items-center gap-4">
             <div className="bg-white/20 backdrop-blur-sm rounded-full p-4">
               <FolderOpen className="w-10 h-10" />
             </div>
             <div>
               <h1 className="text-2xl font-bold mb-1">شعبہ جات کا انتظام</h1>
-              <p className="text-violet-100 text-sm">
+              <p className="text-white/80 text-sm">
                 نئے شعبے شامل کریں اور موجودہ شعبوں کو منظم کریں
               </p>
             </div>
@@ -103,10 +101,10 @@ export default function TalbaDepartmentsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Add Department Form */}
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b">
+            <div className="bg-gray-50 px-6 py-4 border-b">
               <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-                <div className="bg-violet-100 rounded-full p-2">
-                  <PlusCircle className="w-5 h-5 text-violet-600" />
+                <div className="bg-secondary/10 rounded-full p-2">
+                  <PlusCircle className="w-5 h-5 text-secondary" />
                 </div>
                 نیا شعبہ شامل کریں
               </h2>
@@ -130,7 +128,7 @@ export default function TalbaDepartmentsPage() {
                     onChange={(e) => setCode(e.target.value)}
                     required
                     placeholder="مثال: HIFZ"
-                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-100 hover:border-gray-300"
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 hover:border-gray-300"
                   />
                 </div>
 
@@ -143,7 +141,7 @@ export default function TalbaDepartmentsPage() {
                     onChange={(e) => setName(e.target.value)}
                     required
                     placeholder="مثال: شعبہ حفظ القرآن"
-                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-100 hover:border-gray-300"
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 hover:border-gray-300"
                   />
                 </div>
 
@@ -155,7 +153,7 @@ export default function TalbaDepartmentsPage() {
                     value={type}
                     onChange={(e) => setType(e.target.value)}
                     placeholder="مثال: قرآنی علوم"
-                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-100 hover:border-gray-300"
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 hover:border-gray-300"
                   />
                 </div>
 
@@ -175,7 +173,7 @@ export default function TalbaDepartmentsPage() {
                 <button
                   onClick={addDepartment}
                   disabled={loading}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-violet-600 to-purple-600 text-white px-6 py-3.5 text-sm font-semibold shadow-lg hover:shadow-xl hover:from-violet-700 hover:to-purple-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 active:scale-95"
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary text-white px-6 py-3.5 text-sm font-semibold shadow-lg hover:shadow-xl hover:bg-primary/90 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 active:scale-95"
                 >
                   {loading ? (
                     <>
@@ -195,11 +193,11 @@ export default function TalbaDepartmentsPage() {
 
           {/* Departments List */}
           <div className="lg:col-span-2 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b">
+            <div className="bg-gray-50 px-6 py-4 border-b">
               <h2 className="text-lg font-bold text-gray-800 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="bg-violet-100 rounded-full p-2">
-                    <FolderOpen className="w-5 h-5 text-violet-600" />
+                  <div className="bg-secondary/10 rounded-full p-2">
+                    <FolderOpen className="w-5 h-5 text-secondary" />
                   </div>
                   موجودہ شعبہ جات
                 </div>
@@ -211,21 +209,21 @@ export default function TalbaDepartmentsPage() {
 
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-gradient-to-r from-violet-50 to-purple-50">
+                <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-violet-200">
+                    <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-gray-200">
                       کوڈ
                     </th>
-                    <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-violet-200">
+                    <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-gray-200">
                       نام
                     </th>
-                    <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-violet-200">
+                    <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-gray-200">
                       قسم
                     </th>
-                    <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-violet-200">
+                    <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-gray-200">
                       حالت
                     </th>
-                    <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-violet-200">
+                    <th className="px-6 py-4 text-right font-bold text-gray-700 border-b-2 border-gray-200">
                       عمل
                     </th>
                   </tr>
@@ -257,8 +255,8 @@ export default function TalbaDepartmentsPage() {
                         <span
                           className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ${
                             d.isActive
-                              ? "bg-green-100 text-green-700 border border-green-300"
-                              : "bg-gray-100 text-gray-600 border border-gray-300"
+                              ? "bg-green-100 text-green-700 border border-green-200"
+                              : "bg-gray-100 text-gray-600 border border-gray-200"
                           }`}
                         >
                           {d.isActive ? (
@@ -278,7 +276,7 @@ export default function TalbaDepartmentsPage() {
                         <div className="flex gap-2 justify-end">
                           <button
                             onClick={() => toggleActive(d._id, d.isActive)}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors"
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
                           >
                             <Power className="w-3 h-3" />
                             {d.isActive ? "غیرفعال" : "فعال"}

@@ -125,7 +125,7 @@ export default function SyllabusPage() {
     <TalbaLayout>
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
@@ -133,7 +133,7 @@ export default function SyllabusPage() {
               </div>
               <div>
                 <h1 className="text-xl font-bold">نصاب کا انتظام</h1>
-                <p className="text-purple-100 text-xs">
+                <p className="text-white/80 text-xs">
                   نصاب کی تفصیلات اور پیشرفت
                 </p>
               </div>
@@ -143,7 +143,7 @@ export default function SyllabusPage() {
                 <div className="flex items-center gap-2">
                   <BarChart3 className="w-5 h-5" />
                   <div>
-                    <p className="text-[10px] text-purple-100">اوسط پیشرفت</p>
+                    <p className="text-[10px] text-white/80">اوسط پیشرفت</p>
                     <p className="text-lg font-bold">{avgProgress}%</p>
                   </div>
                 </div>
@@ -155,7 +155,7 @@ export default function SyllabusPage() {
         {/* Department Tabs */}
         <div className="bg-white rounded-xl shadow-md border border-gray-100 p-3">
           <div className="flex items-center gap-2 mb-3">
-            <Layers className="w-4 h-4 text-purple-600" />
+            <Layers className="w-4 h-4 text-secondary" />
             <h2 className="text-sm font-bold text-gray-800">شعبہ منتخب کریں</h2>
           </div>
           <div className="flex gap-2 flex-wrap">
@@ -170,7 +170,7 @@ export default function SyllabusPage() {
                   }}
                   className={`text-xs font-semibold rounded-lg px-4 py-2 transition-all ${
                     active
-                      ? `${d.color} text-white shadow-md`
+                      ? `bg-primary text-white shadow-md`
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
@@ -198,7 +198,7 @@ export default function SyllabusPage() {
                 <select
                   value={classId}
                   onChange={(e) => setClassId(e.target.value)}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   <option value="">تمام کلاسز</option>
                   {classes.map((c) => (
@@ -216,7 +216,7 @@ export default function SyllabusPage() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="مثلاً: سورۃ البقرہ"
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
               </div>
               <div>
@@ -227,14 +227,14 @@ export default function SyllabusPage() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="اختیاری تفصیل"
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
               </div>
               <div className="flex items-end">
                 <button
                   type="submit"
                   disabled={!title}
-                  className={`w-full inline-flex items-center justify-center gap-2 rounded-lg ${currentTab?.color} text-white px-4 py-2.5 text-sm font-semibold shadow-md hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all`}
+                  className={`w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary text-white px-4 py-2.5 text-sm font-semibold shadow-md hover:shadow-lg hover:bg-primary/90 disabled:opacity-60 disabled:cursor-not-allowed transition-all`}
                 >
                   <Plus className="w-4 h-4" />
                   <span>شامل کریں</span>
@@ -263,15 +263,15 @@ export default function SyllabusPage() {
               {items.map((item, index) => (
                 <div
                   key={item._id}
-                  className={`p-4 hover:bg-purple-50 transition-colors ${
+                  className={`p-4 hover:bg-gray-50 transition-colors ${
                     index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
-                          <BookOpen className="w-4 h-4 text-purple-600" />
+                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                          <BookOpen className="w-4 h-4 text-primary" />
                         </div>
                         <div>
                           <h3 className="text-sm font-bold text-gray-800">
@@ -298,7 +298,7 @@ export default function SyllabusPage() {
                             <div className="relative">
                               <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                                 <div
-                                  className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300"
+                                  className="h-full bg-primary transition-all duration-300"
                                   style={{
                                     width: `${item.progress || 0}%`,
                                   }}
@@ -314,7 +314,7 @@ export default function SyllabusPage() {
                             onChange={(e) =>
                               updateProgress(item._id, Number(e.target.value))
                             }
-                            className="w-32 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                            className="w-32 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
                           />
                         </div>
                       </div>

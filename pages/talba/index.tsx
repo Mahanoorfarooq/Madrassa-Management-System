@@ -171,17 +171,17 @@ export default function TalbaDashboard() {
     <TalbaLayout>
       <div className="space-y-6" dir="rtl">
         {/* Hero Header */}
-        <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 rounded-2xl shadow-xl p-8 text-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00em0wLTEwYzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHptMC0xMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20" />
-          <div className="relative flex items-center gap-4">
+        <div className="bg-secondary rounded-2xl shadow-xl p-8 text-white">
+          <div className="flex items-center gap-4">
             <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
               <Sparkles className="w-10 h-10" />
             </div>
             <div>
               <h1 className="text-3xl font-bold mb-2">ناظمِ طلبہ ڈیش بورڈ</h1>
-              <p className="text-purple-100 text-sm max-w-2xl">
+              <p className="text-white/80 text-sm max-w-2xl">
                 یہاں سے آپ تمام شعبہ جات کے طلبہ، کلاسز، سیکشنز، حاضری اور
-                رپورٹس کو منظم کر سکتے ہیں۔ ناظمِ طلبہ کے تمام انتظامی امور کا مرکزی پینل۔
+                رپورٹس کو منظم کر سکتے ہیں۔ ناظمِ طلبہ کے تمام انتظامی امور کا
+                مرکزی پینل۔
               </p>
             </div>
           </div>
@@ -198,7 +198,7 @@ export default function TalbaDashboard() {
         {/* Department Cards */}
         <div>
           <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <FolderOpen className="w-6 h-6 text-purple-600" />
+            <FolderOpen className="w-6 h-6 text-secondary" />
             <span>شعبہ جات کی فہرست</span>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -209,13 +209,8 @@ export default function TalbaDashboard() {
                 <Link
                   key={dept._id}
                   href={linkForDepartment(dept)}
-                  className={`group rounded-2xl bg-gradient-to-br ${colors.bg} border-2 ${colors.border} p-6 shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105 relative overflow-hidden`}
+                  className={`group rounded-2xl bg-white border border-gray-200 p-6 shadow-md hover:shadow-lg transition-all duration-300 relative`}
                 >
-                  {/* Hover Overlay */}
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${colors.hover} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
-                  />
-
                   <div className="relative space-y-4">
                     {/* Header */}
                     <div className="flex items-start justify-between">
@@ -225,14 +220,14 @@ export default function TalbaDashboard() {
                         </h3>
                         {dept.code && (
                           <span
-                            className={`inline-block text-xs font-semibold px-3 py-1 rounded-full border ${colors.badge}`}
+                            className={`inline-block text-xs font-semibold px-3 py-1 rounded-full border border-primary/20 bg-primary/10 text-primary`}
                           >
                             {dept.code}
                           </span>
                         )}
                       </div>
                       <ArrowLeft
-                        className={`w-5 h-5 ${colors.text} group-hover:translate-x-1 transition-transform duration-300`}
+                        className={`w-5 h-5 text-secondary group-hover:translate-x-1 transition-transform duration-300`}
                       />
                     </div>
 
@@ -245,19 +240,19 @@ export default function TalbaDashboard() {
                     {stats && (
                       <div className="flex items-center gap-4 pt-2 border-t border-gray-200">
                         <div className="flex items-center gap-1">
-                          <Users className="w-4 h-4 text-gray-500" />
+                          <Users className="w-4 h-4 text-secondary" />
                           <span className="text-sm font-semibold text-gray-700">
                             {stats.totalStudents}
                           </span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <GraduationCap className="w-4 h-4 text-gray-500" />
+                          <GraduationCap className="w-4 h-4 text-secondary" />
                           <span className="text-sm font-semibold text-gray-700">
                             {stats.totalTeachers}
                           </span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <BookOpen className="w-4 h-4 text-gray-500" />
+                          <BookOpen className="w-4 h-4 text-secondary" />
                           <span className="text-sm font-semibold text-gray-700">
                             {stats.totalClasses}
                           </span>
@@ -316,42 +311,42 @@ export default function TalbaDashboard() {
           <>
             <div>
               <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <BarChart3 className="w-6 h-6 text-purple-600" />
+                <BarChart3 className="w-6 h-6 text-secondary" />
                 <span>مجموعی اعداد و شمار</span>
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white rounded-xl shadow-md border-2 border-green-200 p-6 hover:shadow-lg transition-shadow">
+                <div className="bg-white rounded-xl shadow-md border border-gray-200 p-6 hover:shadow-lg transition-shadow">
                   <div className="flex items-center justify-between mb-3">
-                    <div className="bg-green-100 rounded-full p-3">
-                      <Users className="w-6 h-6 text-green-600" />
+                    <div className="bg-secondary/10 rounded-full p-3">
+                      <Users className="w-6 h-6 text-secondary" />
                     </div>
                   </div>
                   <p className="text-sm text-gray-600 mb-1">کل طلبہ</p>
-                  <p className="text-3xl font-bold text-green-600">
+                  <p className="text-3xl font-bold text-primary">
                     {totals.students}
                   </p>
                 </div>
 
-                <div className="bg-white rounded-xl shadow-md border-2 border-blue-200 p-6 hover:shadow-lg transition-shadow">
+                <div className="bg-white rounded-xl shadow-md border border-gray-200 p-6 hover:shadow-lg transition-shadow">
                   <div className="flex items-center justify-between mb-3">
-                    <div className="bg-blue-100 rounded-full p-3">
-                      <GraduationCap className="w-6 h-6 text-blue-600" />
+                    <div className="bg-secondary/10 rounded-full p-3">
+                      <GraduationCap className="w-6 h-6 text-secondary" />
                     </div>
                   </div>
                   <p className="text-sm text-gray-600 mb-1">کل اساتذہ</p>
-                  <p className="text-3xl font-bold text-blue-600">
+                  <p className="text-3xl font-bold text-primary">
                     {totals.teachers}
                   </p>
                 </div>
 
-                <div className="bg-white rounded-xl shadow-md border-2 border-purple-200 p-6 hover:shadow-lg transition-shadow">
+                <div className="bg-white rounded-xl shadow-md border border-gray-200 p-6 hover:shadow-lg transition-shadow">
                   <div className="flex items-center justify-between mb-3">
-                    <div className="bg-purple-100 rounded-full p-3">
-                      <BookOpen className="w-6 h-6 text-purple-600" />
+                    <div className="bg-secondary/10 rounded-full p-3">
+                      <BookOpen className="w-6 h-6 text-secondary" />
                     </div>
                   </div>
                   <p className="text-sm text-gray-600 mb-1">کل کلاسز</p>
-                  <p className="text-3xl font-bold text-purple-600">
+                  <p className="text-3xl font-bold text-primary">
                     {totals.classes}
                   </p>
                 </div>
@@ -363,8 +358,8 @@ export default function TalbaDashboard() {
               {studentChart.labels.length > 0 && (
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="bg-green-100 rounded-full p-2">
-                      <Users className="w-5 h-5 text-green-600" />
+                    <div className="bg-secondary/10 rounded-full p-2">
+                      <Users className="w-5 h-5 text-secondary" />
                     </div>
                     <h3 className="text-lg font-bold text-gray-800">
                       شعبہ وار طلبہ کی تعداد
@@ -380,8 +375,8 @@ export default function TalbaDashboard() {
               {teacherChart.labels.length > 0 && (
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="bg-blue-100 rounded-full p-2">
-                      <GraduationCap className="w-5 h-5 text-blue-600" />
+                    <div className="bg-secondary/10 rounded-full p-2">
+                      <GraduationCap className="w-5 h-5 text-secondary" />
                     </div>
                     <h3 className="text-lg font-bold text-gray-800">
                       شعبہ وار اساتذہ کی تعداد

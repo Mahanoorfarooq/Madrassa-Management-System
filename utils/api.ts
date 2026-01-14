@@ -4,7 +4,13 @@ export const api = axios.create();
 
 api.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
-    const token = localStorage.getItem("madrassa_token");
+    let token = localStorage.getItem("madrassa_token");
+    if (!token) {
+      const cookie = document.cookie
+        .split("; ")
+        .find((c) => c.startsWith("auth_token="));
+      if (cookie) token = cookie.split("=")[1];
+    }
     if (token) {
       config.headers = config.headers || {};
       (config.headers as any)["Authorization"] = `Bearer ${token}`;
@@ -25,7 +31,6 @@ api.interceptors.response.use(
         window.location.href = "/activate";
       }
     }
-    // Gracefully handle unauthorized/forbidden by returning an empty success response
     if (
       error.response &&
       (error.response.status === 401 || error.response.status === 403)
@@ -34,15 +39,14 @@ api.interceptors.response.use(
         try {
           localStorage.removeItem("madrassa_token");
         } catch {}
+        // Expire auth cookie to keep client and middleware in sync
+        document.cookie =
+          "auth_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax";
+        const next = encodeURIComponent(
+          window.location.pathname + window.location.search
+        );
+        window.location.replace(`/login?next=${next}`);
       }
-      // Return a synthetic empty response so pages don't crash due to unhandled rejections
-      return Promise.resolve({
-        data: {},
-        status: 200,
-        statusText: "OK",
-        headers: error.response?.headers || {},
-        config: error.config,
-      });
     }
     return Promise.reject(error);
   }

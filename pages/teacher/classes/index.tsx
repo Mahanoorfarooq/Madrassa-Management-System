@@ -29,7 +29,7 @@ export default function TeacherClasses() {
     <TeacherLayout>
       <div className="p-6 max-w-6xl mx-auto" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-teal-500 to-cyan-600 rounded-xl p-5 text-white shadow-md mb-6">
+        <div className="bg-secondary rounded-xl p-5 text-white shadow-md mb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-11 h-11 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
@@ -37,7 +37,7 @@ export default function TeacherClasses() {
               </div>
               <div>
                 <h2 className="text-xl font-bold">میری کلاسیں</h2>
-                <p className="text-teal-100 text-sm">
+                <p className="text-white/80 text-sm">
                   آپ کو تفویض کردہ کلاسز اور سیکشنز
                 </p>
               </div>
@@ -46,11 +46,11 @@ export default function TeacherClasses() {
               <div className="hidden sm:flex gap-4">
                 <div className="text-center bg-white/20 rounded-lg px-4 py-2 backdrop-blur-sm">
                   <div className="text-2xl font-bold">{items.length}</div>
-                  <div className="text-xs text-teal-100">کلاسیں</div>
+                  <div className="text-xs text-white/80">کلاسیں</div>
                 </div>
                 <div className="text-center bg-white/20 rounded-lg px-4 py-2 backdrop-blur-sm">
                   <div className="text-2xl font-bold">{totalSections}</div>
-                  <div className="text-xs text-teal-100">سیکشنز</div>
+                  <div className="text-xs text-white/80">سیکشنز</div>
                 </div>
               </div>
             )}
@@ -71,8 +71,8 @@ export default function TeacherClasses() {
             >
               {/* Class Header */}
               <div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-200">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-100 to-cyan-100 flex items-center justify-center">
-                  <GraduationCap className="w-5 h-5 text-teal-600" />
+                <div className="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center border border-secondary/30">
+                  <GraduationCap className="w-5 h-5 text-secondary" />
                 </div>
                 <div className="flex-1">
                   <div className="text-base font-bold text-gray-800">
@@ -91,7 +91,7 @@ export default function TeacherClasses() {
                   <Link
                     key={s.sectionId}
                     href={`/teacher/classes/${c.classId}/sections/${s.sectionId}`}
-                    className="group flex items-center justify-between rounded-lg border-2 border-gray-200 bg-gray-50 px-4 py-3 hover:bg-teal-50 hover:border-teal-300 transition-all"
+                    className="group flex items-center justify-between rounded-lg border-2 border-gray-200 bg-gray-50 px-4 py-3 hover:bg-secondary/10 hover:border-secondary/40 transition-all"
                   >
                     <div className="flex flex-col items-end gap-1.5">
                       <div className="flex items-center gap-2">
@@ -104,14 +104,14 @@ export default function TeacherClasses() {
                           </span>
                         )}
                       </div>
-                      <span className="inline-flex items-center rounded-full bg-teal-100 text-teal-700 text-xs px-2.5 py-0.5 border border-teal-200">
+                      <span className="inline-flex items-center rounded-full bg-primary/10 text-primary text-xs px-2.5 py-0.5 border border-primary/20">
                         طلبہ:{" "}
                         {typeof s.studentCount === "number"
                           ? s.studentCount
                           : "—"}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 text-teal-600 text-sm font-medium group-hover:translate-x-[-4px] transition-transform">
+                    <div className="flex items-center gap-1 text-primary text-sm font-medium group-hover:translate-x-[-4px] transition-transform">
                       <span>دیکھیں</span>
                       <ArrowLeft className="w-4 h-4" />
                     </div>

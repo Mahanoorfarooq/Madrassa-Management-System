@@ -84,7 +84,7 @@ export default function TalbaTeachersList() {
     <TalbaLayout>
       <div className="space-y-6" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl shadow-lg p-6 text-white">
+        <div className="bg-secondary rounded-2xl shadow-lg p-6 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="bg-white/20 backdrop-blur-sm rounded-full p-4">
@@ -92,7 +92,7 @@ export default function TalbaTeachersList() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold mb-1">اساتذہ کی فہرست</h1>
-                <p className="text-indigo-100 text-sm">
+                <p className="text-white/80 text-sm">
                   تمام اساتذہ کی تفصیلات دیکھیں اور تلاش کریں
                 </p>
               </div>
@@ -102,7 +102,7 @@ export default function TalbaTeachersList() {
                 pathname: "/talba/teachers/new",
                 query: { dept: deptCode },
               }}
-              className="inline-flex items-center gap-2 bg-white text-indigo-600 hover:bg-indigo-50 rounded-lg px-5 py-3 text-sm font-semibold shadow-lg transition-all transform hover:scale-105"
+              className="inline-flex items-center gap-2 bg-primary text-white hover:bg-primary/90 rounded-lg px-5 py-3 text-sm font-semibold shadow-lg transition-all"
             >
               <UserPlus className="w-5 h-5" />
               نیا استاد
@@ -126,7 +126,7 @@ export default function TalbaTeachersList() {
         {/* Department Tabs */}
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4">
           <div className="flex items-center gap-3 mb-4">
-            <Layers className="w-5 h-5 text-indigo-600" />
+            <Layers className="w-5 h-5 text-secondary" />
             <h2 className="text-lg font-bold text-gray-800">شعبہ منتخب کریں</h2>
           </div>
           <div className="flex gap-3 flex-wrap">
@@ -139,9 +139,9 @@ export default function TalbaTeachersList() {
                     pathname: "/talba/teachers",
                     query: { dept: d.code },
                   }}
-                  className={`text-sm font-semibold rounded-xl px-6 py-3 transition-all duration-200 transform hover:scale-105 ${
+                  className={`text-sm font-semibold rounded-xl px-6 py-3 transition-all duration-200 ${
                     active
-                      ? `${d.color} text-white shadow-lg`
+                      ? `bg-primary text-white shadow-lg`
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
@@ -154,9 +154,9 @@ export default function TalbaTeachersList() {
 
         {/* Search Filter */}
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-          <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b">
+          <div className="bg-gray-50 px-6 py-4 border-b">
             <div className="flex items-center gap-2">
-              <Search className="w-5 h-5 text-gray-600" />
+              <Search className="w-5 h-5 text-secondary" />
               <h2 className="text-lg font-bold text-gray-800">تلاش</h2>
             </div>
           </div>
@@ -165,7 +165,7 @@ export default function TalbaTeachersList() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <div className="flex items-center gap-2">
-                  <Search className="w-4 h-4" />
+                  <Search className="w-4 h-4 text-secondary" />
                   نام / عہدہ
                 </div>
               </label>
@@ -173,7 +173,7 @@ export default function TalbaTeachersList() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="استاد کا نام یا عہدہ تلاش کریں..."
-                className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 hover:border-gray-300"
+                className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 hover:border-gray-300"
               />
             </div>
           </div>
@@ -184,7 +184,7 @@ export default function TalbaTeachersList() {
           <div className="overflow-x-auto">
             {loading ? (
               <div className="flex items-center justify-center py-12">
-                <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
               </div>
             ) : teachers.length === 0 ? (
               <div className="text-center py-12">
@@ -200,7 +200,7 @@ export default function TalbaTeachersList() {
               </div>
             ) : (
               <table className="min-w-full text-sm">
-                <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <thead className="bg-gray-50 border-b-2 border-gray-200">
                   <tr>
                     <th className="px-6 py-4 text-right font-bold text-gray-700">
                       نام
@@ -220,14 +220,14 @@ export default function TalbaTeachersList() {
                   {teachers.map((t, index) => (
                     <tr
                       key={t._id}
-                      className={`hover:bg-indigo-50 transition-colors ${
+                      className={`hover:bg-gray-50 transition-colors ${
                         index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                       }`}
                     >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                            <span className="text-indigo-600 font-bold text-sm">
+                          <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center">
+                            <span className="text-secondary font-bold text-sm">
                               {t.fullName.charAt(0)}
                             </span>
                           </div>
@@ -266,9 +266,9 @@ export default function TalbaTeachersList() {
                             pathname: `/talba/teachers/${t._id}`,
                             query: { dept: deptCode },
                           }}
-                          className="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-700 font-medium hover:underline"
+                          className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
                         >
-                          <Eye className="w-4 h-4" />
+                          <Eye className="w-4 h-4 text-secondary" />
                           تفصیل
                         </Link>
                       </td>

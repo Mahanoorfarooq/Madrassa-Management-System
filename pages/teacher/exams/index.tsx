@@ -33,9 +33,9 @@ export default function TeacherExamsPage() {
   return (
     <TeacherLayout>
       <div className="space-y-6" dir="rtl">
-        <div className="bg-gradient-to-r from-indigo-600 to-blue-600 rounded-xl p-5 text-white shadow-md">
+        <div className="bg-secondary rounded-xl p-5 text-white shadow-md">
           <h1 className="text-xl font-bold">امتحانات</h1>
-          <p className="text-indigo-100 text-xs">
+          <p className="text-white/80 text-xs">
             اپنے مضامین کے لیے مارکس درج کریں
           </p>
         </div>
@@ -92,7 +92,7 @@ export default function TeacherExamsPage() {
                         <div className="flex items-center gap-2 justify-end">
                           <Link
                             href={`/teacher/exams/${e._id}`}
-                            className="px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-700 text-xs hover:bg-emerald-200"
+                            className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-xs hover:bg-primary/20"
                           >
                             مارکس درج کریں
                           </Link>

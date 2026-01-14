@@ -126,7 +126,7 @@ export default function SectionsPage() {
         {/* Department Tabs */}
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4">
           <div className="flex items-center gap-3 mb-4">
-            <Layers className="w-5 h-5 text-purple-600" />
+            <Layers className="w-5 h-5 text-secondary" />
             <h2 className="text-lg font-bold text-gray-800">شعبہ منتخب کریں</h2>
           </div>
           <div className="flex gap-3 flex-wrap">
@@ -139,9 +139,9 @@ export default function SectionsPage() {
                     pathname: "/talba/sections",
                     query: { dept: d.code },
                   }}
-                  className={`text-sm font-semibold rounded-xl px-6 py-3 transition-all duration-200 transform hover:scale-105 ${
+                  className={`text-sm font-semibold rounded-xl px-6 py-3 transition-all duration-200 ${
                     active
-                      ? `${d.color} text-white shadow-lg`
+                      ? `bg-primary text-white shadow-lg`
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
@@ -155,12 +155,10 @@ export default function SectionsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Add Section Form */}
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b">
+            <div className="bg-gray-50 px-6 py-4 border-b">
               <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-                <div
-                  className={`${currentTab?.color} rounded-full p-2 text-white`}
-                >
-                  <PlusCircle className="w-5 h-5" />
+                <div className="bg-secondary/10 rounded-full p-2">
+                  <PlusCircle className="w-5 h-5 text-secondary" />
                 </div>
                 نیا سیکشن شامل کریں
               </h2>
@@ -175,7 +173,7 @@ export default function SectionsPage() {
                   <select
                     value={classId}
                     onChange={(e) => setClassId(e.target.value)}
-                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 hover:border-gray-300"
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 hover:border-gray-300"
                   >
                     <option value="">کلاس منتخب کریں</option>
                     {classes.map((c) => (
@@ -192,7 +190,7 @@ export default function SectionsPage() {
                   </label>
                   <input
                     placeholder="مثلاً: سیکشن الف"
-                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 hover:border-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 hover:border-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     disabled={!classId}
@@ -208,7 +206,7 @@ export default function SectionsPage() {
                 <button
                   onClick={addSection}
                   disabled={loading || !name || !classId}
-                  className={`w-full inline-flex items-center justify-center gap-2 rounded-lg ${currentTab?.color} text-white px-6 py-3.5 text-sm font-semibold shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 active:scale-95`}
+                  className={`w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary text-white px-6 py-3.5 text-sm font-semibold shadow-lg hover:shadow-xl hover:bg-primary/90 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 active:scale-95`}
                 >
                   {loading ? (
                     <>
@@ -225,14 +223,14 @@ export default function SectionsPage() {
               </div>
 
               {/* Info Box */}
-              <div className="mt-6 bg-purple-50 border-r-4 border-purple-400 rounded-lg p-4">
+              <div className="mt-6 bg-primary/10 border-r-4 border-primary rounded-lg p-4">
                 <div className="flex items-start gap-3">
-                  <AlertCircle className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                  <AlertCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-xs text-purple-800 font-medium mb-1">
+                    <p className="text-xs text-primary font-medium mb-1">
                       نوٹ:
                     </p>
-                    <p className="text-xs text-purple-700">
+                    <p className="text-xs text-primary">
                       پہلے کلاس منتخب کریں، پھر سیکشن کا نام لکھیں
                     </p>
                   </div>
@@ -243,13 +241,11 @@ export default function SectionsPage() {
 
           {/* Sections List */}
           <div className="lg:col-span-2 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b">
+            <div className="bg-gray-50 px-6 py-4 border-b">
               <h2 className="text-lg font-bold text-gray-800 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div
-                    className={`${currentTab?.color} rounded-full p-2 text-white`}
-                  >
-                    <Users className="w-5 h-5" />
+                  <div className="bg-secondary/10 rounded-full p-2">
+                    <Users className="w-5 h-5 text-secondary" />
                   </div>
                   <span>
                     {selectedClass
@@ -270,7 +266,7 @@ export default function SectionsPage() {
                   value={q}
                   onChange={(e) => setQ(e.target.value)}
                   placeholder="سیکشن تلاش کریں..."
-                  className="w-full md:w-72 rounded-lg border-2 border-gray-200 px-4 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                  className="w-full md:w-72 rounded-lg border-2 border-gray-200 px-4 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
               </div>
               {!classId ? (
@@ -296,14 +292,14 @@ export default function SectionsPage() {
                     .map((s, index) => (
                       <div
                         key={s._id}
-                        className={`group rounded-xl border-2 border-gray-200 p-5 hover:border-purple-400 hover:shadow-md transition-all duration-200 ${
+                        className={`group rounded-xl border-2 border-gray-200 p-5 hover:border-primary hover:shadow-md transition-all duration-200 ${
                           index % 2 === 0 ? "bg-white" : "bg-gray-50"
                         }`}
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <div className="bg-purple-100 rounded-lg p-2 group-hover:bg-purple-200 transition-colors">
-                              <Users className="w-5 h-5 text-purple-600" />
+                            <div className="bg-primary/10 rounded-lg p-2 group-hover:bg-primary/20 transition-colors">
+                              <Users className="w-5 h-5 text-primary" />
                             </div>
                             <div>
                               <h3 className="text-sm font-semibold text-gray-800">

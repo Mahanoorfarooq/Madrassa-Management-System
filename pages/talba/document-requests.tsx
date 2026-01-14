@@ -73,7 +73,7 @@ export default function DocumentRequestsPage() {
     <TalbaLayout>
       <div className="space-y-6 font-urdu" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl shadow-lg p-6 text-white text-right">
+        <div className="bg-secondary rounded-2xl shadow-lg p-6 text-white text-right">
           <div className="flex items-center gap-4">
             <div className="bg-white/20 backdrop-blur-sm rounded-full p-4">
               <FileText className="w-10 h-10" />
@@ -82,7 +82,7 @@ export default function DocumentRequestsPage() {
               <h1 className="text-2xl font-bold mb-1">
                 دستاویزات کی درخواستیں
               </h1>
-              <p className="text-emerald-100 text-sm">
+              <p className="text-white/80 text-sm">
                 طلباء کی جانب سے ٹرانسکرپٹ اور سند کے لیے موصول ہونے والی
                 درخواستیں
               </p>
@@ -138,7 +138,7 @@ export default function DocumentRequestsPage() {
               placeholder="طالب علم تلاش کریں..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pr-10 pl-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
+              className="w-full pr-10 pl-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm"
             />
           </div>
         </div>
@@ -147,7 +147,7 @@ export default function DocumentRequestsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-right">
           {loading ? (
             <div className="col-span-full flex justify-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-600"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
             </div>
           ) : filteredRequests.length === 0 ? (
             <div className="col-span-full text-center py-20 text-gray-400 bg-white rounded-2xl border border-dashed border-gray-200">
@@ -162,7 +162,7 @@ export default function DocumentRequestsPage() {
                 <div className="p-5 border-b border-gray-50 bg-gray-50/50">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
+                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary">
                         <User className="w-5 h-5" />
                       </div>
                       <div>
@@ -231,7 +231,7 @@ export default function DocumentRequestsPage() {
                     <div className="flex gap-2 pt-2">
                       <button
                         onClick={() => setConfirmApproveId(req._id)}
-                        className="flex-1 flex items-center justify-center gap-2 bg-emerald-600 text-white py-2 rounded-xl font-bold text-xs hover:bg-emerald-700 transition-all"
+                        className="flex-1 flex items-center justify-center gap-2 bg-primary text-white py-2 rounded-xl font-bold text-xs hover:bg-primary/90 transition-all"
                       >
                         <CheckCircle className="w-4 h-4" />
                         منظور کریں
@@ -272,7 +272,7 @@ export default function DocumentRequestsPage() {
               onClick={() =>
                 confirmApproveId && submitUpdate(confirmApproveId, "approved")
               }
-              className="px-3 py-1.5 text-xs rounded-lg bg-emerald-600 text-white hover:bg-emerald-700"
+              className="px-3 py-1.5 text-xs rounded-lg bg-primary text-white hover:bg-primary/90"
             >
               منظور کریں
             </button>
@@ -333,11 +333,11 @@ export default function DocumentRequestsPage() {
         onClose={() => setSuccessMsg(null)}
       >
         <div className="space-y-3">
-          <p className="text-sm text-emerald-700">{successMsg}</p>
+          <p className="text-sm text-primary">{successMsg}</p>
           <div className="text-right">
             <button
               onClick={() => setSuccessMsg(null)}
-              className="px-3 py-1.5 text-xs rounded-lg bg-emerald-600 text-white"
+              className="px-3 py-1.5 text-xs rounded-lg bg-primary text-white"
             >
               ٹھیک ہے
             </button>

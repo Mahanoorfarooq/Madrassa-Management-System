@@ -179,7 +179,7 @@ export default function TeacherRequestsPage() {
         <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-secondary flex items-center justify-center">
                 <ClipboardCheck className="w-5 h-5 text-white" />
               </div>
               <div className="text-right">
@@ -195,7 +195,7 @@ export default function TeacherRequestsPage() {
               <select
                 value={leaveStatusFilter}
                 onChange={(e) => setLeaveStatusFilter(e.target.value as any)}
-                className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-1 focus:ring-secondary"
               >
                 <option value="">تمام</option>
                 <option value="Pending">زیر غور</option>
@@ -258,9 +258,9 @@ export default function TeacherRequestsPage() {
                       className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold border ${
                         {
                           Pending:
-                            "bg-amber-50 text-amber-700 border-amber-200",
+                            "bg-secondary/10 text-secondary border-secondary/30",
                           Approved:
-                            "bg-emerald-50 text-emerald-700 border-emerald-200",
+                            "bg-primary/10 text-primary border-primary/20",
                           Rejected: "bg-red-50 text-red-700 border-red-200",
                         }[r.status]
                       }`}
@@ -280,14 +280,14 @@ export default function TeacherRequestsPage() {
                         }))
                       }
                       placeholder="نوٹ (اختیاری)"
-                      className="mt-2 w-full rounded border border-gray-300 px-2 py-1 text-[11px] focus:outline-none focus:ring-1 focus:ring-amber-500"
+                      className="mt-2 w-full rounded border border-gray-300 px-2 py-1 text-[11px] focus:outline-none focus:ring-1 focus:ring-secondary"
                     />
                   </div>
                   <div className="col-span-2 flex items-center justify-center gap-1">
                     <button
                       disabled={updatingId === r.id || r.status === "Approved"}
                       onClick={() => updateLeaveStatus(r.id, "Approved")}
-                      className="inline-flex items-center gap-1 rounded-lg bg-emerald-600 text-white px-2.5 py-1 text-[11px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-emerald-700"
+                      className="inline-flex items-center gap-1 rounded-lg bg-primary text-white px-2.5 py-1 text-[11px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90"
                     >
                       <Check className="w-3 h-3" />
                       منظور
@@ -311,7 +311,7 @@ export default function TeacherRequestsPage() {
         <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-secondary flex items-center justify-center">
                 <FileText className="w-5 h-5 text-white" />
               </div>
               <div className="text-right">
@@ -327,7 +327,7 @@ export default function TeacherRequestsPage() {
               <select
                 value={recheckStatusFilter}
                 onChange={(e) => setRecheckStatusFilter(e.target.value as any)}
-                className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-1 focus:ring-secondary"
               >
                 <option value="">تمام</option>
                 <option value="Pending">زیر غور</option>
@@ -388,10 +388,11 @@ export default function TeacherRequestsPage() {
                       className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold border ${
                         {
                           Pending:
-                            "bg-amber-50 text-amber-700 border-amber-200",
-                          InReview: "bg-blue-50 text-blue-700 border-blue-200",
+                            "bg-secondary/10 text-secondary border-secondary/30",
+                          InReview:
+                            "bg-secondary/10 text-secondary border-secondary/30",
                           Completed:
-                            "bg-emerald-50 text-emerald-700 border-emerald-200",
+                            "bg-primary/10 text-primary border-primary/20",
                           Rejected: "bg-red-50 text-red-700 border-red-200",
                         }[r.status]
                       }`}
@@ -413,21 +414,21 @@ export default function TeacherRequestsPage() {
                         }))
                       }
                       placeholder="جوابی نوٹ (اختیاری)"
-                      className="mt-2 w-full rounded border border-gray-300 px-2 py-1 text-[11px] focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="mt-2 w-full rounded border border-gray-300 px-2 py-1 text-[11px] focus:outline-none focus:ring-1 focus:ring-secondary"
                     />
                   </div>
                   <div className="col-span-2 flex flex-wrap items-center justify-center gap-1">
                     <button
                       disabled={updatingId === r.id || r.status === "InReview"}
                       onClick={() => updateRecheckStatus(r.id, "InReview")}
-                      className="inline-flex items-center gap-1 rounded-lg bg-blue-600 text-white px-2.5 py-1 text-[11px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-blue-700"
+                      className="inline-flex items-center gap-1 rounded-lg bg-secondary text-white px-2.5 py-1 text-[11px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90"
                     >
                       جاری
                     </button>
                     <button
                       disabled={updatingId === r.id || r.status === "Completed"}
                       onClick={() => updateRecheckStatus(r.id, "Completed")}
-                      className="inline-flex items-center gap-1 rounded-lg bg-emerald-600 text-white px-2.5 py-1 text-[11px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-emerald-700"
+                      className="inline-flex items-center gap-1 rounded-lg bg-primary text-white px-2.5 py-1 text-[11px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90"
                     >
                       مکمل
                     </button>

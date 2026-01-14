@@ -96,11 +96,11 @@ export default function TeacherStudyMaterialPage() {
     <TeacherLayout>
       <div className="space-y-6" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-xl p-5 text-white shadow-md">
+        <div className="bg-secondary rounded-xl p-5 text-white shadow-md">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-xl font-bold">تعلیمی مواد</h1>
-              <p className="text-emerald-100 text-xs">
+              <p className="text-white/80 text-xs">
                 پی ڈی ایف / آڈیو / ویڈیو کے لنکس شیئر کریں
               </p>
             </div>
@@ -121,7 +121,7 @@ export default function TeacherStudyMaterialPage() {
               <input
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-emerald-600"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary"
                 required
               />
             </div>
@@ -133,7 +133,7 @@ export default function TeacherStudyMaterialPage() {
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="https://..."
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-emerald-600"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary"
                 required
               />
             </div>
@@ -142,7 +142,7 @@ export default function TeacherStudyMaterialPage() {
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-emerald-600"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary"
                 rows={3}
               />
             </div>
@@ -154,7 +154,7 @@ export default function TeacherStudyMaterialPage() {
                   setClassId(e.target.value);
                   setSectionId("");
                 }}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-emerald-600"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary"
               >
                 <option value="">(اختیاری)</option>
                 {classes.map((c: any) => (
@@ -170,7 +170,7 @@ export default function TeacherStudyMaterialPage() {
                 value={sectionId}
                 onChange={(e) => setSectionId(e.target.value)}
                 disabled={!classId}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-emerald-600 disabled:bg-gray-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary disabled:bg-gray-100"
               >
                 <option value="">(اختیاری)</option>
                 {sections.map((s: any) => (
@@ -186,14 +186,14 @@ export default function TeacherStudyMaterialPage() {
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 placeholder="مثلاً: عربی"
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-emerald-600"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary"
               />
             </div>
             <div className="md:col-span-2 flex justify-end">
               <button
                 type="submit"
                 disabled={loading}
-                className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 text-sm font-semibold disabled:opacity-60"
+                className="inline-flex items-center gap-2 rounded-lg bg-secondary hover:opacity-90 text-white px-5 py-2.5 text-sm font-semibold disabled:opacity-60"
               >
                 محفوظ کریں
               </button>
@@ -274,7 +274,7 @@ export default function TeacherStudyMaterialPage() {
                             href={m.url}
                             target="_blank"
                             rel="noreferrer"
-                            className="px-3 py-1.5 rounded-lg bg-blue-100 text-blue-700 text-xs hover:bg-blue-200"
+                            className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-xs hover:bg-primary/20"
                           >
                             کھولیں
                           </a>

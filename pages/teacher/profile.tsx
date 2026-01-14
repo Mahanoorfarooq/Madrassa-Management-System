@@ -138,8 +138,8 @@ export default function TeacherProfile() {
           {/* Profile Card */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-md">
-              {/* Header with gradient */}
-              <div className="h-28 bg-gradient-to-r from-teal-500 to-cyan-600 relative">
+              {/* Header with solid color */}
+              <div className="h-28 bg-secondary relative">
                 <div className="absolute -bottom-14 right-1/2 transform translate-x-1/2">
                   <div className="relative">
                     {form.photoUrl ? (
@@ -149,11 +149,11 @@ export default function TeacherProfile() {
                         className="h-28 w-28 rounded-full object-cover border-4 border-white shadow-lg"
                       />
                     ) : (
-                      <div className="h-28 w-28 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 border-4 border-white shadow-lg flex items-center justify-center">
+                      <div className="h-28 w-28 rounded-full bg-gray-200 border-4 border-white shadow-lg flex items-center justify-center">
                         <User className="w-14 h-14 text-gray-400" />
                       </div>
                     )}
-                    <div className="absolute bottom-1 right-1 w-7 h-7 bg-teal-500 rounded-full flex items-center justify-center shadow-md">
+                    <div className="absolute bottom-1 right-1 w-7 h-7 bg-primary rounded-full flex items-center justify-center shadow-md">
                       <Camera className="w-4 h-4 text-white" />
                     </div>
                   </div>
@@ -171,13 +171,13 @@ export default function TeacherProfile() {
 
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-3 mb-5">
-                  <div className="bg-teal-50 rounded-lg p-3 border border-teal-100">
+                  <div className="bg-primary/10 rounded-lg p-3 border border-primary/20">
                     <div className="text-xs text-gray-600 mb-1">تخصص</div>
                     <div className="text-sm font-semibold text-gray-800">
                       {t?.specialization || "—"}
                     </div>
                   </div>
-                  <div className="bg-cyan-50 rounded-lg p-3 border border-cyan-100">
+                  <div className="bg-secondary/10 rounded-lg p-3 border border-secondary/20">
                     <div className="text-xs text-gray-600 mb-1">مضامین</div>
                     <div className="text-sm font-semibold text-gray-800">
                       {(t?.subjects || []).length || 0}
@@ -212,7 +212,7 @@ export default function TeacherProfile() {
           <div className="lg:col-span-2 space-y-5">
             <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-md">
               <div className="flex items-center gap-3 mb-5 pb-4 border-b border-gray-200">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-teal-500 to-cyan-600 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center">
                   <User className="w-5 h-5 text-white" />
                 </div>
                 <h2 className="text-lg font-bold text-gray-800">
@@ -225,14 +225,14 @@ export default function TeacherProfile() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center justify-end gap-2">
                     <span>فون</span>
-                    <Phone className="w-4 h-4 text-teal-600" />
+                    <Phone className="w-4 h-4 text-secondary" />
                   </label>
                   <input
                     value={form.phone}
                     onChange={(e) =>
                       setForm({ ...form, phone: e.target.value })
                     }
-                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition-all"
+                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                     placeholder="03XX XXXXXXX"
                   />
                 </div>
@@ -241,14 +241,14 @@ export default function TeacherProfile() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center justify-end gap-2">
                     <span>رابطہ نمبر</span>
-                    <Phone className="w-4 h-4 text-blue-600" />
+                    <Phone className="w-4 h-4 text-secondary" />
                   </label>
                   <input
                     value={form.contactNumber}
                     onChange={(e) =>
                       setForm({ ...form, contactNumber: e.target.value })
                     }
-                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                     placeholder="متبادل نمبر"
                   />
                 </div>
@@ -257,7 +257,7 @@ export default function TeacherProfile() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center justify-end gap-2">
                     <span>ای میل</span>
-                    <Mail className="w-4 h-4 text-purple-600" />
+                    <Mail className="w-4 h-4 text-secondary" />
                   </label>
                   <input
                     type="email"
@@ -265,7 +265,7 @@ export default function TeacherProfile() {
                     onChange={(e) =>
                       setForm({ ...form, email: e.target.value })
                     }
-                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all"
+                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                     placeholder="example@email.com"
                   />
                 </div>
@@ -274,14 +274,14 @@ export default function TeacherProfile() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center justify-end gap-2">
                     <span>پتا</span>
-                    <MapPin className="w-4 h-4 text-orange-600" />
+                    <MapPin className="w-4 h-4 text-secondary" />
                   </label>
                   <input
                     value={form.address}
                     onChange={(e) =>
                       setForm({ ...form, address: e.target.value })
                     }
-                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition-all"
+                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                     placeholder="مکمل پتا"
                   />
                 </div>
@@ -290,7 +290,7 @@ export default function TeacherProfile() {
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center justify-end gap-2">
                     <span>تصویر اپ لوڈ / لنک</span>
-                    <Camera className="w-4 h-4 text-emerald-600" />
+                    <Camera className="w-4 h-4 text-secondary" />
                   </label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <input
@@ -298,7 +298,7 @@ export default function TeacherProfile() {
                       onChange={(e) =>
                         setForm({ ...form, photoUrl: e.target.value })
                       }
-                      className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all"
+                      className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                       placeholder="https://example.com/photo.jpg"
                     />
                     <input
@@ -320,7 +320,7 @@ export default function TeacherProfile() {
                 <button
                   onClick={onSave}
                   disabled={saving}
-                  className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-teal-600 to-cyan-600 text-white px-6 py-2.5 text-sm font-semibold hover:from-teal-700 hover:to-cyan-700 disabled:opacity-50 transition-all shadow-md"
+                  className="flex items-center gap-2 rounded-lg bg-secondary text-white px-6 py-2.5 text-sm font-semibold hover:opacity-90 disabled:opacity-50 transition-all shadow-md"
                 >
                   <Save className="w-4 h-4" />
                   <span>{saving ? "محفوظ ہو رہا ہے..." : "محفوظ کریں"}</span>
@@ -331,7 +331,7 @@ export default function TeacherProfile() {
             {/* Change Password */}
             <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-md">
               <div className="flex items-center gap-3 mb-5 pb-4 border-b border-gray-200">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-rose-500 to-pink-600 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
                   <Shield className="w-5 h-5 text-white" />
                 </div>
                 <h2 className="text-lg font-bold text-gray-800">
@@ -344,7 +344,7 @@ export default function TeacherProfile() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center justify-end gap-2">
                     <span>موجودہ پاس ورڈ</span>
-                    <Lock className="w-4 h-4 text-rose-600" />
+                    <Lock className="w-4 h-4 text-primary" />
                   </label>
                   <input
                     type="password"
@@ -352,7 +352,7 @@ export default function TeacherProfile() {
                     onChange={(e) =>
                       setCp({ ...cp, currentPassword: e.target.value })
                     }
-                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-rose-500 focus:ring-2 focus:ring-rose-200 outline-none transition-all"
+                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                     placeholder="••••••••"
                   />
                 </div>
@@ -361,7 +361,7 @@ export default function TeacherProfile() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center justify-end gap-2">
                     <span>نیا پاس ورڈ</span>
-                    <Lock className="w-4 h-4 text-pink-600" />
+                    <Lock className="w-4 h-4 text-primary" />
                   </label>
                   <input
                     type="password"
@@ -369,7 +369,7 @@ export default function TeacherProfile() {
                     onChange={(e) =>
                       setCp({ ...cp, newPassword: e.target.value })
                     }
-                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-pink-500 focus:ring-2 focus:ring-pink-200 outline-none transition-all"
+                    className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                     placeholder="••••••••"
                   />
                 </div>
@@ -378,7 +378,7 @@ export default function TeacherProfile() {
               <div className="flex justify-end mt-5 pt-4 border-t border-gray-200">
                 <button
                   onClick={onChangePassword}
-                  className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-rose-600 to-pink-600 text-white px-6 py-2.5 text-sm font-semibold hover:from-rose-700 hover:to-pink-700 transition-all shadow-md"
+                  className="flex items-center gap-2 rounded-lg bg-primary text-white px-6 py-2.5 text-sm font-semibold hover:opacity-90 transition-all shadow-md"
                 >
                   <Shield className="w-4 h-4" />
                   <span>تبدیل کریں</span>

@@ -23,11 +23,7 @@ module.exports = {
         saAccent: "#33675C",
       },
       fontFamily: {
-        urdu: [
-          "AlQalam",
-          "Noto Nastaliq Urdu",
-          "serif",
-        ],
+        urdu: ["AlQalam", "Noto Nastaliq Urdu", "serif"],
       },
       keyframes: {
         "fade-up": {

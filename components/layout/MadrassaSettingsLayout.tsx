@@ -14,26 +14,28 @@ export function MadrassaSettingsLayout({
   const router = useRouter();
 
   useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        await api.get("/api/auth/me");
-        // authorized; no-op
-      } catch {
-        if (!cancelled) router.replace("/login");
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
+    if (typeof window === "undefined") return;
+    const hasLocal = !!localStorage.getItem("madrassa_token");
+    const hasCookie = document.cookie
+      .split("; ")
+      .some((c) => c.startsWith("auth_token="));
+    if (!hasLocal && !hasCookie) {
+      const next = encodeURIComponent(router.asPath || "/");
+      router.replace(`/login?next=${next}`);
+      return;
+    }
+    // Optionally verify session, but don't loop/redirect here; middleware will enforce.
+    // api.get("/api/auth/me").catch(() => {});
   }, [router]);
 
   const handleLogout = () => {
     if (typeof window !== "undefined") {
       localStorage.removeItem("madrassa_token");
+      document.cookie =
+        "auth_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax";
       fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
     }
-    router.push("/modules/madrassa");
+    router.push("/login");
   };
 
   const NavLink = ({ href, label }: { href: string; label: string }) => {
@@ -42,10 +44,11 @@ export function MadrassaSettingsLayout({
     return (
       <Link
         href={href}
-        className={`block rounded-xl px-3 py-2.5 text-sm text-right transition-colors duration-200 text-slate-200 ${active
-          ? "bg-secondary text-white shadow-md font-medium"
-          : "hover:bg-white/10"
-          }`}
+        className={`block rounded-xl px-3 py-2.5 text-sm text-right transition-colors duration-200 text-slate-200 ${
+          active
+            ? "bg-secondary text-white shadow-md font-medium"
+            : "hover:bg-white/10"
+        }`}
       >
         {label}
       </Link>

@@ -14,18 +14,24 @@ export function AdminLayout({
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const token = localStorage.getItem("madrassa_token");
-    if (!token) {
-      router.replace("/login");
+    const hasLocal = !!localStorage.getItem("madrassa_token");
+    const hasCookie = document.cookie
+      .split("; ")
+      .some((c) => c.startsWith("auth_token="));
+    if (!hasLocal && !hasCookie) {
+      const next = encodeURIComponent(router.asPath || "/");
+      router.replace(`/login?next=${next}`);
     }
   }, [router]);
 
   const handleLogout = () => {
     if (typeof window !== "undefined") {
       localStorage.removeItem("madrassa_token");
+      document.cookie =
+        "auth_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax";
       fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
     }
-    router.push("/modules/madrassa");
+    router.push("/login");
   };
 
   return (

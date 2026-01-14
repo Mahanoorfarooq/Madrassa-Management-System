@@ -144,18 +144,18 @@ export default function TeacherDashboard() {
     <TeacherLayout>
       <div className="space-y-6">
         {/* Welcome Section */}
-        <div className="bg-gradient-to-br from-primary via-brandTeal to-brandForest rounded-2xl p-6 shadow-xl text-touchWhite">
+        <div className="bg-secondary rounded-2xl p-6 shadow-xl text-white">
           <div className="flex items-center justify-between">
             <div className="text-right flex-1">
               <h1 className="text-2xl font-bold mb-2">
                 خوش آمدید، {me?.teacher?.fullName || "استاد"}
               </h1>
-              <p className="text-touchWhite/80 text-sm">
+              <p className="text-white/80 text-sm">
                 آج کی تاریخ: {new Date().toLocaleDateString("ur-PK")}
               </p>
             </div>
             <div className="hidden md:block">
-              <div className="w-20 h-20 bg-touchWhite/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+              <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
                 <Award className="w-10 h-10" />
               </div>
             </div>
@@ -236,7 +236,7 @@ export default function TeacherDashboard() {
           {/* Classes Card */}
           <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg hover:shadow-xl transition-shadow">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-brandTeal flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
                 <BookOpen className="w-6 h-6 text-white" />
               </div>
               <div className="text-right">
@@ -246,7 +246,7 @@ export default function TeacherDashboard() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2 text-xs text-brandTeal">
+            <div className="flex items-center gap-2 text-xs text-accent">
               <TrendingUp className="w-4 h-4" />
               <span>تفویض شدہ کلاسز</span>
             </div>
@@ -255,7 +255,7 @@ export default function TeacherDashboard() {
           {/* Sections Card */}
           <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg hover:shadow-xl transition-shadow">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brandTeal to-primary flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
                 <Calendar className="w-6 h-6 text-white" />
               </div>
               <div className="text-right">
@@ -274,7 +274,7 @@ export default function TeacherDashboard() {
           {/* Students Card */}
           <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg hover:shadow-xl transition-shadow">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brandTeal to-primary flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center">
                 <Users className="w-6 h-6 text-white" />
               </div>
               <div className="text-right">
@@ -284,7 +284,7 @@ export default function TeacherDashboard() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2 text-xs text-brandTeal">
+            <div className="flex items-center gap-2 text-xs text-accent">
               <TrendingUp className="w-4 h-4" />
               <span>کل طلبہ کی تعداد</span>
             </div>
@@ -296,7 +296,7 @@ export default function TeacherDashboard() {
             className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg hover:shadow-xl transition-shadow block"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brandTeal to-primary flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
                 <Calendar className="w-6 h-6 text-white" />
               </div>
               <div className="text-right">
@@ -368,7 +368,7 @@ export default function TeacherDashboard() {
                     <Link
                       key={`${c.classId}:${s.sectionId}`}
                       href={`/teacher/classes/${c.classId}/sections/${s.sectionId}`}
-                      className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 hover:bg-brandTeal/10 hover:border-brandTeal/40 transition-all"
+                      className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 hover:bg-accent/10 hover:border-accent/40 transition-all"
                     >
                       <div className="text-right">
                         <div className="text-sm font-semibold text-gray-800">
@@ -381,7 +381,7 @@ export default function TeacherDashboard() {
                             : "—"}
                         </div>
                       </div>
-                      <span className="text-xs text-brandTeal">حاضری</span>
+                      <span className="text-xs text-accent">حاضری</span>
                     </Link>
                   ))
                 )}
@@ -397,7 +397,7 @@ export default function TeacherDashboard() {
         {/* Quick Actions */}
         <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
               <ArrowRight className="w-5 h-5 text-white" />
             </div>
             <h2 className="text-xl font-bold text-gray-800">فوری رسائی</h2>
@@ -412,10 +412,8 @@ export default function TeacherDashboard() {
                   href={q.href}
                   className="group relative rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-all p-5 overflow-hidden"
                 >
-                  {/* Gradient overlay on hover */}
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${q.gradient} opacity-0 group-hover:opacity-5 transition-opacity`}
-                  ></div>
+                  {/* Overlay removed (no gradients) */}
+                  <div className="absolute inset-0 bg-transparent"></div>
 
                   <div className="relative flex items-center gap-4 text-right">
                     <div className="flex-1">
@@ -425,7 +423,7 @@ export default function TeacherDashboard() {
                       <p className="text-sm text-gray-600">{q.description}</p>
                     </div>
                     <div
-                      className={`w-12 h-12 rounded-xl bg-gradient-to-br ${q.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all`}
+                      className={`w-12 h-12 rounded-xl bg-primary flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all`}
                     >
                       <IconComponent className="w-6 h-6 text-white" />
                     </div>
@@ -445,7 +443,7 @@ export default function TeacherDashboard() {
         {classChart.labels.length > 0 && (
           <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brandTeal to-primary flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center">
                 <TrendingUp className="w-5 h-5 text-white" />
               </div>
               <h2 className="text-xl font-bold text-gray-800">
