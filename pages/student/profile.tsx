@@ -67,7 +67,7 @@ export default function StudentProfile() {
     <StudentLayout>
       <div className="p-6 max-w-7xl mx-auto" dir="rtl">
         {/* Profile Header */}
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl p-6 text-white shadow-lg mb-6">
+        <div className="bg-gradient-to-r from-saAccent to-primary rounded-xl p-6 text-white shadow-lg mb-6">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
               <User className="w-8 h-8" />
@@ -76,7 +76,7 @@ export default function StudentProfile() {
               <h2 className="text-2xl font-bold">
                 {student?.fullName || "طالب علم"}
               </h2>
-              <p className="text-blue-100 text-sm">
+              <p className="text-white/80 text-sm">
                 رول نمبر: {student?.rollNumber || "—"}
               </p>
             </div>
@@ -86,7 +86,7 @@ export default function StudentProfile() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           {/* Basic Information */}
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
-            <div className="bg-gradient-to-r from-purple-500 to-pink-600 p-4 text-white">
+            <div className="bg-gradient-to-r from-saAccent to-primary p-4 text-white">
               <div className="flex items-center gap-2">
                 <GraduationCap className="w-5 h-5" />
                 <h3 className="text-base font-bold">بنیادی معلومات</h3>
@@ -148,7 +148,7 @@ export default function StudentProfile() {
 
           {/* Guardian Information */}
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
-            <div className="bg-gradient-to-r from-teal-500 to-cyan-600 p-4 text-white">
+            <div className="bg-gradient-to-r from-saAccent to-primary p-4 text-white">
               <div className="flex items-center gap-2">
                 <Users className="w-5 h-5" />
                 <h3 className="text-base font-bold">سرپرست کی معلومات</h3>
@@ -202,7 +202,7 @@ export default function StudentProfile() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Documents */}
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
-            <div className="bg-gradient-to-r from-orange-500 to-red-600 p-4 text-white">
+            <div className="bg-secondary p-4 text-white">
               <div className="flex items-center gap-2">
                 <FileText className="w-5 h-5" />
                 <h3 className="text-base font-bold">دستاویزات</h3>
@@ -220,12 +220,12 @@ export default function StudentProfile() {
                     key={idx}
                     href={doc.href}
                     rel="noreferrer"
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-orange-50 hover:border-orange-300 transition-all group"
+                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-secondary/5 hover:border-secondary transition-all group"
                   >
                     <span className="text-sm font-medium text-gray-800">
                       {doc.label}
                     </span>
-                    <Download className="w-4 h-4 text-gray-400 group-hover:text-orange-600 transition-colors" />
+                    <Download className="w-4 h-4 text-gray-400 group-hover:text-secondary transition-colors" />
                   </a>
                 ))}
               </div>
@@ -234,7 +234,7 @@ export default function StudentProfile() {
 
           {/* Profile Correction Request */}
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
-            <div className="bg-gradient-to-r from-emerald-500 to-teal-600 p-4 text-white">
+            <div className="bg-gradient-to-r from-saAccent to-primary p-4 text-white">
               <div className="flex items-center gap-2">
                 <FileText className="w-5 h-5" />
                 <h3 className="text-base font-bold">پروفائل میں اصلاح</h3>
@@ -246,7 +246,7 @@ export default function StudentProfile() {
                   درخواست کی تفصیل
                 </label>
                 <textarea
-                  className="w-full rounded-lg border-2 border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all"
+                  className="w-full rounded-lg border-2 border-gray-300 px-3 py-2 text-sm focus:border-secondary focus:ring-2 focus:ring-secondary/30 outline-none transition-all"
                   rows={4}
                   value={correctionText}
                   onChange={(e) => setCorrectionText(e.target.value)}
@@ -268,7 +268,7 @@ export default function StudentProfile() {
 
               <button
                 type="submit"
-                className="w-full flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:from-emerald-700 hover:to-teal-700 disabled:opacity-50 transition-all"
+                className="w-full flex items-center justify-center gap-2 rounded-lg bg-secondary px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-secondary/90 disabled:opacity-50 transition-all"
                 disabled={!correctionText.trim() || correctionLoading}
               >
                 <Send className="w-4 h-4" />

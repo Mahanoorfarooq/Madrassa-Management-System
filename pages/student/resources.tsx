@@ -38,14 +38,14 @@ export default function StudentResources() {
     <StudentLayout>
       <div className="p-6 max-w-6xl mx-auto" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl p-5 text-white shadow-lg mb-6">
+        <div className="bg-gradient-to-r from-saAccent to-primary rounded-xl p-5 text-white shadow-lg mb-6">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
               <BookOpen className="w-6 h-6" />
             </div>
             <div>
               <h2 className="text-xl font-bold">لیکچر نوٹس / مواد</h2>
-              <p className="text-purple-100 text-sm">تعلیمی وسائل</p>
+              <p className="text-white/80 text-sm">تعلیمی وسائل</p>
             </div>
           </div>
         </div>
@@ -71,16 +71,16 @@ export default function StudentResources() {
                 {materials.map((m) => (
                   <div
                     key={m.id}
-                    className="rounded-lg border border-gray-200 bg-gray-50 p-4 hover:bg-purple-50/50 hover:border-purple-300 transition-all group"
+                    className="rounded-lg border border-gray-200 bg-gray-50 p-4 hover:bg-secondary/5 hover:border-secondary transition-all group"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
                         <div className="flex items-start gap-3 mb-2">
-                          <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <FileText className="w-4 h-4 text-purple-600" />
+                          <div className="w-8 h-8 bg-secondary/15 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <FileText className="w-4 h-4 text-secondary" />
                           </div>
                           <div className="flex-1">
-                            <div className="text-sm font-semibold text-gray-800 mb-1">
+                            <div className="text-sm font-semibold text-primary mb-1">
                               {m.title}
                             </div>
                             <div className="text-xs text-gray-600 bg-white px-2 py-1 rounded border border-gray-200 inline-block">
@@ -100,7 +100,7 @@ export default function StudentResources() {
                             href={m.url}
                             target="_blank"
                             rel="noreferrer"
-                            className="flex items-center gap-1.5 text-purple-600 hover:text-purple-700 font-medium group-hover:underline"
+                            className="flex items-center gap-1.5 text-secondary hover:text-secondary/90 font-medium group-hover:underline"
                           >
                             <ExternalLink className="w-3 h-3" />
                             <span>کھولیں</span>
@@ -119,10 +119,10 @@ export default function StudentResources() {
                         href={m.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="flex-shrink-0 w-9 h-9 bg-purple-100 rounded-lg flex items-center justify-center hover:bg-purple-200 transition-colors"
+                        className="flex-shrink-0 w-9 h-9 bg-secondary/15 rounded-lg flex items-center justify-center hover:bg-secondary/25 transition-colors"
                         title="ڈاؤن لوڈ"
                       >
-                        <Download className="w-4 h-4 text-purple-600" />
+                        <Download className="w-4 h-4 text-secondary" />
                       </a>
                     </div>
                   </div>

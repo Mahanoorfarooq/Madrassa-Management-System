@@ -100,10 +100,10 @@ export default function StudentClasses() {
   };
 
   const resourceIcon = (type: string) => {
-    if (type === "PDF") return <FileText className="w-4 h-4 text-red-600" />;
+    if (type === "PDF") return <FileText className="w-4 h-4 text-secondary" />;
     if (type === "Audio")
-      return <FileAudio className="w-4 h-4 text-purple-600" />;
-    return <Video className="w-4 h-4 text-blue-600" />;
+      return <FileAudio className="w-4 h-4 text-secondary" />;
+    return <Video className="w-4 h-4 text-secondary" />;
   };
 
   return (
@@ -112,14 +112,14 @@ export default function StudentClasses() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Subjects/Timetable */}
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
-            <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-5 text-white">
+            <div className="bg-gradient-to-r from-saAccent to-primary p-5 text-white">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
                   <BookOpen className="w-5 h-5" />
                 </div>
                 <div>
                   <h2 className="text-lg font-bold">مضامین</h2>
-                  <p className="text-indigo-100 text-xs">ٹائم ٹیبل</p>
+                  <p className="text-white/80 text-xs">ٹائم ٹیبل</p>
                 </div>
               </div>
             </div>
@@ -160,7 +160,7 @@ export default function StudentClasses() {
                       subjects.map((row, idx) => (
                         <tr
                           key={idx}
-                          className="border-b border-gray-100 hover:bg-indigo-50/30"
+                          className="border-b border-gray-100 hover:bg-secondary/5"
                         >
                           <td className="px-4 py-3 text-sm font-medium text-gray-800">
                             {row.subject || "—"}
@@ -182,14 +182,14 @@ export default function StudentClasses() {
           <div className="space-y-6">
             {/* Assignments */}
             <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
-              <div className="bg-gradient-to-r from-orange-500 to-red-600 p-5 text-white">
+              <div className="bg-secondary p-5 text-white">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
                     <FileText className="w-5 h-5" />
                   </div>
                   <div>
                     <h2 className="text-lg font-bold">اسائنمنٹس</h2>
-                    <p className="text-orange-100 text-xs">ہوم ورک</p>
+                    <p className="text-white/80 text-xs">ہوم ورک</p>
                   </div>
                 </div>
               </div>
@@ -199,7 +199,7 @@ export default function StudentClasses() {
                   {assignments.map((a) => (
                     <div
                       key={a.id}
-                      className="rounded-lg border border-gray-200 bg-gray-50 p-3 hover:bg-orange-50/30 transition-colors"
+                      className="rounded-lg border border-gray-200 bg-gray-50 p-3 hover:bg-secondary/5 transition-colors"
                     >
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex-1">
@@ -233,14 +233,14 @@ export default function StudentClasses() {
 
             {/* Resources */}
             <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
-              <div className="bg-gradient-to-r from-emerald-500 to-teal-600 p-5 text-white">
+              <div className="bg-gradient-to-r from-saAccent to-primary p-5 text-white">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
                     <FileText className="w-5 h-5" />
                   </div>
                   <div>
                     <h2 className="text-lg font-bold">لیکچر نوٹس</h2>
-                    <p className="text-emerald-100 text-xs">مواد</p>
+                    <p className="text-white/80 text-xs">مواد</p>
                   </div>
                 </div>
               </div>
@@ -250,12 +250,12 @@ export default function StudentClasses() {
                   {resources.map((r) => (
                     <div
                       key={r.id}
-                      className="rounded-lg border border-gray-200 bg-gray-50 p-3 flex items-center justify-between hover:bg-emerald-50/30 transition-colors"
+                      className="rounded-lg border border-gray-200 bg-gray-50 p-3 flex items-center justify-between hover:bg-secondary/5 transition-colors"
                     >
                       <div className="flex items-center gap-3">
                         {resourceIcon(r.type)}
                         <div>
-                          <div className="text-sm font-semibold text-gray-800">
+                          <div className="text-sm font-semibold text-primary">
                             {r.title}
                           </div>
                           <div className="text-xs text-gray-600">

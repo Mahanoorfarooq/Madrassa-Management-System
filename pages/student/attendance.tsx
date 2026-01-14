@@ -206,7 +206,7 @@ export default function StudentAttendance() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Attendance Record */}
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
-            <div className="bg-gradient-to-r from-emerald-500 to-teal-600 p-5 text-white">
+            <div className="bg-gradient-to-r from-saAccent to-primary p-5 text-white">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
@@ -214,7 +214,7 @@ export default function StudentAttendance() {
                   </div>
                   <div>
                     <h2 className="text-lg font-bold">حاضری کا ریکارڈ</h2>
-                    <p className="text-emerald-100 text-xs">ماہانہ حاضری</p>
+                    <p className="text-white/80 text-xs">ماہانہ حاضری</p>
                   </div>
                 </div>
                 <input
@@ -286,14 +286,14 @@ export default function StudentAttendance() {
 
           {/* Leave Request */}
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-5 text-white">
+            <div className="bg-gradient-to-r from-saAccent to-primary p-5 text-white">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
                   <h2 className="text-lg font-bold">رخصت کی درخواست</h2>
-                  <p className="text-blue-100 text-xs">نئی درخواست جمع کریں</p>
+                  <p className="text-white/80 text-xs">نئی درخواست جمع کریں</p>
                 </div>
               </div>
             </div>

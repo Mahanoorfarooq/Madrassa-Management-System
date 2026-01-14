@@ -153,14 +153,14 @@ export default function StudentExams() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Exam Schedule */}
           <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-5 text-white">
+            <div className="bg-gradient-to-r from-saAccent to-primary p-5 text-white">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
                   <Calendar className="w-5 h-5" />
                 </div>
                 <div>
                   <h2 className="text-lg font-bold">امتحانی شیڈول</h2>
-                  <p className="text-blue-100 text-xs">آنے والے امتحانات</p>
+                  <p className="text-white/80 text-xs">آنے والے امتحانات</p>
                 </div>
               </div>
             </div>
@@ -176,7 +176,7 @@ export default function StudentExams() {
                   schedule.map((e) => (
                     <div
                       key={e.id}
-                      className="rounded-lg border border-gray-200 bg-gray-50 p-3 hover:bg-blue-50/30 transition-colors"
+                      className="rounded-lg border border-gray-200 bg-gray-50 p-3 hover:bg-secondary/5 transition-colors"
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div className="text-sm font-semibold text-gray-800">
@@ -233,8 +233,8 @@ export default function StudentExams() {
                     <div className="text-xs text-gray-600">فیصد</div>
                   </div>
                   {latestRank && (
-                    <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-200">
-                      <div className="text-2xl font-bold text-blue-700">
+                    <div className="text-center p-3 bg-secondary/10 rounded-lg border border-secondary/30">
+                      <div className="text-2xl font-bold text-secondary">
                         {latestRank.position}/{latestRank.total}
                       </div>
                       <div className="text-xs text-gray-600">پوزیشن</div>

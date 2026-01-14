@@ -54,15 +54,15 @@ export default function StudentFees() {
 
         {!loading && !error && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-            <div className="bg-white rounded-xl shadow-sm border border-emerald-200 p-4 text-right">
+            <div className="bg-white rounded-xl shadow-sm border border-primary/30 p-4 text-right">
               <div className="text-[11px] text-gray-600 mb-1">کل فیس</div>
-              <div className="text-xl font-bold text-emerald-600">
+              <div className="text-xl font-bold text-primary">
                 {totalAmount.toLocaleString("ur-PK")} روپے
               </div>
             </div>
-            <div className="bg-white rounded-xl shadow-sm border border-blue-200 p-4 text-right">
+            <div className="bg-white rounded-xl shadow-sm border border-secondary/30 p-4 text-right">
               <div className="text-[11px] text-gray-600 mb-1">ادا شدہ</div>
-              <div className="text-xl font-bold text-blue-600">
+              <div className="text-xl font-bold text-secondary">
                 {totalPaid.toLocaleString("ur-PK")} روپے
               </div>
             </div>
@@ -76,7 +76,7 @@ export default function StudentFees() {
         )}
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-right text-xs">
-          <h2 className="text-base font-semibold text-gray-800 mb-2">
+          <h2 className="text-base font-semibold text-primary mb-2">
             فیس انوائس کی تاریخچہ
           </h2>
           <div className="overflow-x-auto">

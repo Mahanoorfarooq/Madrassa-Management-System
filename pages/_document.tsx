@@ -5,6 +5,7 @@ class MyDocument extends Document {
     return (
       <Html lang="ur" dir="rtl">
         <Head>
+          <meta charSet="utf-8" />
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600&display=swap"

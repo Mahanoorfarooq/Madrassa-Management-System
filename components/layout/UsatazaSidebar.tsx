@@ -11,7 +11,7 @@ export function UsatazaSidebar() {
   const router = useRouter();
 
   return (
-    <aside className="sticky top-0 h-screen overflow-y-auto custom-scrollbar w-64 bg-darkBg text-white px-4 py-6 hidden md:block">
+    <aside className="sticky top-0 h-screen overflow-y-auto custom-scrollbar scrollbar-none w-64 bg-saPrimary text-white px-4 py-6 hidden md:block border-l border-white/5">
       <div className="mb-6 text-xl font-semibold text-secondary text-right">
         اساتذہ ماڈیول
       </div>
@@ -22,10 +22,11 @@ export function UsatazaSidebar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 text-xs md:text-sm ${active
-                ? "bg-primary/90 text-white shadow-md"
-                : "hover:bg-slate-800/80 text-slate-200"
-                }`}
+              className={`${
+                active
+                  ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+                  : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+              } flex items-center gap-3 px-4 py-2.5 transition-all duration-300 text-sm md:text-base selection:bg-secondary/30`}
             >
               {link.label}
             </Link>

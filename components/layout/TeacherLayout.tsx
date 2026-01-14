@@ -35,10 +35,11 @@ export function TeacherLayout({
     return (
       <Link
         href={href}
-        className={`block rounded-xl px-3 py-2.5 text-sm text-right transition-colors duration-200 text-slate-200 ${active
-          ? "bg-secondary text-white shadow-md font-medium"
-          : "hover:bg-white/10"
-          }`}
+        className={`${
+          active
+            ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+            : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+        } flex items-center gap-3 px-4 py-2.5 text-sm text-right transition-all duration-300`}
       >
         {label}
       </Link>
@@ -47,34 +48,36 @@ export function TeacherLayout({
 
   return (
     <div className="min-h-screen bg-lightBg">
-      <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-darkBg text-white px-4 py-6 overflow-y-auto custom-scrollbar">
-        <div className="mb-6 text-xl font-semibold text-secondary text-right">
-          استاد پورٹل
+      <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-saPrimary text-white px-4 py-6 overflow-hidden border-l border-white/5">
+        <div className="h-full overflow-y-auto scrollbar-none">
+          <div className="mb-6 text-xl font-semibold text-secondary text-right">
+            استاد پورٹل
+          </div>
+          <nav className="space-y-1 text-right text-sm">
+            <NavLink href="/teacher" label="ڈیش بورڈ" />
+            <NavLink href="/teacher/profile" label="میرا پروفائل" />
+            <NavLink href="/teacher/classes" label="میری کلاسز اور سیکشنز" />
+            <NavLink href="/teacher/attendance" label="حاضری" />
+            <NavLink href="/teacher/my-attendance" label="میری حاضری" />
+            <NavLink
+              href="/teacher/attendance-edit-requests"
+              label="حاضری ایڈٹ ریکویسٹ"
+            />
+            <NavLink href="/teacher/attendance-report" label="حاضری رپورٹ" />
+            <NavLink href="/teacher/requests" label="طالب علم کی درخواستیں" />
+            <NavLink href="/teacher/exams" label="امتحانات" />
+            <NavLink href="/teacher/assignments" label="اسائنمنٹس" />
+            <NavLink href="/teacher/timetable" label="ٹائم ٹیبل" />
+            <NavLink href="/teacher/study-material" label="تعلیمی مواد" />
+            <NavLink href="/teacher/discipline" label="ڈسپلن نوٹس" />
+            <button
+              onClick={handleLogout}
+              className="w-full text-right mt-2 rounded px-3 py-2 text-sm text-slate-300 hover:bg-white/5"
+            >
+              لاگ آؤٹ
+            </button>
+          </nav>
         </div>
-        <nav className="space-y-1 text-right text-sm">
-          <NavLink href="/teacher" label="ڈیش بورڈ" />
-          <NavLink href="/teacher/profile" label="میرا پروفائل" />
-          <NavLink href="/teacher/classes" label="میری کلاسز اور سیکشنز" />
-          <NavLink href="/teacher/attendance" label="حاضری" />
-          <NavLink href="/teacher/my-attendance" label="میری حاضری" />
-          <NavLink
-            href="/teacher/attendance-edit-requests"
-            label="حاضری ایڈٹ ریکویسٹ"
-          />
-          <NavLink href="/teacher/attendance-report" label="حاضری رپورٹ" />
-          <NavLink href="/teacher/requests" label="طالب علم کی درخواستیں" />
-          <NavLink href="/teacher/exams" label="امتحانات" />
-          <NavLink href="/teacher/assignments" label="اسائنمنٹس" />
-          <NavLink href="/teacher/timetable" label="ٹائم ٹیبل" />
-          <NavLink href="/teacher/study-material" label="تعلیمی مواد" />
-          <NavLink href="/teacher/discipline" label="ڈسپلن نوٹس" />
-          <button
-            onClick={handleLogout}
-            className="w-full text-right mt-2 rounded px-3 py-2 text-sm text-red-400 hover:bg-red-950/40"
-          >
-            لاگ آؤٹ
-          </button>
-        </nav>
       </div>
       <div className="md:pr-64">
         <Topbar

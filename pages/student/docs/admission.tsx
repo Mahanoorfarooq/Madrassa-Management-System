@@ -29,7 +29,7 @@ export default function AdmissionFormDoc() {
     <StudentLayout>
       <div className="p-6 max-w-5xl mx-auto print:p-0" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl p-5 text-white shadow-lg mb-6 print:hidden">
+        <div className="bg-gradient-to-r from-saAccent to-primary rounded-xl p-5 text-white shadow-lg mb-6 print:hidden">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-11 h-11 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
@@ -37,7 +37,7 @@ export default function AdmissionFormDoc() {
               </div>
               <div>
                 <h2 className="text-xl font-bold">داخلہ فارم</h2>
-                <p className="text-blue-100 text-sm">
+                <p className="text-white/80 text-sm">
                   طالب علم کی داخلہ کی تفصیلات
                 </p>
               </div>
@@ -47,10 +47,7 @@ export default function AdmissionFormDoc() {
               onClick={() => {
                 if (!student?._id) return;
                 // Open the new vector-based print page (no background image)
-                window.open(
-                  `/admission-form/${student._id}`,
-                  "_blank"
-                );
+                window.open(`/admission-form/${student._id}`, "_blank");
               }}
               className="flex items-center gap-2 rounded-lg bg-white/20 backdrop-blur-sm text-white px-4 py-2 text-sm font-semibold hover:bg-white/30 transition-all border border-white/30 disabled:opacity-60"
             >
@@ -88,8 +85,8 @@ export default function AdmissionFormDoc() {
                     className="w-20 h-20 rounded-lg object-cover border-2 border-gray-200"
                   />
                 ) : (
-                  <div className="w-20 h-20 rounded-lg bg-gradient-to-br from-blue-100 to-indigo-100 border-2 border-gray-200 flex items-center justify-center">
-                    <User className="w-10 h-10 text-blue-600" />
+                  <div className="w-20 h-20 rounded-lg bg-secondary/10 border-2 border-gray-200 flex items-center justify-center">
+                    <User className="w-10 h-10 text-secondary" />
                   </div>
                 )}
                 <div>
@@ -106,7 +103,7 @@ export default function AdmissionFormDoc() {
             {/* Admission Details */}
             <div className="p-6">
               <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200">
-                <GraduationCap className="w-5 h-5 text-blue-600" />
+                <GraduationCap className="w-5 h-5 text-secondary" />
                 <h5 className="text-base font-bold text-gray-800">
                   داخلہ کی تفصیلات
                 </h5>
@@ -114,8 +111,8 @@ export default function AdmissionFormDoc() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Hash className="w-4 h-4 text-blue-600" />
+                  <div className="w-8 h-8 bg-secondary/15 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Hash className="w-4 h-4 text-secondary" />
                   </div>
                   <div>
                     <div className="text-xs text-gray-600 mb-1">داخلہ نمبر</div>
@@ -126,8 +123,8 @@ export default function AdmissionFormDoc() {
                 </div>
 
                 <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Calendar className="w-4 h-4 text-purple-600" />
+                  <div className="w-8 h-8 bg-secondary/15 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Calendar className="w-4 h-4 text-secondary" />
                   </div>
                   <div>
                     <div className="text-xs text-gray-600 mb-1">
@@ -136,16 +133,16 @@ export default function AdmissionFormDoc() {
                     <div className="text-sm font-semibold text-gray-800">
                       {student.admissionDate
                         ? new Date(student.admissionDate).toLocaleDateString(
-                          "ur-PK"
-                        )
+                            "ur-PK"
+                          )
                         : "—"}
                     </div>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <GraduationCap className="w-4 h-4 text-emerald-600" />
+                  <div className="w-8 h-8 bg-secondary/15 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <GraduationCap className="w-4 h-4 text-secondary" />
                   </div>
                   <div>
                     <div className="text-xs text-gray-600 mb-1">شعبہ</div>
@@ -158,8 +155,8 @@ export default function AdmissionFormDoc() {
                 </div>
 
                 <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <FileText className="w-4 h-4 text-orange-600" />
+                  <div className="w-8 h-8 bg-secondary/15 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <FileText className="w-4 h-4 text-secondary" />
                   </div>
                   <div>
                     <div className="text-xs text-gray-600 mb-1">کلاس</div>
@@ -170,8 +167,8 @@ export default function AdmissionFormDoc() {
                 </div>
 
                 <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-8 h-8 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <FileText className="w-4 h-4 text-teal-600" />
+                  <div className="w-8 h-8 bg-secondary/15 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <FileText className="w-4 h-4 text-secondary" />
                   </div>
                   <div>
                     <div className="text-xs text-gray-600 mb-1">سیکشن</div>
@@ -182,8 +179,8 @@ export default function AdmissionFormDoc() {
                 </div>
 
                 <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <User className="w-4 h-4 text-indigo-600" />
+                  <div className="w-8 h-8 bg-secondary/15 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <User className="w-4 h-4 text-secondary" />
                   </div>
                   <div>
                     <div className="text-xs text-gray-600 mb-1">حیثیت</div>

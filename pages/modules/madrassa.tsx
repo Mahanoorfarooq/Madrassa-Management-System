@@ -11,9 +11,7 @@ import {
   ClipboardCheck,
   Library,
   LogOut,
-  ArrowLeft,
   MessageSquare,
-  FileText,
 } from "lucide-react";
 
 const adminModules = [
@@ -74,14 +72,6 @@ const adminModules = [
     gradient: "from-green-500 to-emerald-500",
   },
   {
-    key: "exams",
-    title: "امتحانات",
-    description: "امتحانات، نتائج اور رول نمبر سلپس",
-    href: "/exams",
-    icon: FileText,
-    gradient: "from-sky-500 to-blue-600",
-  },
-  {
     key: "library",
     title: "لائبریری",
     description: "کتب، اجراء، واپسی اور جرمانہ مینجمنٹ",
@@ -135,7 +125,7 @@ export default function MadrassaModules() {
         if (stored) {
           try {
             setAllowedModules(JSON.parse(stored));
-          } catch (e) { }
+          } catch (e) {}
         }
 
         const res = await api.get("/api/auth/me");
@@ -147,11 +137,25 @@ export default function MadrassaModules() {
         // Update from server and sync to localStorage
         if (serverModules) {
           setAllowedModules(serverModules);
-          localStorage.setItem("allowed_modules", JSON.stringify(serverModules));
+          localStorage.setItem(
+            "allowed_modules",
+            JSON.stringify(serverModules)
+          );
         }
 
-        if (r && r !== "admin") {
-          window.location.href = "/teacher";
+        // Role-based landing: allow admin and mudeer to stay here
+        if (r && !["admin", "mudeer"].includes(r)) {
+          if (r === "teacher" || r === "nazim") {
+            window.location.href = "/teacher";
+          } else if (r === "super_admin") {
+            window.location.href = "/super-admin";
+          } else if (r === "student") {
+            window.location.href = "/dashboard/student";
+          } else if (r === "staff") {
+            window.location.href = "/dashboard/staff";
+          } else {
+            window.location.href = "/login";
+          }
         }
       } catch (e: any) {
         console.error("Auth failed:", e);
@@ -166,15 +170,16 @@ export default function MadrassaModules() {
   }, []);
 
   const hasModule = (name: string) => {
-    return allowedModules.some(m =>
-      m === name ||
-      m === name + " پورٹل" ||
-      m.includes(name) ||
-      (name === "طلباء" && m.includes("طلبہ"))
+    return allowedModules.some(
+      (m) =>
+        m === name ||
+        m === name + " پورٹل" ||
+        m.includes(name) ||
+        (name === "طلباء" && m.includes("طلبہ"))
     );
   };
 
-  const filteredModules = adminModules.filter(m => {
+  const filteredModules = adminModules.filter((m) => {
     if (allowedModules.includes("all")) return true;
 
     if (m.key === "talba") return hasModule("طلباء") || hasModule("طلبہ");
@@ -183,37 +188,37 @@ export default function MadrassaModules() {
     if (m.key === "hostel") return hasModule("ہاسٹل");
     if (m.key === "mess") return hasModule("میس");
     if (m.key === "nisab") return hasModule("نصاب");
-    if (m.key === "hazri") return hasModule("حاضری") || hasModule("اساتذہ") || hasModule("طلباء");
+    if (m.key === "hazri")
+      return hasModule("حاضری") || hasModule("اساتذہ") || hasModule("طلباء");
     if (m.key === "library") return hasModule("لائبریری");
-    if (m.key === "exams") return hasModule("امتحانات");
     if (m.key === "tickets") return hasModule("شکایات");
-    if (m.key === "notifications") return hasModule("اعلانات") || hasModule("نوٹیفیکیشنز");
-    if (m.key === "auditLogs") return hasModule("آڈٹ لاگز") || hasModule("لاگز");
-    if (m.key === "userManagement") return hasModule("یوزر مینجمنٹ") || hasModule("یوزر");
+    if (m.key === "notifications")
+      return hasModule("اعلانات") || hasModule("نوٹیفیکیشنز");
+    if (m.key === "auditLogs")
+      return hasModule("آڈٹ لاگز") || hasModule("لاگز");
+    if (m.key === "userManagement")
+      return hasModule("یوزر مینجمنٹ") || hasModule("یوزر");
 
     return false;
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50 to-blue-50 font-urdu">
+    <div className="min-h-screen bg-lightBg font-urdu">
       {/* Decorative Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-20 w-72 h-72 bg-green-200/30 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-20 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-200/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 right-20 w-72 h-72 bg-primary/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl"></div>
       </div>
 
-      <header className="relative w-full border-b bg-white/90 backdrop-blur-xl shadow-sm font-urdu">
+      <header className="relative w-full border-b bg-primary text-white shadow-sm font-urdu">
         <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-blue-600 flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform">
-              <span className="text-2xl">🕌</span>
-            </div>
             <div className="flex flex-col text-right">
-              <span className="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+              <span className="text-xl font-bold text-white">
                 جامعہ مینجمنٹ سسٹم
               </span>
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-white/80">
                 تمام انتظامی ماڈیولز ایک ہی جگہ
               </span>
             </div>
@@ -221,16 +226,15 @@ export default function MadrassaModules() {
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white hover:bg-white/10 transition-colors"
             >
-              <ArrowLeft className="w-4 h-4" />
               <span>ہوم</span>
             </Link>
             <button
               onClick={() => {
                 window.location.href = "/login/admin";
               }}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white hover:bg-white/10 transition-colors"
             >
               <LogOut className="w-4 h-4" />
               <span>لاگ آؤٹ</span>
@@ -243,10 +247,10 @@ export default function MadrassaModules() {
         <div className="mx-auto max-w-7xl">
           {/* Hero Section */}
           <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-3xl font-bold text-gray-800 mb-3">
+            <h1 className="text-3xl md:text-3xl font-bold text-primary mb-3">
               سسٹم کے اہم ماڈیولز
             </h1>
-            <p className="text-gray-600 text-lg max-w-3xl mx-auto">
+            <p className="text-primary/80 text-lg max-w-3xl mx-auto">
               طلبہ، اساتذہ، مالیات، ہاسٹل، میس، نصاب، حاضری اور لائبریری کے لئے
               الگ الگ ڈیش بورڈز
             </p>
@@ -268,35 +272,35 @@ export default function MadrassaModules() {
                     opacity: 0,
                   }}
                 >
-                  {/* Gradient Background Effect */}
+                  {/* Background Hover Tint */}
                   <div
-                    className={`absolute inset-0 bg-gradient-to-br ${m.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}
+                    className={`absolute inset-0 bg-primary opacity-0 group-hover:opacity-5 transition-opacity duration-300`}
                   ></div>
 
                   {/* Decorative Corner */}
                   <div
-                    className={`absolute top-0 left-0 w-20 h-20 bg-gradient-to-br ${m.gradient} opacity-10 rounded-br-full`}
+                    className={`absolute top-0 left-0 w-20 h-20 bg-primary/10 rounded-br-full`}
                   ></div>
 
                   {/* Icon */}
                   <div className="relative mb-4 flex justify-end">
                     <div
-                      className={`w-14 h-14 rounded-xl bg-gradient-to-br ${m.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}
+                      className={`w-14 h-14 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 group-hover:bg-secondary group-hover:text-white transition-all duration-300`}
                     >
-                      <IconComponent className="w-7 h-7 text-white" />
+                      <IconComponent className="w-7 h-7" />
                     </div>
                   </div>
 
                   {/* Content */}
                   <div className="relative mb-6 text-right flex-1">
-                    <h2 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-gray-900 transition-colors">
+                    <h2 className="text-xl font-bold text-primary mb-2 transition-colors">
                       {m.title}
                     </h2>
-                    <p className="text-sm text-gray-600 leading-relaxed">
+                    <p className="text-sm text-primary/70 leading-relaxed">
                       {m.description}
                     </p>
                     {isTickets && (
-                      <div className="mt-3 text-xs text-gray-500">
+                      <div className="mt-3 text-xs text-primary/60">
                         تفصیل دیکھنے کے لیے کھولیں
                       </div>
                     )}
@@ -305,7 +309,7 @@ export default function MadrassaModules() {
                   {/* Button */}
                   <div className="relative flex justify-end">
                     <span
-                      className={`inline-flex items-center gap-2 rounded-xl bg-gradient-to-r ${m.gradient} px-6 py-2.5 text-sm font-semibold text-white shadow-md transition-all group-hover:shadow-xl group-hover:scale-105 active:scale-95`}
+                      className={`inline-flex items-center gap-2 rounded-xl bg-secondary hover:bg-secondary/90 px-6 py-2.5 text-sm font-semibold text-white shadow-md transition-all group-hover:shadow-xl group-hover:scale-105 active:scale-95`}
                     >
                       کھولیں
                       <svg

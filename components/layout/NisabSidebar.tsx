@@ -4,76 +4,76 @@ import { useRouter } from "next/router";
 export function NisabSidebar() {
   const router = useRouter();
   return (
-    <aside className="sticky top-0 h-screen overflow-y-auto scrollbar-none w-64 bg-gradient-to-b from-brandForest via-brandTeal to-brandForest text-touchWhite p-4 hidden md:block text-right">
-      <div className="mb-6 text-xl font-semibold text-touchWhite">نصاب</div>
-      <nav className="space-y-2 text-sm">
+    <aside className="sticky top-0 h-screen overflow-y-auto custom-scrollbar w-64 bg-saPrimary text-white p-4 hidden md:block text-right border-l border-white/5">
+      <div className="mb-6 text-xl font-semibold text-secondary">نصاب</div>
+      <nav className="space-y-1 text-sm">
         <Link
           href="/nisab"
-          className={`block rounded px-3 py-2 transition ${
+          className={`${
             router.pathname === "/nisab"
-              ? "bg-primary text-touchWhite shadow-md"
-              : "hover:bg-brandForest/70 text-touchWhite/90"
-          }`}
+              ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+              : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+          } flex items-center gap-3 px-4 py-2.5 transition-all duration-300`}
         >
           ڈیش بورڈ
         </Link>
         <Link
           href="/nisab/syllabus"
-          className={`block rounded px-3 py-2 transition ${
+          className={`${
             router.pathname === "/nisab/syllabus"
-              ? "bg-primary text-touchWhite shadow-md"
-              : "hover:bg-brandForest/70 text-touchWhite/90"
-          }`}
+              ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+              : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+          } flex items-center gap-3 px-4 py-2.5 transition-all duration-300`}
         >
           سلیبس
         </Link>
         <Link
           href="/nisab/dars"
-          className={`block rounded px-3 py-2 transition ${
+          className={`${
             router.pathname === "/nisab/dars"
-              ? "bg-primary text-touchWhite shadow-md"
-              : "hover:bg-brandForest/70 text-touchWhite/90"
-          }`}
+              ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+              : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+          } flex items-center gap-3 px-4 py-2.5 transition-all duration-300`}
         >
           مضامین / دروس
         </Link>
         <Link
           href="/nisab/timetable"
-          className={`block rounded px-3 py-2 transition ${
+          className={`${
             router.pathname === "/nisab/timetable"
-              ? "bg-primary text-touchWhite shadow-md"
-              : "hover:bg-brandForest/70 text-touchWhite/90"
-          }`}
+              ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+              : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+          } flex items-center gap-3 px-4 py-2.5 transition-all duration-300`}
         >
           ٹائم ٹیبل
         </Link>
         <Link
           href="/nisab/calendar"
-          className={`block rounded px-3 py-2 transition ${
+          className={`${
             router.pathname === "/nisab/calendar"
-              ? "bg-primary text-touchWhite shadow-md"
-              : "hover:bg-brandForest/70 text-touchWhite/90"
-          }`}
+              ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+              : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+          } flex items-center gap-3 px-4 py-2.5 transition-all duration-300`}
         >
           اکیڈمک کیلنڈر
         </Link>
         <Link
           href="/nisab/exams"
-          className={`block rounded px-3 py-2 transition ${
+          className={`${
             router.pathname === "/nisab/exams"
-              ? "bg-primary text-touchWhite shadow-md"
-              : "hover:bg-brandForest/70 text-touchWhite/90"
-          }`}
+              ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+              : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+          } flex items-center gap-3 px-4 py-2.5 transition-all duration-300`}
         >
           امتحانات
         </Link>
         <Link
           href="/nisab/results"
-          className={`block rounded px-3 py-2 transition ${
+          className={`${
             router.pathname === "/nisab/results"
-              ? "bg-primary text-touchWhite shadow-md"
-              : "hover:bg-brandForest/70 text-touchWhite/90"
-          }`}
+              ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+              : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+          } flex items-center gap-3 px-4 py-2.5 transition-all duration-300`}
         >
           نتائج
         </Link>

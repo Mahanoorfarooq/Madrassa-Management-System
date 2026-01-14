@@ -49,10 +49,10 @@ export default function StudentTimetable() {
   }));
 
   return (
-    <StudentLayout >
+    <StudentLayout>
       <div className="p-6 max-w-7xl mx-auto" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-teal-500 to-cyan-600 rounded-xl p-5 text-white shadow-lg mb-6">
+        <div className="bg-gradient-to-r from-saAccent to-primary rounded-xl p-5 text-white shadow-lg mb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-11 h-11 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
@@ -60,7 +60,7 @@ export default function StudentTimetable() {
               </div>
               <div>
                 <h2 className="text-xl font-bold">ٹائم ٹیبل</h2>
-                <p className="text-teal-100 text-sm">
+                <p className="text-white/80 text-sm">
                   {view === "weekly"
                     ? "ہفتہ وار شیڈول"
                     : `یومیہ شیڈول: ${urDays[dayIndex]}`}
@@ -74,14 +74,14 @@ export default function StudentTimetable() {
         <div className="bg-white rounded-xl border border-gray-200 p-4 mb-6 shadow-sm">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <Clock className="w-5 h-5 text-teal-600" />
+              <Clock className="w-5 h-5 text-secondary" />
               <span className="text-sm font-medium text-gray-700">منظر:</span>
             </div>
             <div className="flex items-center gap-3">
               <select
                 value={view}
                 onChange={(e) => setView(e.target.value as any)}
-                className="rounded-lg border-2 border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition-all"
+                className="rounded-lg border-2 border-gray-300 px-3 py-2 text-sm focus:border-secondary focus:ring-2 focus:ring-secondary/30 outline-none transition-all"
               >
                 <option value="weekly">ہفتہ وار</option>
                 <option value="daily">یومیہ</option>
@@ -90,7 +90,7 @@ export default function StudentTimetable() {
                 <select
                   value={dayIndex}
                   onChange={(e) => setDayIndex(Number(e.target.value))}
-                  className="rounded-lg border-2 border-gray-300 px-3 py-2 text-sm focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 outline-none transition-all"
+                  className="rounded-lg border-2 border-gray-300 px-3 py-2 text-sm focus:border-secondary focus:ring-2 focus:ring-secondary/30 outline-none transition-all"
                 >
                   {urDays.map((d, i) => (
                     <option key={i} value={i}>
@@ -119,13 +119,13 @@ export default function StudentTimetable() {
                   {weeklyGrid.slice(1, 6).map((day) => (
                     <div
                       key={day.day}
-                      className="border-2 border-gray-200 rounded-lg p-4 hover:border-teal-300 hover:bg-teal-50/30 transition-all"
+                      className="border-2 border-gray-200 rounded-lg p-4 hover:border-secondary hover:bg-secondary/5 transition-all"
                     >
                       <div className="flex items-center gap-2 mb-3 pb-3 border-b border-gray-200">
-                        <div className="w-8 h-8 bg-teal-100 rounded-lg flex items-center justify-center">
-                          <Calendar className="w-4 h-4 text-teal-600" />
+                        <div className="w-8 h-8 bg-secondary/15 rounded-lg flex items-center justify-center">
+                          <Calendar className="w-4 h-4 text-secondary" />
                         </div>
-                        <div className="text-sm font-bold text-gray-800">
+                        <div className="text-sm font-bold text-primary">
                           {urDays[day.day]}
                         </div>
                       </div>
@@ -138,11 +138,11 @@ export default function StudentTimetable() {
                           day.periods.map((p, i) => (
                             <div
                               key={i}
-                              className="bg-gray-50 rounded-lg p-2 border border-gray-200 hover:bg-teal-50 transition-colors"
+                              className="bg-gray-50 rounded-lg p-2 border border-gray-200 hover:bg-secondary/10 transition-colors"
                             >
                               <div className="flex items-center gap-2 mb-1">
-                                <BookOpen className="w-3 h-3 text-teal-600" />
-                                <div className="text-xs font-semibold text-gray-800">
+                                <BookOpen className="w-3 h-3 text-secondary" />
+                                <div className="text-xs font-semibold text-primary">
                                   {p.subject || "—"}
                                 </div>
                               </div>
@@ -161,10 +161,10 @@ export default function StudentTimetable() {
             ) : (
               <div className="p-5">
                 <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200">
-                  <div className="w-9 h-9 bg-cyan-100 rounded-lg flex items-center justify-center">
-                    <Calendar className="w-5 h-5 text-cyan-600" />
+                  <div className="w-9 h-9 bg-secondary/15 rounded-lg flex items-center justify-center">
+                    <Calendar className="w-5 h-5 text-secondary" />
                   </div>
-                  <div className="text-base font-bold text-gray-800">
+                  <div className="text-base font-bold text-primary">
                     {urDays[dayIndex]}
                   </div>
                 </div>
@@ -186,12 +186,12 @@ export default function StudentTimetable() {
                         weeklyGrid[dayIndex].periods.map((p, i) => (
                           <tr
                             key={i}
-                            className="border-b border-gray-100 hover:bg-cyan-50"
+                            className="border-b border-gray-100 hover:bg-secondary/5"
                           >
                             <td className="px-4 py-3 text-sm">
                               <div className="flex items-center gap-2">
-                                <BookOpen className="w-4 h-4 text-cyan-600" />
-                                <span className="font-medium text-gray-800">
+                                <BookOpen className="w-4 h-4 text-secondary" />
+                                <span className="font-medium text-primary">
                                   {p.subject || "—"}
                                 </span>
                               </div>

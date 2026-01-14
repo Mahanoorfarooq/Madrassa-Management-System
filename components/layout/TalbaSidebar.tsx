@@ -24,28 +24,30 @@ export function TalbaSidebar() {
   const router = useRouter();
 
   return (
-    <aside className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-darkBg text-white px-4 py-6 overflow-y-auto custom-scrollbar">
-      <div className="mb-6 text-xl font-semibold text-secondary text-right">
-        طلبہ ماڈیول
+    <aside className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-saPrimary text-white px-4 py-6 overflow-hidden">
+      <div className="h-full overflow-y-auto scrollbar-none">
+        <div className="mb-6 text-xl font-semibold text-secondary text-right">
+          طلبہ ماڈیول
+        </div>
+        <nav className="space-y-1 text-right text-sm">
+          {links.map((link) => {
+            const active = router.pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`${
+                  active
+                    ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+                    : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+                } flex items-center gap-3 px-4 py-2.5 transition-all duration-300 text-sm md:text-base selection:bg-secondary/30`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+        </nav>
       </div>
-      <nav className="space-y-1 text-right text-sm">
-        {links.map((link) => {
-          const active = router.pathname === link.href;
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 text-xs md:text-sm ${
-                active
-                  ? "bg-primary text-touchWhite shadow-md"
-                  : "hover:bg-brandForest/70 text-touchWhite/90"
-              }`}
-            >
-              {link.label}
-            </Link>
-          );
-        })}
-      </nav>
     </aside>
   );
 }

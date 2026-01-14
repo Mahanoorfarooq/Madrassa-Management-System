@@ -48,28 +48,36 @@ export default async function handler(
 
   // Set http-only cookie for global auth
   const isProd = process.env.NODE_ENV === "production";
+  const host = (req.headers.host || "").toLowerCase();
+  const isLocalhost =
+    host.includes("localhost") ||
+    host.includes("127.0.0.1") ||
+    host.includes("::1");
+  // Use Secure cookies only when NOT on localhost to avoid cookie drop on HTTP
+  const useSecureCookie = !isLocalhost && isProd;
 
   // Fetch license info
   const { License } = require("@/schemas/License");
   const license = await License.findOne({ status: "active" });
 
-  res.setHeader(
-    "Set-Cookie",
-    [
-      serialize("auth_token", token, {
-        httpOnly: true,
-        secure: isProd,
-        sameSite: "lax",
-        path: "/",
-        maxAge: 60 * 60 * 24 * 7, // 7 days
-      }),
-      // If we found a valid license, ensure the activation cookie is there
-      ...(license ? [serialize("software_activated", "true", {
-        path: "/",
-        maxAge: 60 * 60 * 24 * 365,
-      })] : [])
-    ]
-  );
+  res.setHeader("Set-Cookie", [
+    serialize("auth_token", token, {
+      httpOnly: true,
+      secure: useSecureCookie,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    }),
+    // If we found a valid license, ensure the activation cookie is there
+    ...(license
+      ? [
+          serialize("software_activated", "true", {
+            path: "/",
+            maxAge: 60 * 60 * 24 * 365,
+          }),
+        ]
+      : []),
+  ]);
 
   return res.status(200).json({
     message: "کامیابی سے لاگ اِن ہو گئے۔",
@@ -85,18 +93,18 @@ export default async function handler(
         user.role === "super_admin"
           ? "/super-admin"
           : user.role === "admin"
-            ? "/modules/madrassa"
-            : user.role === "mudeer"
-              ? "/mudeer"
-              : user.role === "nazim"
-                ? "/talba"
-                : user.role === "teacher"
-                  ? "/teacher"
-                  : user.role === "student"
-                    ? "/student"
-                    : user.role === "staff"
-                      ? "/staff/dashboard"
-                      : "/",
+          ? "/modules/madrassa"
+          : user.role === "mudeer"
+          ? "/mudeer"
+          : user.role === "nazim"
+          ? "/talba"
+          : user.role === "teacher"
+          ? "/teacher"
+          : user.role === "student"
+          ? "/student"
+          : user.role === "staff"
+          ? "/staff/dashboard"
+          : "/",
     },
   });
 }

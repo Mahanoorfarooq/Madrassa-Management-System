@@ -27,12 +27,10 @@ export default function StudentHome() {
         setStudent(res.data?.student || null);
         const d = await api.get("/api/student/dashboard");
         setDash(d.data || null);
-      } catch {
-      } 
+      } catch {}
     };
     load();
   }, []);
-
 
   if (!student) {
     return (
@@ -53,11 +51,11 @@ export default function StudentHome() {
     <StudentLayout>
       <div className="p-6 max-w-7xl mx-auto" dir="rtl">
         {/* Welcome Header */}
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl p-6 text-white shadow-lg mb-6">
+        <div className="bg-gradient-to-r from-saAccent to-primary rounded-xl p-6 text-white shadow-lg mb-6">
           <h1 className="text-2xl font-bold mb-2">
             خوش آمدید، {student.fullName}
           </h1>
-          <p className="text-blue-100 text-sm">
+          <p className="text-white/80 text-sm">
             یہاں سے آپ اپنی حاضری، کلاسز، امتحانات، فیس اور ہاسٹل سے متعلق تمام
             معلومات دیکھ سکتے ہیں
           </p>
@@ -68,8 +66,8 @@ export default function StudentHome() {
           {/* Attendance */}
           <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
-              <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-emerald-600" />
+              <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                <TrendingUp className="w-5 h-5 text-secondary" />
               </div>
             </div>
             <div className="text-3xl font-bold text-gray-800 mb-1">
@@ -82,8 +80,8 @@ export default function StudentHome() {
           {/* Today Classes */}
           <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
-              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Calendar className="w-5 h-5 text-blue-600" />
+              <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                <Calendar className="w-5 h-5 text-secondary" />
               </div>
             </div>
             <div className="text-3xl font-bold text-gray-800 mb-1">
@@ -96,8 +94,8 @@ export default function StudentHome() {
           {/* Fee Status */}
           <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
-              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                <DollarSign className="w-5 h-5 text-purple-600" />
+              <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                <DollarSign className="w-5 h-5 text-secondary" />
               </div>
             </div>
             <div className="text-lg font-bold text-gray-800 mb-1">
@@ -114,8 +112,8 @@ export default function StudentHome() {
           {/* Latest Grade */}
           <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
-              <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                <Award className="w-5 h-5 text-orange-600" />
+              <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                <Award className="w-5 h-5 text-secondary" />
               </div>
             </div>
             <div className="text-3xl font-bold text-gray-800 mb-1">
@@ -134,8 +132,8 @@ export default function StudentHome() {
           {/* Today Schedule */}
           <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
             <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200">
-              <Calendar className="w-5 h-5 text-blue-600" />
-              <h3 className="text-lg font-bold text-gray-800">آج کا شیڈول</h3>
+              <Calendar className="w-5 h-5 text-secondary" />
+              <h3 className="text-lg font-bold text-primary">آج کا شیڈول</h3>
             </div>
             {todaySchedule.length === 0 ? (
               <div className="text-center py-8 text-gray-500 text-sm">
@@ -146,11 +144,11 @@ export default function StudentHome() {
                 {todaySchedule.map((s: any, i: number) => (
                   <div
                     key={i}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-blue-50 transition-colors"
+                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-secondary/10 transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <BookOpen className="w-5 h-5 text-blue-600" />
+                      <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                        <BookOpen className="w-5 h-5 text-secondary" />
                       </div>
                       <div>
                         <div className="font-semibold text-gray-800 text-sm">
@@ -176,8 +174,8 @@ export default function StudentHome() {
           {/* Attendance Summary */}
           <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
             <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200">
-              <TrendingUp className="w-5 h-5 text-emerald-600" />
-              <h3 className="text-lg font-bold text-gray-800">حاضری خلاصہ</h3>
+              <TrendingUp className="w-5 h-5 text-secondary" />
+              <h3 className="text-lg font-bold text-primary">حاضری خلاصہ</h3>
             </div>
             <div className="text-sm text-gray-600 mb-3">
               ماہانہ فیصد:{" "}
@@ -239,8 +237,8 @@ export default function StudentHome() {
           {/* Notices */}
           <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
             <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200">
-              <Bell className="w-5 h-5 text-orange-600" />
-              <h3 className="text-lg font-bold text-gray-800">نوٹس</h3>
+              <Bell className="w-5 h-5 text-secondary" />
+              <h3 className="text-lg font-bold text-primary">نوٹس</h3>
             </div>
             {notices.length === 0 ? (
               <div className="text-center py-6 text-gray-500 text-sm">
@@ -251,7 +249,7 @@ export default function StudentHome() {
                 {notices.slice(0, 5).map((n: any, i: number) => (
                   <div
                     key={i}
-                    className="p-3 bg-orange-50 rounded-lg border border-orange-200"
+                    className="p-3 bg-secondary/10 rounded-lg border border-secondary/20"
                   >
                     <div className="flex items-start justify-between gap-2 mb-1">
                       <div className="font-semibold text-gray-800 text-sm">
@@ -273,42 +271,42 @@ export default function StudentHome() {
           {/* Quick Links */}
           <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
             <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200">
-              <Users className="w-5 h-5 text-indigo-600" />
-              <h3 className="text-lg font-bold text-gray-800">فوری رسائی</h3>
+              <Users className="w-5 h-5 text-secondary" />
+              <h3 className="text-lg font-bold text-primary">فوری رسائی</h3>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <Link
                 href="/student/profile"
-                className="p-3 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg border border-blue-200 hover:shadow-md transition-all group"
+                className="p-3 bg-secondary/10 rounded-lg border border-secondary/20 hover:bg-secondary/20 hover:shadow-md transition-all group"
               >
-                <div className="text-sm font-semibold text-gray-800 mb-1 group-hover:text-blue-600">
+                <div className="text-sm font-semibold text-gray-800 mb-1 group-hover:text-secondary">
                   پروفائل
                 </div>
                 <div className="text-xs text-gray-600">تفصیلات دیکھیں</div>
               </Link>
               <Link
                 href="/student/attendance"
-                className="p-3 bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-lg border border-emerald-200 hover:shadow-md transition-all group"
+                className="p-3 bg-secondary/10 rounded-lg border border-secondary/20 hover:bg-secondary/20 hover:shadow-md transition-all group"
               >
-                <div className="text-sm font-semibold text-gray-800 mb-1 group-hover:text-emerald-600">
+                <div className="text-sm font-semibold text-gray-800 mb-1 group-hover:text-secondary">
                   حاضری
                 </div>
                 <div className="text-xs text-gray-600">ریکارڈ دیکھیں</div>
               </Link>
               <Link
                 href="/student/exams"
-                className="p-3 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg border border-purple-200 hover:shadow-md transition-all group"
+                className="p-3 bg-secondary/10 rounded-lg border border-secondary/20 hover:bg-secondary/20 hover:shadow-md transition-all group"
               >
-                <div className="text-sm font-semibold text-gray-800 mb-1 group-hover:text-purple-600">
+                <div className="text-sm font-semibold text-gray-800 mb-1 group-hover:text-secondary">
                   امتحانات
                 </div>
                 <div className="text-xs text-gray-600">نتائج دیکھیں</div>
               </Link>
               <Link
                 href="/student/fee"
-                className="p-3 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg border border-orange-200 hover:shadow-md transition-all group"
+                className="p-3 bg-secondary/10 rounded-lg border border-secondary/20 hover:bg-secondary/20 hover:shadow-md transition-all group"
               >
-                <div className="text-sm font-semibold text-gray-800 mb-1 group-hover:text-orange-600">
+                <div className="text-sm font-semibold text-gray-800 mb-1 group-hover:text-secondary">
                   فیس
                 </div>
                 <div className="text-xs text-gray-600">ادائیگی دیکھیں</div>

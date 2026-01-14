@@ -117,14 +117,14 @@ export default function TeacherDashboard() {
       href: "/teacher/attendance",
       label: "حاضری لگائیں",
       icon: ClipboardCheck,
-      gradient: "from-blue-500 to-cyan-500",
+      gradient: "from-secondary to-primary",
       description: "آج کی حاضری درج کریں",
     },
     {
       href: "/teacher/classes",
       label: "میری کلاسز دیکھیں",
       icon: BookOpen,
-      gradient: "from-purple-500 to-pink-500",
+      gradient: "from-primary to-secondary",
       description: "تفویض شدہ کلاسز",
     },
   ];

@@ -4,51 +4,56 @@ import { useRouter } from "next/router";
 export function HazriSidebar() {
   const router = useRouter();
   return (
-    <aside className="sticky top-0 h-screen overflow-y-auto custom-scrollbar w-64 bg-darkBg text-white px-4 py-6 hidden md:block text-right">
+    <aside className="sticky top-0 h-screen overflow-y-auto custom-scrollbar scrollbar-none w-64 bg-saPrimary text-white px-4 py-6 hidden md:block text-right border-l border-white/5">
       <div className="mb-6 text-xl font-semibold text-secondary">حاضری</div>
       <nav className="space-y-1 text-sm">
         <Link
           href="/hazri"
-          className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 ${router.pathname === "/hazri"
-            ? "bg-primary/90 text-white shadow-md"
-            : "hover:bg-slate-800/80 text-slate-200"
-            }`}
+          className={`${
+            router.pathname === "/hazri"
+              ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+              : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+          } flex items-center gap-3 px-4 py-2.5 transition-all duration-300`}
         >
           ڈیش بورڈ
         </Link>
         <Link
           href="/hazri/students"
-          className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 ${router.pathname === "/hazri/students"
-            ? "bg-primary/90 text-white shadow-md"
-            : "hover:bg-slate-800/80 text-slate-200"
-            }`}
+          className={`${
+            router.pathname === "/hazri/students"
+              ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+              : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+          } flex items-center gap-3 px-4 py-2.5 transition-all duration-300`}
         >
           طلبہ
         </Link>
         <Link
           href="/hazri/teacher"
-          className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 ${router.pathname === "/hazri/teacher"
-            ? "bg-primary/90 text-white shadow-md"
-            : "hover:bg-slate-800/80 text-slate-200"
-            }`}
+          className={`${
+            router.pathname === "/hazri/teacher"
+              ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+              : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+          } flex items-center gap-3 px-4 py-2.5 transition-all duration-300`}
         >
           اساتذہ
         </Link>
         <Link
           href="/hazri/staff"
-          className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 ${router.pathname === "/hazri/staff"
-            ? "bg-primary/90 text-white shadow-md"
-            : "hover:bg-slate-800/80 text-slate-200"
-            }`}
+          className={`${
+            router.pathname === "/hazri/staff"
+              ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+              : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+          } flex items-center gap-3 px-4 py-2.5 transition-all duration-300`}
         >
           عملہ
         </Link>
         <Link
           href="/hazri/oversight"
-          className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 ${router.pathname === "/hazri/oversight"
-            ? "bg-primary/90 text-white shadow-md"
-            : "hover:bg-slate-800/80 text-slate-200"
-            }`}
+          className={`${
+            router.pathname === "/hazri/oversight"
+              ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+              : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+          } flex items-center gap-3 px-4 py-2.5 transition-all duration-300`}
         >
           نگرانی
         </Link>

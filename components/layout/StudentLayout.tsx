@@ -78,10 +78,11 @@ export function StudentLayout({
     return (
       <Link
         href={href}
-        className={`block rounded-xl px-3 py-2.5 text-sm text-right transition-colors duration-200 text-slate-200 ${active
-          ? "bg-secondary text-white shadow-md font-medium"
-          : "hover:bg-white/10"
-          }`}
+        className={`${
+          active
+            ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+            : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+        } flex items-center gap-3 px-4 py-2.5 text-sm text-right transition-all duration-300`}
       >
         {label}
       </Link>
@@ -91,13 +92,13 @@ export function StudentLayout({
   return (
     <div className="min-h-screen bg-lightBg">
       {/* Sidebar */}
-      <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-darkBg text-white px-4 py-6">
-        <div ref={sidebarRef} className="h-full overflow-y-auto custom-scrollbar">
+      <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-saPrimary text-white px-4 py-6 border-l border-white/5 overflow-hidden">
+        <div ref={sidebarRef} className="h-full overflow-y-auto scrollbar-none">
           <div className="mb-1 text-xl font-semibold text-secondary text-right">
             طالب علم پورٹل
           </div>
           {jamia && (
-            <div className="mb-4 text-xs text-touchWhite/80 text-right">
+            <div className="mb-4 text-xs text-slate-300 text-right">
               {jamia.name}
             </div>
           )}
@@ -168,7 +169,7 @@ export function StudentLayout({
 
             <button
               onClick={handleLogout}
-              className="w-full text-right mt-2 rounded px-3 py-2 text-sm text-red-400 hover:bg-red-950/40"
+              className="w-full text-right mt-2 rounded px-3 py-2 text-sm text-slate-300 hover:bg-white/5"
             >
               لاگ آؤٹ
             </button>
