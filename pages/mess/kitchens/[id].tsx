@@ -59,7 +59,7 @@ export default function EditKitchenPage() {
           <input
             value={form.name || ""}
             onChange={(e) => set({ name: e.target.value })}
-            className="w-full rounded border px-3 py-2 text-sm"
+            className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
           />
         </div>
         <div>
@@ -67,7 +67,7 @@ export default function EditKitchenPage() {
           <input
             value={form.dailyMenu || ""}
             onChange={(e) => set({ dailyMenu: e.target.value })}
-            className="w-full rounded border px-3 py-2 text-sm"
+            className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -78,7 +78,7 @@ export default function EditKitchenPage() {
             <input
               value={form.breakfastTime || ""}
               onChange={(e) => set({ breakfastTime: e.target.value })}
-              className="w-full rounded border px-3 py-2 text-sm"
+              className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
             />
           </div>
           <div>
@@ -88,7 +88,7 @@ export default function EditKitchenPage() {
             <input
               value={form.lunchTime || ""}
               onChange={(e) => set({ lunchTime: e.target.value })}
-              className="w-full rounded border px-3 py-2 text-sm"
+              className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
             />
           </div>
           <div>
@@ -96,7 +96,7 @@ export default function EditKitchenPage() {
             <input
               value={form.dinnerTime || ""}
               onChange={(e) => set({ dinnerTime: e.target.value })}
-              className="w-full rounded border px-3 py-2 text-sm"
+              className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
             />
           </div>
         </div>
@@ -109,7 +109,7 @@ export default function EditKitchenPage() {
             min={0}
             value={form.perStudentCost || ""}
             onChange={(e) => set({ perStudentCost: e.target.value })}
-            className="w-full rounded border px-3 py-2 text-sm"
+            className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
           />
         </div>
         <div className="flex justify-end">

@@ -39,16 +39,14 @@ export default function NewNisabSyllabusPage() {
     <NisabLayout title="نیا سلیبس">
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
               <Layers className="w-7 h-7" />
             </div>
             <div>
               <h1 className="text-xl font-bold">نیا سلیبس شامل کریں</h1>
-              <p className="text-indigo-100 text-xs">
-                نصاب کا نیا ریکارڈ بنائیں
-              </p>
+              <p className="text-white/80 text-xs">نصاب کا نیا ریکارڈ بنائیں</p>
             </div>
           </div>
         </div>
@@ -75,7 +73,7 @@ export default function NewNisabSyllabusPage() {
                 <select
                   value={departmentId}
                   onChange={(e) => setDepartmentId(e.target.value)}
-                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all"
+                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                 >
                   <option value="">شعبہ منتخب کریں</option>
                   {departments.map((d) => (
@@ -97,7 +95,7 @@ export default function NewNisabSyllabusPage() {
                   onChange={(e) => setTitle(e.target.value)}
                   required
                   placeholder="سلیبس کا عنوان درج کریں"
-                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all"
+                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                 />
               </div>
 
@@ -114,7 +112,7 @@ export default function NewNisabSyllabusPage() {
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="اختیاری تفصیل"
                   rows={3}
-                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all resize-none"
+                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-none"
                 />
               </div>
             </div>
@@ -131,7 +129,7 @@ export default function NewNisabSyllabusPage() {
             </button>
             <button
               type="submit"
-              className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 text-sm font-medium shadow-sm transition-all"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-5 py-2.5 text-sm font-medium shadow-sm transition-all"
             >
               <Save className="w-4 h-4" />
               محفوظ کریں

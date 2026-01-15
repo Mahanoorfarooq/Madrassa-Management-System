@@ -121,6 +121,24 @@ export default function NisabExamsPage() {
     }
   };
 
+  const updateStatus = async (
+    id: string,
+    next: "draft" | "scheduled" | "published"
+  ) => {
+    try {
+      setSaving(true);
+      setError(null);
+      await api.put(`/api/nisab/exams/${id}`, { status: next });
+      setExams((prev) =>
+        prev.map((ex) => (ex._id === id ? { ...ex, status: next } : ex))
+      );
+    } catch (e: any) {
+      setError(e?.response?.data?.message || "سٹیٹس اپ ڈیٹ نہیں ہو سکا");
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const openSchedule = async (id: string) => {
     const fallback = exams.find((x) => x._id === id) as any;
     try {
@@ -224,33 +242,6 @@ export default function NisabExamsPage() {
     }
   };
 
-  const updateStatus = async (
-    id: string,
-    status: "draft" | "scheduled" | "published"
-  ) => {
-    const ex = exams.find((x) => x._id === id);
-    if (!ex) return;
-    try {
-      setSaving(true);
-      setError(null);
-      await api.put(`/api/nisab/exams/${id}`, {
-        title: ex.title,
-        term: ex.term,
-        className: ex.className,
-        examDate: ex.examDate,
-        subjects: ex.subjects,
-        status,
-      });
-      await load();
-    } catch (e: any) {
-      setError(
-        e?.response?.data?.message || "حیثیت اپ ڈیٹ کرنے میں مسئلہ پیش آیا"
-      );
-    } finally {
-      setSaving(false);
-    }
-  };
-
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -299,7 +290,7 @@ export default function NisabExamsPage() {
                 onChange={(e) =>
                   setNewExam((v) => ({ ...v, title: e.target.value }))
                 }
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 placeholder="مثال: سالانہ امتحان"
               />
             </div>
@@ -312,7 +303,7 @@ export default function NisabExamsPage() {
                 onChange={(e) =>
                   setNewExam((v) => ({ ...v, term: e.target.value }))
                 }
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 placeholder="مثال: پہلی سہ ماہی"
               />
             </div>
@@ -325,7 +316,7 @@ export default function NisabExamsPage() {
                 onChange={(e) =>
                   setNewExam((v) => ({ ...v, className: e.target.value }))
                 }
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 placeholder="مثال: درجہ اول"
               />
             </div>
@@ -339,7 +330,7 @@ export default function NisabExamsPage() {
                 onChange={(e) =>
                   setNewExam((v) => ({ ...v, examDate: e.target.value }))
                 }
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div>
@@ -357,7 +348,7 @@ export default function NisabExamsPage() {
                       | "published",
                   }))
                 }
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 bg-white"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 bg-white"
               >
                 <option value="draft">ڈرافٹ</option>
                 <option value="scheduled">شیڈولڈ</option>
@@ -373,7 +364,7 @@ export default function NisabExamsPage() {
                 onChange={(e) =>
                   setNewExam((v) => ({ ...v, subjectsText: e.target.value }))
                 }
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 placeholder="مثال: فقہ، حدیث، تفسیر"
               />
             </div>
@@ -382,7 +373,7 @@ export default function NisabExamsPage() {
                 type="button"
                 onClick={handleCreate}
                 disabled={saving}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white px-3 py-2 text-sm font-medium shadow-sm transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 disabled:opacity-60 text-white px-3 py-2 text-sm font-medium shadow-sm transition-all"
               >
                 {saving ? "محفوظ ہو رہا ہے…" : "نیا امتحان محفوظ کریں"}
               </button>
@@ -404,26 +395,26 @@ export default function NisabExamsPage() {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-5 text-white">
+          <div className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl shadow-lg p-5 text-white">
             <div className="flex items-start justify-between mb-3">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
                 <BookOpen className="w-6 h-6" />
               </div>
             </div>
             <div className="text-3xl font-bold mb-1">{distinctClasses}</div>
-            <div className="text-blue-100 text-sm font-medium">مختلف درجات</div>
+            <div className="text-amber-100 text-sm font-medium">
+              مختلف درجات
+            </div>
           </div>
 
-          <div className="bg-gradient-to-br from-violet-500 to-violet-600 rounded-xl shadow-lg p-5 text-white">
+          <div className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl shadow-lg p-5 text-white">
             <div className="flex items-start justify-between mb-3">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
                 <Tag className="w-6 h-6" />
               </div>
             </div>
             <div className="text-3xl font-bold mb-1">{distinctTerms}</div>
-            <div className="text-violet-100 text-sm font-medium">
-              مختلف ٹرمز
-            </div>
+            <div className="text-amber-100 text-sm font-medium">مختلف ٹرمز</div>
           </div>
         </div>
 
@@ -443,7 +434,7 @@ export default function NisabExamsPage() {
                 value={className}
                 onChange={(e) => setClassName(e.target.value)}
                 placeholder="مثال: درجہ اول"
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div>
@@ -455,7 +446,7 @@ export default function NisabExamsPage() {
                 value={term}
                 onChange={(e) => setTerm(e.target.value)}
                 placeholder="مثال: سالانہ"
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div>
@@ -466,14 +457,14 @@ export default function NisabExamsPage() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="امتحان کا نام"
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div className="flex items-end">
               <button
                 type="button"
                 onClick={load}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 text-sm font-medium shadow-sm transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-3 py-2 text-sm font-medium shadow-sm transition-all"
               >
                 <RefreshCw className="w-4 h-4" />
                 فلٹر لگائیں
@@ -515,8 +506,8 @@ export default function NisabExamsPage() {
         <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
           {exams.length === 0 ? (
             <div className="text-center py-12">
-              <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-full p-6 w-24 h-24 mx-auto mb-4 flex items-center justify-center">
-                <ClipboardCheck className="w-12 h-12 text-emerald-400" />
+              <div className="bg-gray-100 rounded-full p-6 w-24 h-24 mx-auto mb-4 flex items-center justify-center">
+                <ClipboardCheck className="w-12 h-12 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-gray-800 mb-2">
                 کوئی امتحان نہیں ملا
@@ -528,7 +519,7 @@ export default function NisabExamsPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <thead className="bg-gray-50 border-b-2 border-gray-200">
                   <tr>
                     <th className="px-5 py-3 text-right font-bold text-gray-700">
                       <div className="flex items-center gap-2 justify-end">
@@ -566,7 +557,7 @@ export default function NisabExamsPage() {
                   {exams.map((ex, index) => (
                     <tr
                       key={ex._id}
-                      className={`hover:bg-emerald-50 transition-colors ${
+                      className={`hover:bg-gray-50 transition-colors ${
                         index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                       }`}
                     >
@@ -574,13 +565,13 @@ export default function NisabExamsPage() {
                         {ex.title}
                       </td>
                       <td className="px-5 py-4">
-                        <span className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-1.5 rounded-lg text-xs font-medium">
+                        <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 rounded-lg text-xs font-medium">
                           <BookOpen className="w-3.5 h-3.5" />
                           {ex.className}
                         </span>
                       </td>
                       <td className="px-5 py-4">
-                        <span className="inline-flex items-center gap-2 bg-violet-50 text-violet-700 px-3 py-1.5 rounded-lg text-xs font-medium">
+                        <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 rounded-lg text-xs font-medium">
                           <Tag className="w-3.5 h-3.5" />
                           {ex.term}
                         </span>
@@ -603,7 +594,7 @@ export default function NisabExamsPage() {
                               ex.status === "published"
                                 ? "bg-emerald-50 text-emerald-700 border-emerald-200"
                                 : ex.status === "scheduled"
-                                ? "bg-blue-50 text-blue-700 border-blue-200"
+                                ? "bg-amber-50 text-amber-700 border-amber-200"
                                 : "bg-gray-50 text-gray-700 border-gray-200"
                             }`}
                           >
@@ -625,7 +616,7 @@ export default function NisabExamsPage() {
                             type="button"
                             disabled={saving || ex.status === "scheduled"}
                             onClick={() => updateStatus(ex._id, "scheduled")}
-                            className="px-2 py-1 rounded-lg border border-blue-200 text-xs text-blue-700 hover:bg-blue-50 disabled:opacity-40"
+                            className="px-2 py-1 rounded-lg border border-amber-200 text-xs text-amber-700 hover:bg-amber-50 disabled:opacity-40"
                           >
                             شیڈولڈ
                           </button>
@@ -720,7 +711,7 @@ export default function NisabExamsPage() {
                             onChange={(e) =>
                               setScheduleField(idx, "date", e.target.value)
                             }
-                            className="w-full rounded border border-gray-200 px-2 py-1 text-xs focus:outline-none focus:border-emerald-500"
+                            className="w-full rounded border border-gray-200 px-2 py-1 text-xs focus:outline-none focus:border-primary focus:ring-primary/10"
                           />
                         </td>
                         <td className="px-3 py-1.5 border-t border-gray-100">
@@ -730,7 +721,7 @@ export default function NisabExamsPage() {
                             onChange={(e) =>
                               setScheduleField(idx, "startTime", e.target.value)
                             }
-                            className="w-full rounded border border-gray-200 px-2 py-1 text-xs focus:outline-none focus:border-emerald-500"
+                            className="w-full rounded border border-gray-200 px-2 py-1 text-xs focus:outline-none focus:border-primary focus:ring-primary/10"
                           />
                         </td>
                         <td className="px-3 py-1.5 border-t border-gray-100">
@@ -740,7 +731,7 @@ export default function NisabExamsPage() {
                             onChange={(e) =>
                               setScheduleField(idx, "endTime", e.target.value)
                             }
-                            className="w-full rounded border border-gray-200 px-2 py-1 text-xs focus:outline-none focus:border-emerald-500"
+                            className="w-full rounded border border-gray-200 px-2 py-1 text-xs focus:outline-none focus:border-primary focus:ring-primary/10"
                           />
                         </td>
                         <td className="px-3 py-1.5 border-t border-gray-100">
@@ -749,7 +740,7 @@ export default function NisabExamsPage() {
                             onChange={(e) =>
                               setScheduleField(idx, "room", e.target.value)
                             }
-                            className="w-full rounded border border-gray-200 px-2 py-1 text-xs focus:outline-none focus:border-emerald-500"
+                            className="w-full rounded border border-gray-200 px-2 py-1 text-xs focus:outline-none focus:border-primary focus:ring-primary/10"
                           />
                         </td>
                         <td className="px-3 py-1.5 border-t border-gray-100">
@@ -763,7 +754,7 @@ export default function NisabExamsPage() {
                                 e.target.value
                               )
                             }
-                            className="w-full rounded border border-gray-200 px-2 py-1 text-xs text-right focus:outline-none focus:border-emerald-500"
+                            className="w-full rounded border border-gray-200 px-2 py-1 text-xs text-right focus:outline-none focus:border-primary focus:ring-primary/10"
                           />
                         </td>
                       </tr>
@@ -788,7 +779,7 @@ export default function NisabExamsPage() {
                 type="button"
                 onClick={saveSchedule}
                 disabled={scheduleSaving}
-                className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium disabled:opacity-60"
+                className="px-4 py-2 rounded-lg bg-primary hover:bg-primary/90 text-white text-xs font-medium disabled:opacity-60"
               >
                 {scheduleSaving ? "محفوظ ہو رہا ہے…" : "شیڈول محفوظ کریں"}
               </button>

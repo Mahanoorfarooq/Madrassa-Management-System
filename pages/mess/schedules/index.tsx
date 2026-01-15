@@ -82,14 +82,14 @@ export default function WeeklySchedulesPage() {
     <MessLayout title="ہفتہ وار شیڈول">
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-violet-500 to-purple-500 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
               <Calendar className="w-7 h-7" />
             </div>
             <div>
               <h1 className="text-xl font-bold">ہفتہ وار شیڈول</h1>
-              <p className="text-violet-100 text-xs">
+              <p className="text-white/80 text-xs">
                 کچن کا ہفتہ وار کھانے کا شیڈول منظم کریں
               </p>
             </div>
@@ -109,7 +109,7 @@ export default function WeeklySchedulesPage() {
                 onChange={(e) => {
                   setKitchenId(e.target.value);
                 }}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">کچن انتخاب کریں</option>
                 {kitchens.map((h: any) => (
@@ -122,7 +122,7 @@ export default function WeeklySchedulesPage() {
             <div className="flex items-end">
               <button
                 onClick={load}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-violet-600 hover:bg-violet-700 text-white px-3 py-2 text-sm font-medium shadow-sm transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-3 py-2 text-sm font-medium shadow-sm transition-all"
               >
                 <RefreshCw className="w-4 h-4" />
                 لوڈ کریں
@@ -136,7 +136,7 @@ export default function WeeklySchedulesPage() {
           <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <thead className="bg-gray-50 border-b-2 border-gray-200">
                   <tr>
                     <th className="px-4 py-3 text-right font-bold text-gray-700">
                       <div className="flex items-center gap-2 justify-end">
@@ -170,12 +170,12 @@ export default function WeeklySchedulesPage() {
                     return (
                       <tr
                         key={idx}
-                        className={`hover:bg-violet-50 transition-colors ${
+                        className={`hover:bg-gray-50 transition-colors ${
                           idx % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                         }`}
                       >
                         <td className="px-4 py-3">
-                          <span className="inline-flex items-center gap-2 bg-violet-100 text-violet-700 px-3 py-1.5 rounded-lg text-xs font-medium">
+                          <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 rounded-lg text-xs font-medium">
                             {name}
                           </span>
                         </td>
@@ -186,7 +186,7 @@ export default function WeeklySchedulesPage() {
                               setForDay(idx, { breakfast: e.target.value })
                             }
                             placeholder="ناشتہ درج کریں"
-                            className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+                            className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                           />
                         </td>
                         <td className="px-4 py-3">
@@ -196,7 +196,7 @@ export default function WeeklySchedulesPage() {
                               setForDay(idx, { lunch: e.target.value })
                             }
                             placeholder="دوپہر کا کھانا درج کریں"
-                            className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+                            className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                           />
                         </td>
                         <td className="px-4 py-3">
@@ -206,7 +206,7 @@ export default function WeeklySchedulesPage() {
                               setForDay(idx, { dinner: e.target.value })
                             }
                             placeholder="رات کا کھانا درج کریں"
-                            className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+                            className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                           />
                         </td>
                       </tr>
@@ -219,7 +219,7 @@ export default function WeeklySchedulesPage() {
               <button
                 disabled={saving}
                 onClick={saveAll}
-                className="inline-flex items-center gap-2 rounded-lg bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 text-sm font-medium shadow-sm disabled:opacity-60 transition-all"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-4 py-2 text-sm font-medium shadow-sm disabled:opacity-60 transition-all"
               >
                 <Save className="w-4 h-4" />
                 {saving ? "محفوظ ہو رہا ہے..." : "محفوظ کریں"}
@@ -228,8 +228,8 @@ export default function WeeklySchedulesPage() {
           </div>
         ) : (
           <div className="text-center py-12 bg-white rounded-xl shadow-md border border-gray-100">
-            <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-full p-6 w-24 h-24 mx-auto mb-4 flex items-center justify-center">
-              <Calendar className="w-12 h-12 text-violet-400" />
+            <div className="bg-gray-100 rounded-full p-6 w-24 h-24 mx-auto mb-4 flex items-center justify-center">
+              <Calendar className="w-12 h-12 text-primary" />
             </div>
             <h3 className="text-lg font-semibold text-gray-800 mb-2">
               کچن منتخب کریں

@@ -73,14 +73,14 @@ export default function MessDashboard() {
     <MessLayout title="میس ڈیش بورڈ">
       <div className="space-y-6 bg-gray-50 p-1" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-sky-100 to-blue-100 rounded-xl border border-sky-200 p-6">
+        <div className="bg-secondary rounded-xl p-6 text-white shadow-md">
           <div className="flex items-center gap-4">
-            <div className="bg-white rounded-lg p-3 shadow-sm">
-              <ChefHat className="w-8 h-8 text-sky-600" />
+            <div className="bg-white/20 rounded-lg p-3 shadow-sm">
+              <ChefHat className="w-8 h-8" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-800">میس ڈیش بورڈ</h1>
-              <p className="text-sm text-gray-600 mt-1">
+              <h1 className="text-2xl font-bold text-white">میس ڈیش بورڈ</h1>
+              <p className="text-sm text-white/80 mt-1">
                 میس کے کچن، رجسٹریشن اور اخراجات کا خلاصہ
               </p>
             </div>

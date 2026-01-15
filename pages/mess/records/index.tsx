@@ -58,7 +58,7 @@ export default function MessRecordsPage() {
     <MessLayout title="ریکارڈ/اخراجات">
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-cyan-500 to-teal-500 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
@@ -66,14 +66,14 @@ export default function MessRecordsPage() {
               </div>
               <div>
                 <h1 className="text-xl font-bold">میس ریکارڈ اور اخراجات</h1>
-                <p className="text-cyan-100 text-xs">
+                <p className="text-white/80 text-xs">
                   تمام میس کے اخراجات دیکھیں
                 </p>
               </div>
             </div>
             <Link
               href="/mess/records/new"
-              className="inline-flex items-center gap-2 bg-white text-cyan-600 hover:bg-cyan-50 rounded-lg px-3 py-2 text-sm font-medium shadow-sm transition-all"
+              className="inline-flex items-center gap-2 bg-white text-primary hover:bg-gray-50 rounded-lg px-3 py-2 text-sm font-medium shadow-sm transition-all"
             >
               <Plus className="w-4 h-4" />
               نیا ریکارڈ
@@ -97,7 +97,7 @@ export default function MessRecordsPage() {
                 type="date"
                 value={from}
                 onChange={(e) => setFrom(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div>
@@ -109,7 +109,7 @@ export default function MessRecordsPage() {
                 type="date"
                 value={to}
                 onChange={(e) => setTo(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div>
@@ -120,7 +120,7 @@ export default function MessRecordsPage() {
               <select
                 value={mealType}
                 onChange={(e) => setMealType(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام</option>
                 <option value="breakfast">ناشتہ</option>
@@ -131,7 +131,7 @@ export default function MessRecordsPage() {
             <div className="md:col-span-3 flex items-end justify-end">
               <button
                 onClick={load}
-                className="inline-flex items-center gap-2 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white px-3 py-2 text-sm font-medium shadow-sm transition-all"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-3 py-2 text-sm font-medium shadow-sm transition-all"
               >
                 <RefreshCw className="w-4 h-4" />
                 تازہ کریں
@@ -155,7 +155,7 @@ export default function MessRecordsPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <thead className="bg-gray-50 border-b-2 border-gray-200">
                   <tr>
                     <th className="px-5 py-3 text-right font-bold text-gray-700">
                       <div className="flex items-center gap-2 justify-end">
@@ -190,7 +190,7 @@ export default function MessRecordsPage() {
                   {items.map((x: any, index) => (
                     <tr
                       key={x._id}
-                      className={`hover:bg-cyan-50 transition-colors ${
+                      className={`hover:bg-gray-50 transition-colors ${
                         index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                       }`}
                     >
@@ -231,7 +231,7 @@ export default function MessRecordsPage() {
                     </tr>
                   ))}
                 </tbody>
-                <tfoot className="bg-gradient-to-r from-gray-50 to-gray-100 border-t-2 border-gray-200">
+                <tfoot className="bg-gray-50 border-t-2 border-gray-200">
                   <tr>
                     <td
                       className="px-5 py-3 font-bold text-gray-800"

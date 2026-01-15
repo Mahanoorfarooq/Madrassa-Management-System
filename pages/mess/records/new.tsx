@@ -45,14 +45,14 @@ export default function NewMessRecordPage() {
     <MessLayout title="نیا ریکارڈ">
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-cyan-500 to-teal-500 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
               <Receipt className="w-7 h-7" />
             </div>
             <div>
               <h1 className="text-xl font-bold">نیا ریکارڈ شامل کریں</h1>
-              <p className="text-cyan-100 text-xs">
+              <p className="text-white/80 text-xs">
                 میس کا نیا اخراجات کا ریکارڈ بنائیں
               </p>
             </div>
@@ -83,12 +83,12 @@ export default function NewMessRecordPage() {
                     value={form.date}
                     onChange={(e) => set({ date: e.target.value })}
                     required
-                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all"
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                    <UtensilsCrossed className="w-4 h-4 text-gray-500" />
+                    <UtensilsCrossed className="w-4 h-4 text-primary" />
                     خوراک کی قسم
                     <span className="text-red-500">*</span>
                   </label>
@@ -96,7 +96,7 @@ export default function NewMessRecordPage() {
                     value={form.mealType}
                     onChange={(e) => set({ mealType: e.target.value })}
                     required
-                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all"
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                   >
                     <option value="breakfast">ناشتہ</option>
                     <option value="lunch">دوپہر کا کھانا</option>
@@ -109,7 +109,7 @@ export default function NewMessRecordPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                    <Users className="w-4 h-4 text-gray-500" />
+                    <Users className="w-4 h-4 text-primary" />
                     کل طلبہ
                     <span className="text-xs text-gray-500 font-normal">
                       (اختیاری)
@@ -121,12 +121,12 @@ export default function NewMessRecordPage() {
                     value={form.totalStudents || ""}
                     onChange={(e) => set({ totalStudents: e.target.value })}
                     placeholder="طلبہ کی تعداد"
-                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all"
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                    <DollarSign className="w-4 h-4 text-gray-500" />
+                    <DollarSign className="w-4 h-4 text-primary" />
                     کل اخراجات
                     <span className="text-red-500">*</span>
                   </label>
@@ -137,7 +137,7 @@ export default function NewMessRecordPage() {
                     onChange={(e) => set({ totalCost: e.target.value })}
                     placeholder="رقم درج کریں"
                     required
-                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all"
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                   />
                 </div>
               </div>
@@ -145,7 +145,7 @@ export default function NewMessRecordPage() {
               {/* Notes */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-gray-500" />
+                  <FileText className="w-4 h-4 text-primary" />
                   نوٹس
                   <span className="text-xs text-gray-500 font-normal">
                     (اختیاری)
@@ -156,7 +156,7 @@ export default function NewMessRecordPage() {
                   onChange={(e) => set({ notes: e.target.value })}
                   placeholder="اضافی معلومات درج کریں..."
                   rows={3}
-                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all resize-none"
+                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-none"
                 />
               </div>
             </div>
@@ -173,7 +173,7 @@ export default function NewMessRecordPage() {
             </button>
             <button
               type="submit"
-              className="inline-flex items-center gap-2 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white px-5 py-2.5 text-sm font-medium shadow-sm transition-all"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-5 py-2.5 text-sm font-medium shadow-sm transition-all"
             >
               <Save className="w-4 h-4" />
               محفوظ کریں

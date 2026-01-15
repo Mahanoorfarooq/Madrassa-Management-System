@@ -31,7 +31,7 @@ export default function KitchensListPage() {
     <MessLayout title="کچن">
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
@@ -39,14 +39,14 @@ export default function KitchensListPage() {
               </div>
               <div>
                 <h1 className="text-xl font-bold">کچن کی فہرست</h1>
-                <p className="text-blue-100 text-xs">
+                <p className="text-white/80 text-xs">
                   تمام کچن دیکھیں اور منظم کریں
                 </p>
               </div>
             </div>
             <Link
               href="/mess/kitchens/new"
-              className="inline-flex items-center gap-2 bg-white text-blue-600 hover:bg-blue-50 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
+              className="inline-flex items-center gap-2 bg-white text-primary hover:bg-gray-50 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
             >
               <Plus className="w-4 h-4" />
               نیا کچن
@@ -69,13 +69,13 @@ export default function KitchensListPage() {
                 onChange={(e) => setQ(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && load()}
                 placeholder="کچن کا نام تلاش کریں..."
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div className="flex items-end">
               <button
                 onClick={load}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
               >
                 <RefreshCw className="w-4 h-4" />
                 تازہ کریں
@@ -88,8 +88,8 @@ export default function KitchensListPage() {
         <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
           {items.length === 0 ? (
             <div className="text-center py-12">
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full p-6 w-24 h-24 mx-auto mb-4 flex items-center justify-center">
-                <ChefHat className="w-12 h-12 text-blue-400" />
+              <div className="bg-gray-100 rounded-full p-6 w-24 h-24 mx-auto mb-4 flex items-center justify-center">
+                <ChefHat className="w-12 h-12 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-gray-800 mb-2">
                 کوئی کچن نہیں ملا
@@ -99,7 +99,7 @@ export default function KitchensListPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <thead className="bg-gray-50 border-b-2 border-gray-200">
                   <tr>
                     <th className="px-5 py-3 text-right font-bold text-gray-700">
                       <div className="flex items-center gap-2 justify-end">
@@ -125,14 +125,14 @@ export default function KitchensListPage() {
                   {items.map((h: any, index) => (
                     <tr
                       key={h._id}
-                      className={`hover:bg-blue-50 transition-colors ${
+                      className={`hover:bg-gray-50 transition-colors ${
                         index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                       }`}
                     >
                       <td className="px-5 py-4">
                         <Link
                           href={`/mess/kitchens/${h._id}`}
-                          className="text-blue-600 hover:text-blue-700 font-medium hover:underline"
+                          className="text-primary hover:text-primary/90 font-medium hover:underline"
                         >
                           {h.name}
                         </Link>

@@ -54,7 +54,7 @@ export default function NewHostelExpensePage() {
           <select
             value={form.hostelId || ""}
             onChange={(e) => set({ hostelId: e.target.value })}
-            className="w-full rounded border px-2 py-2 text-sm"
+            className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
           >
             <option value="">انتخاب کریں</option>
             {hostels.map((h: any) => (
@@ -71,7 +71,7 @@ export default function NewHostelExpensePage() {
               type="date"
               value={form.date}
               onChange={(e) => set({ date: e.target.value })}
-              className="w-full rounded border px-3 py-2 text-sm"
+              className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
             />
           </div>
           <div>
@@ -79,7 +79,7 @@ export default function NewHostelExpensePage() {
             <input
               value={form.category || ""}
               onChange={(e) => set({ category: e.target.value })}
-              className="w-full rounded border px-3 py-2 text-sm"
+              className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
             />
           </div>
         </div>
@@ -91,7 +91,7 @@ export default function NewHostelExpensePage() {
               min={0}
               value={form.amount || 0}
               onChange={(e) => set({ amount: e.target.value })}
-              className="w-full rounded border px-3 py-2 text-sm"
+              className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
             />
           </div>
           <div>
@@ -99,7 +99,7 @@ export default function NewHostelExpensePage() {
             <input
               value={form.notes || ""}
               onChange={(e) => set({ notes: e.target.value })}
-              className="w-full rounded border px-3 py-2 text-sm"
+              className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
             />
           </div>
         </div>

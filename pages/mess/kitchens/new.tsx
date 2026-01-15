@@ -42,14 +42,14 @@ export default function NewKitchenPage() {
     <MessLayout title="نیا کچن">
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
               <ChefHat className="w-7 h-7" />
             </div>
             <div>
               <h1 className="text-xl font-bold">نیا کچن شامل کریں</h1>
-              <p className="text-blue-100 text-xs">
+              <p className="text-white/80 text-xs">
                 نیا کچن بنائیں اور تفصیلات درج کریں
               </p>
             </div>
@@ -79,7 +79,7 @@ export default function NewKitchenPage() {
                   onChange={(e) => set({ name: e.target.value })}
                   placeholder="مثال: مرکزی کچن"
                   required
-                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                 />
               </div>
 
@@ -97,14 +97,14 @@ export default function NewKitchenPage() {
                   onChange={(e) => set({ dailyMenu: e.target.value })}
                   placeholder="آج کا کھانا درج کریں..."
                   rows={3}
-                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all resize-none"
+                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-none"
                 />
               </div>
 
               {/* Meal Times */}
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4">
+              <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-4">
-                  <Clock className="w-5 h-5 text-blue-600" />
+                  <Clock className="w-5 h-5 text-primary" />
                   <h3 className="text-sm font-bold text-gray-800">
                     کھانے کا وقت
                   </h3>
@@ -119,7 +119,7 @@ export default function NewKitchenPage() {
                       value={form.breakfastTime || ""}
                       onChange={(e) => set({ breakfastTime: e.target.value })}
                       placeholder="مثال: 8:00 AM"
-                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                     />
                   </div>
                   <div>
@@ -130,7 +130,7 @@ export default function NewKitchenPage() {
                       value={form.lunchTime || ""}
                       onChange={(e) => set({ lunchTime: e.target.value })}
                       placeholder="مثال: 1:00 PM"
-                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                     />
                   </div>
                   <div>
@@ -141,7 +141,7 @@ export default function NewKitchenPage() {
                       value={form.dinnerTime || ""}
                       onChange={(e) => set({ dinnerTime: e.target.value })}
                       placeholder="مثال: 8:00 PM"
-                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                     />
                   </div>
                 </div>
@@ -162,7 +162,7 @@ export default function NewKitchenPage() {
                   value={form.perStudentCost || ""}
                   onChange={(e) => set({ perStudentCost: e.target.value })}
                   placeholder="رقم درج کریں"
-                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                 />
               </div>
             </div>
@@ -179,7 +179,7 @@ export default function NewKitchenPage() {
             </button>
             <button
               type="submit"
-              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 text-sm font-medium shadow-sm transition-all"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-5 py-2.5 text-sm font-medium shadow-sm transition-all"
             >
               <Save className="w-4 h-4" />
               محفوظ کریں

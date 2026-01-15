@@ -134,7 +134,7 @@ export default function NisabDarsPage() {
               <select
                 value={departmentId}
                 onChange={(e) => setDepartmentId(e.target.value)}
-                className="w-full rounded border px-3 py-2 text-sm bg-white"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام</option>
                 {departments.map((d) => (
@@ -152,7 +152,7 @@ export default function NisabDarsPage() {
                 value={classId}
                 onChange={(e) => setClassId(e.target.value)}
                 disabled={!departmentId}
-                className="w-full rounded border px-3 py-2 text-sm bg-white disabled:bg-gray-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm bg-white disabled:bg-gray-100 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام</option>
                 {classes.map((c) => (
@@ -170,14 +170,14 @@ export default function NisabDarsPage() {
                 onKeyDown={(e) => {
                   if (e.key === "Enter") load();
                 }}
-                className="w-full rounded border px-3 py-2 text-sm"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 placeholder="عنوان / کوڈ / کتاب"
               />
             </div>
             <div className="md:col-span-3 flex justify-end gap-2">
               <button
                 onClick={load}
-                className="rounded border border-gray-200 px-4 py-2 text-xs font-semibold hover:bg-gray-50"
+                className="rounded-lg bg-primary hover:bg-primary/90 text-white px-4 py-2 text-xs font-semibold shadow-sm transition-all"
               >
                 ریفریش
               </button>
@@ -197,7 +197,7 @@ export default function NisabDarsPage() {
                 onChange={(e) =>
                   setForm((p) => ({ ...p, title: e.target.value }))
                 }
-                className="w-full rounded border px-3 py-2 text-sm"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div className="text-right">
@@ -207,7 +207,7 @@ export default function NisabDarsPage() {
                 onChange={(e) =>
                   setForm((p) => ({ ...p, code: e.target.value }))
                 }
-                className="w-full rounded border px-3 py-2 text-sm"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div className="text-right">
@@ -217,7 +217,7 @@ export default function NisabDarsPage() {
                 onChange={(e) =>
                   setForm((p) => ({ ...p, book: e.target.value }))
                 }
-                className="w-full rounded border px-3 py-2 text-sm"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div className="md:col-span-4 flex justify-end">

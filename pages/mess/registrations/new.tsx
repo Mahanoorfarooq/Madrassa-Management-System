@@ -84,14 +84,14 @@ export default function NewRegistrationPage() {
     <MessLayout title="نئی رجسٹریشن">
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-emerald-500 to-green-500 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
               <UserCheck className="w-7 h-7" />
             </div>
             <div>
               <h1 className="text-xl font-bold">نئی رجسٹریشن شامل کریں</h1>
-              <p className="text-emerald-100 text-xs">
+              <p className="text-white/80 text-xs">
                 طالب علم کی میس میں رجسٹریشن کریں
               </p>
             </div>
@@ -121,7 +121,7 @@ export default function NewRegistrationPage() {
                     value={form.studentId || ""}
                     onChange={(e) => set({ studentId: e.target.value })}
                     required
-                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all"
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                   >
                     <option value="">طالب علم منتخب کریں</option>
                     {students.map((s: any) => {
@@ -156,7 +156,7 @@ export default function NewRegistrationPage() {
                     value={form.kitchenId || ""}
                     onChange={(e) => set({ kitchenId: e.target.value })}
                     required
-                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all"
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                   >
                     <option value="">کچن منتخب کریں</option>
                     {kitchens.map((h: any) => (
@@ -181,7 +181,7 @@ export default function NewRegistrationPage() {
                     value={form.fromDate}
                     onChange={(e) => set({ fromDate: e.target.value })}
                     required
-                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all"
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                   />
                 </div>
                 <div>
@@ -196,19 +196,19 @@ export default function NewRegistrationPage() {
                     type="date"
                     value={form.toDate || ""}
                     onChange={(e) => set({ toDate: e.target.value })}
-                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all"
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                   />
                 </div>
               </div>
 
               {/* Active Status */}
-              <div className="bg-emerald-50 border-2 border-emerald-200 rounded-lg p-4">
+              <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={!!form.isActive}
                     onChange={(e) => set({ isActive: e.target.checked })}
-                    className="w-5 h-5 text-emerald-600 border-2 border-gray-300 rounded focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+                    className="w-5 h-5 text-primary border-2 border-gray-300 rounded focus:ring-2 focus:ring-primary/10 cursor-pointer"
                   />
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-semibold text-gray-700">
@@ -235,7 +235,7 @@ export default function NewRegistrationPage() {
             </button>
             <button
               type="submit"
-              className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 text-sm font-medium shadow-sm transition-all"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-5 py-2.5 text-sm font-medium shadow-sm transition-all"
             >
               <Save className="w-4 h-4" />
               محفوظ کریں

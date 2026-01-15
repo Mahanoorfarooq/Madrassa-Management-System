@@ -186,7 +186,7 @@ export default function HostelUniformsPage() {
               <select
                 value={hostelId}
                 onChange={(e) => setHostelId(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام ہاسٹلز</option>
                 {hostels.map((h: any) => (
@@ -203,7 +203,7 @@ export default function HostelUniformsPage() {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value as any)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="Issued">جاری شدہ</option>
                 <option value="Returned">واپس شدہ</option>
@@ -258,7 +258,7 @@ export default function HostelUniformsPage() {
                   <input
                     value={itemTitle}
                     onChange={(e) => setItemTitle(e.target.value)}
-                    className="w-full rounded border px-3 py-2 text-sm"
+                    className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                     placeholder="مثال: شرٹ، شلوار"
                   />
                 </div>
@@ -269,7 +269,7 @@ export default function HostelUniformsPage() {
                   <input
                     value={itemSize}
                     onChange={(e) => setItemSize(e.target.value)}
-                    className="w-full rounded border px-3 py-2 text-sm"
+                    className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                     placeholder="S/M/L/XL"
                   />
                 </div>
@@ -281,7 +281,7 @@ export default function HostelUniformsPage() {
                     type="number"
                     value={itemQty}
                     onChange={(e) => setItemQty(e.target.value)}
-                    className="w-full rounded border px-3 py-2 text-sm text-right"
+                    className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm text-right focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                   />
                 </div>
               </div>
@@ -308,7 +308,7 @@ export default function HostelUniformsPage() {
                   <select
                     value={issueItemId}
                     onChange={(e) => setIssueItemId(e.target.value)}
-                    className="w-full rounded border px-3 py-2 text-sm bg-white"
+                    className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                   >
                     <option value="">منتخب کریں</option>
                     {items.map((i) => (
@@ -326,7 +326,7 @@ export default function HostelUniformsPage() {
                   <select
                     value={issueStudentId}
                     onChange={(e) => setIssueStudentId(e.target.value)}
-                    className="w-full rounded border px-3 py-2 text-sm bg-white"
+                    className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                   >
                     <option value="">منتخب کریں</option>
                     {students.map((s) => (
@@ -345,7 +345,7 @@ export default function HostelUniformsPage() {
                     type="number"
                     value={issueQty}
                     onChange={(e) => setIssueQty(e.target.value)}
-                    className="w-full rounded border px-3 py-2 text-sm text-right"
+                    className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm text-right focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                   />
                 </div>
               </div>

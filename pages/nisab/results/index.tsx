@@ -135,17 +135,16 @@ export default function NisabResultsPage() {
   return (
     <NisabLayout title="امتحانی نتائج">
       <div className="space-y-4" dir="rtl">
-       
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-gradient-to-br from-violet-500 to-violet-600 rounded-xl shadow-lg p-5 text-white">
+          <div className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl shadow-lg p-5 text-white">
             <div className="flex items-start justify-between mb-3">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
                 <ClipboardCheck className="w-6 h-6" />
               </div>
             </div>
             <div className="text-3xl font-bold mb-1">{totalResults}</div>
-            <div className="text-violet-100 text-sm font-medium">کل نتائج</div>
+            <div className="text-amber-100 text-sm font-medium">کل نتائج</div>
           </div>
 
           <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl shadow-lg p-5 text-white">
@@ -188,7 +187,7 @@ export default function NisabResultsPage() {
               <select
                 value={examId}
                 onChange={(e) => setExamId(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام امتحانات</option>
                 {examOptions.map((ex) => (
@@ -206,7 +205,7 @@ export default function NisabResultsPage() {
               <select
                 value={studentId}
                 onChange={(e) => setStudentId(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام طلبہ</option>
                 {studentOptions.map((s) => (
@@ -226,14 +225,14 @@ export default function NisabResultsPage() {
                 value={gradeQuery}
                 onChange={(e) => setGradeQuery(e.target.value)}
                 placeholder="مثال: A+"
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div className="flex items-end">
               <button
                 type="button"
                 onClick={loadResults}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-violet-600 hover:bg-violet-700 text-white px-3 py-2 text-sm font-medium shadow-sm transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-3 py-2 text-sm font-medium shadow-sm transition-all"
               >
                 <RefreshCw className="w-4 h-4" />
                 فلٹر لگائیں
@@ -251,8 +250,8 @@ export default function NisabResultsPage() {
         {gradeChart.labels.length > 0 && (
           <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="bg-violet-100 rounded-lg p-2">
-                <Award className="w-5 h-5 text-violet-600" />
+              <div className="bg-amber-100 rounded-lg p-2">
+                <Award className="w-5 h-5 text-amber-600" />
               </div>
               <div>
                 <h2 className="text-lg font-bold text-gray-800">
@@ -275,8 +274,8 @@ export default function NisabResultsPage() {
         <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
           {results.length === 0 ? (
             <div className="text-center py-12">
-              <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-full p-6 w-24 h-24 mx-auto mb-4 flex items-center justify-center">
-                <GraduationCap className="w-12 h-12 text-violet-400" />
+              <div className="bg-gray-100 rounded-full p-6 w-24 h-24 mx-auto mb-4 flex items-center justify-center">
+                <GraduationCap className="w-12 h-12 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-gray-800 mb-2">
                 کوئی نتیجہ نہیں ملا
@@ -288,7 +287,7 @@ export default function NisabResultsPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <thead className="bg-gray-50 border-b-2 border-gray-200">
                   <tr>
                     <th className="px-5 py-3 text-right font-bold text-gray-700">
                       <div className="flex items-center gap-2 justify-end">
@@ -343,7 +342,7 @@ export default function NisabResultsPage() {
                     return (
                       <tr
                         key={r._id}
-                        className={`hover:bg-violet-50 transition-colors ${
+                        className={`hover:bg-gray-50 transition-colors ${
                           index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                         }`}
                       >
@@ -355,7 +354,7 @@ export default function NisabResultsPage() {
                           {r.exam?.title} ({r.exam?.term})
                         </td>
                         <td className="px-5 py-4">
-                          <span className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-1.5 rounded-lg text-xs font-medium">
+                          <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 rounded-lg text-xs font-medium">
                             <BookOpen className="w-3.5 h-3.5" />
                             {r.exam?.className}
                           </span>

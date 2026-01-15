@@ -47,14 +47,14 @@ export default function HostelExpensesPage() {
     <HostelLayout title="ہاسٹل اخراجات">
       <div className="p-6 space-y-5" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-rose-500 to-pink-600 rounded-xl p-5 text-white shadow-md">
+        <div className="bg-secondary rounded-xl p-5 text-white shadow-md">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
               <DollarSign className="w-5 h-5" />
             </div>
             <div>
               <h2 className="text-xl font-bold">ہاسٹل اخراجات</h2>
-              <p className="text-rose-100 text-sm">
+              <p className="text-white/80 text-sm">
                 ہاسٹل کے اخراجات کا ریکارڈ
               </p>
             </div>
@@ -66,13 +66,13 @@ export default function HostelExpensesPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <Building2 className="w-4 h-4 text-rose-600" />
+                <Building2 className="w-4 h-4 text-primary" />
                 ہاسٹل
               </label>
               <select
                 value={hostelId}
                 onChange={(e) => setHostelId(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-rose-500 focus:ring-2 focus:ring-rose-200 outline-none transition-all"
+                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
               >
                 <option value="">تمام ہاسٹلز</option>
                 {hostels.map((h: any) => (
@@ -84,14 +84,14 @@ export default function HostelExpensesPage() {
             </div>
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-blue-600" />
+                <Calendar className="w-4 h-4 text-primary" />
                 از
               </label>
               <input
                 type="date"
                 value={from}
                 onChange={(e) => setFrom(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
               />
             </div>
             <div>
@@ -102,20 +102,20 @@ export default function HostelExpensesPage() {
                 type="date"
                 value={to}
                 onChange={(e) => setTo(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-gray-400 focus:ring-2 focus:ring-gray-200 outline-none transition-all"
+                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
               />
             </div>
             <div className="flex items-end gap-2">
               <button
                 onClick={load}
-                className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-rose-700 transition-all shadow-md"
+                className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary/90 transition-all shadow-md"
               >
                 <RefreshCw className="w-4 h-4" />
                 تازہ کریں
               </button>
               <Link
                 href="/hostel/expenses/new"
-                className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition-all shadow-md"
+                className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary/90 transition-all shadow-md"
               >
                 <Plus className="w-4 h-4" />
                 نیا خرچ
@@ -125,17 +125,17 @@ export default function HostelExpensesPage() {
         </div>
 
         {/* Total Card */}
-        <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl p-5 border-2 border-emerald-200">
+        <div className="bg-primary/10 rounded-xl p-5 border border-primary/20">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-white" />
+              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                <TrendingUp className="w-5 h-5 text-primary" />
               </div>
               <div>
-                <div className="text-sm text-emerald-700 font-medium">
+                <div className="text-sm text-gray-600 font-medium">
                   کل اخراجات
                 </div>
-                <div className="text-2xl font-bold text-emerald-800">
+                <div className="text-2xl font-bold text-primary">
                   ₨ {total.toLocaleString()}
                 </div>
               </div>
@@ -170,7 +170,7 @@ export default function HostelExpensesPage() {
                 {items.map((x: any) => (
                   <tr
                     key={x._id}
-                    className="border-b border-gray-100 hover:bg-rose-50/30 transition-colors"
+                    className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
                   >
                     <td className="px-4 py-3 text-gray-700">
                       {String(x.date).substring(0, 10)}
@@ -182,13 +182,13 @@ export default function HostelExpensesPage() {
                     <td className="px-4 py-3">
                       <Link
                         href={`/hostel/expenses/${x._id}`}
-                        className="text-rose-600 hover:text-rose-700 font-medium hover:underline"
+                        className="text-primary hover:text-primary/90 font-medium hover:underline"
                       >
                         {x.category}
                       </Link>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 border border-emerald-200">
+                      <span className="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
                         ₨ {Number(x.amount || 0).toLocaleString()}
                       </span>
                     </td>
