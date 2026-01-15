@@ -103,14 +103,14 @@ export default function NewFinanceTransactionPage() {
     <FinanceLayout>
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
               <Receipt className="w-7 h-7" />
             </div>
             <div>
               <h1 className="text-xl font-bold">نیا معاملہ</h1>
-              <p className="text-blue-100 text-xs">مالیاتی معاملہ شامل کریں</p>
+              <p className="text-white/80 text-xs">مالیاتی معاملہ شامل کریں</p>
             </div>
           </div>
         </div>
@@ -128,7 +128,7 @@ export default function NewFinanceTransactionPage() {
           {/* Transaction Type & Date */}
           <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4">
             <h2 className="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
-              <FileText className="w-4 h-4 text-blue-600" />
+              <FileText className="w-4 h-4 text-primary" />
               معاملے کی تفصیلات
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -139,7 +139,7 @@ export default function NewFinanceTransactionPage() {
                 <select
                   value={type}
                   onChange={(e) => setType(e.target.value)}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   {TYPES.map((t) => (
                     <option key={t.value} value={t.value}>
@@ -159,7 +159,7 @@ export default function NewFinanceTransactionPage() {
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
               </div>
             </div>
@@ -177,7 +177,7 @@ export default function NewFinanceTransactionPage() {
                   min={0}
                   value={amount}
                   onChange={(e) => setAmount(parseFloat(e.target.value || "0"))}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
               </div>
               <div>
@@ -190,7 +190,7 @@ export default function NewFinanceTransactionPage() {
                 <select
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   <option value="">شعبہ منتخب کریں</option>
                   {departments.map((d: any) => (
@@ -206,7 +206,7 @@ export default function NewFinanceTransactionPage() {
           {/* Student & Teacher (Optional) */}
           <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4">
             <h2 className="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
-              <User className="w-4 h-4 text-blue-600" />
+              <User className="w-4 h-4 text-primary" />
               متعلقہ افراد (اختیاری)
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -218,12 +218,12 @@ export default function NewFinanceTransactionPage() {
                   value={studentQ}
                   onChange={(e) => setStudentQ(e.target.value)}
                   placeholder="نام / رول نمبر تلاش کریں"
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 mb-2"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 mb-2"
                 />
                 <select
                   value={student}
                   onChange={(e) => setStudent(e.target.value)}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-xs focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-xs focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   <option value="">طالب علم منتخب کریں</option>
                   {students.map((s: any) => (
@@ -242,12 +242,12 @@ export default function NewFinanceTransactionPage() {
                   value={teacherQ}
                   onChange={(e) => setTeacherQ(e.target.value)}
                   placeholder="نام / عہدہ تلاش کریں"
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 mb-2"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 mb-2"
                 />
                 <select
                   value={teacher}
                   onChange={(e) => setTeacher(e.target.value)}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-xs focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-xs focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   <option value="">استاد منتخب کریں</option>
                   {teachers.map((t: any) => (
@@ -270,7 +270,7 @@ export default function NewFinanceTransactionPage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="معاملے کی تفصیل لکھیں..."
-              className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
             />
           </div>
 
@@ -310,7 +310,7 @@ export default function NewFinanceTransactionPage() {
             <button
               type="submit"
               disabled={!canSubmit}
-              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 text-sm font-semibold shadow-md disabled:opacity-60 transition-all"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-5 py-2.5 text-sm font-semibold shadow-md disabled:opacity-60 transition-all"
             >
               <Save className="w-4 h-4" />
               <span>محفوظ کریں</span>

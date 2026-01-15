@@ -31,7 +31,7 @@ export default function RoomsListPage() {
     <HostelLayout title="کمرے">
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-teal-600 to-cyan-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
@@ -39,14 +39,14 @@ export default function RoomsListPage() {
               </div>
               <div>
                 <h1 className="text-xl font-bold">کمروں کی فہرست</h1>
-                <p className="text-teal-100 text-xs">
+                <p className="text-white/80 text-xs">
                   تمام کمرے دیکھیں اور منظم کریں
                 </p>
               </div>
             </div>
             <Link
               href="/hostel/rooms/new"
-              className="inline-flex items-center gap-2 bg-white text-teal-600 hover:bg-teal-50 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
+              className="inline-flex items-center gap-2 bg-white text-primary hover:bg-gray-50 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
             >
               <Plus className="w-4 h-4" />
               نیا کمرہ
@@ -68,7 +68,7 @@ export default function RoomsListPage() {
               <select
                 value={hostelId}
                 onChange={(e) => setHostelId(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام ہاسٹلز</option>
                 {hostels.map((h: any) => (
@@ -81,7 +81,7 @@ export default function RoomsListPage() {
             <div className="flex items-end">
               <button
                 onClick={load}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-teal-600 hover:bg-teal-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
               >
                 <RefreshCw className="w-4 h-4" />
                 تازہ کریں
@@ -104,7 +104,7 @@ export default function RoomsListPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <thead className="bg-gray-50 border-b-2 border-gray-200">
                   <tr>
                     <th className="px-5 py-3 text-right font-bold text-gray-700">
                       ہاسٹل
@@ -121,7 +121,7 @@ export default function RoomsListPage() {
                   {rooms.map((r: any, index) => (
                     <tr
                       key={r._id}
-                      className={`hover:bg-teal-50 transition-colors ${
+                      className={`hover:bg-gray-50 transition-colors ${
                         index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                       }`}
                     >
@@ -132,7 +132,7 @@ export default function RoomsListPage() {
                       <td className="px-5 py-3">
                         <Link
                           href={`/hostel/rooms/${r._id}`}
-                          className="text-teal-600 hover:text-teal-700 font-medium hover:underline"
+                          className="text-primary hover:text-primary/90 font-medium hover:underline"
                         >
                           {r.roomNo}
                         </Link>

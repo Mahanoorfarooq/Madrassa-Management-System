@@ -25,7 +25,7 @@ export default function HostelsListPage() {
     <HostelLayout title="ہاسٹل">
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
@@ -33,14 +33,14 @@ export default function HostelsListPage() {
               </div>
               <div>
                 <h1 className="text-xl font-bold">ہاسٹلز کی فہرست</h1>
-                <p className="text-purple-100 text-xs">
+                <p className="text-white/80 text-xs">
                   تمام ہاسٹلز دیکھیں اور منظم کریں
                 </p>
               </div>
             </div>
             <Link
               href="/hostel/hostels/new"
-              className="inline-flex items-center gap-2 bg-white text-purple-600 hover:bg-purple-50 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
+              className="inline-flex items-center gap-2 bg-white text-primary hover:bg-gray-50 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
             >
               <Plus className="w-4 h-4" />
               نیا ہاسٹل
@@ -63,13 +63,13 @@ export default function HostelsListPage() {
                 onChange={(e) => setQ(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && load()}
                 placeholder="ہاسٹل کا نام تلاش کریں..."
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div className="flex items-end">
               <button
                 onClick={load}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
               >
                 <RefreshCw className="w-4 h-4" />
                 تازہ کریں
@@ -92,7 +92,7 @@ export default function HostelsListPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <thead className="bg-gray-50 border-b-2 border-gray-200">
                   <tr>
                     <th className="px-5 py-3 text-right font-bold text-gray-700">
                       نام
@@ -112,14 +112,14 @@ export default function HostelsListPage() {
                   {items.map((h: any, index) => (
                     <tr
                       key={h._id}
-                      className={`hover:bg-purple-50 transition-colors ${
+                      className={`hover:bg-gray-50 transition-colors ${
                         index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                       }`}
                     >
                       <td className="px-5 py-3">
                         <Link
                           href={`/hostel/hostels/${h._id}`}
-                          className="text-purple-600 hover:text-purple-700 font-medium hover:underline"
+                          className="text-primary hover:text-primary/90 font-medium hover:underline"
                         >
                           {h.name}
                         </Link>

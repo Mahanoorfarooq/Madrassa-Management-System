@@ -85,14 +85,14 @@ export default function NewInvoicePage() {
     <FinanceLayout>
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
               <FileText className="w-7 h-7" />
             </div>
             <div>
               <h1 className="text-xl font-bold">نئی انوائس</h1>
-              <p className="text-purple-100 text-xs">انوائس بنائیں</p>
+              <p className="text-white/80 text-xs">انوائس بنائیں</p>
             </div>
           </div>
         </div>
@@ -110,7 +110,7 @@ export default function NewInvoicePage() {
           {/* Basic Info */}
           <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4">
             <h2 className="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
-              <User className="w-4 h-4 text-purple-600" />
+              <User className="w-4 h-4 text-primary" />
               بنیادی معلومات
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -121,7 +121,7 @@ export default function NewInvoicePage() {
                 <select
                   value={form.studentId || ""}
                   onChange={(e) => set({ studentId: e.target.value })}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   <option value="">طالب علم منتخب کریں</option>
                   {students.map((s: any) => (
@@ -141,7 +141,7 @@ export default function NewInvoicePage() {
                 <select
                   value={form.departmentId || ""}
                   onChange={(e) => set({ departmentId: e.target.value })}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   <option value="">شعبہ منتخب کریں</option>
                   {departments.map((d: any) => (
@@ -165,7 +165,7 @@ export default function NewInvoicePage() {
                   value={form.period || ""}
                   onChange={(e) => set({ period: e.target.value })}
                   placeholder="مثلاً: 2025-01"
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
               </div>
               <div>
@@ -179,7 +179,7 @@ export default function NewInvoicePage() {
                   type="date"
                   value={form.dueDate || ""}
                   onChange={(e) => set({ dueDate: e.target.value })}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
               </div>
             </div>
@@ -189,13 +189,13 @@ export default function NewInvoicePage() {
           <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-sm font-bold text-gray-800 flex items-center gap-2">
-                <FileText className="w-4 h-4 text-purple-600" />
+                <FileText className="w-4 h-4 text-primary" />
                 فیس کی آئیٹمز
               </h2>
               <button
                 type="button"
                 onClick={addItem}
-                className="inline-flex items-center gap-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 text-xs font-semibold transition-all"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-3 py-2 text-xs font-semibold transition-all"
               >
                 <Plus className="w-4 h-4" />
                 آئیٹم شامل کریں
@@ -214,7 +214,7 @@ export default function NewInvoicePage() {
                         updateItem(idx, { title: e.target.value })
                       }
                       placeholder="عنوان (مثلاً: ماہانہ فیس)"
-                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                     />
                   </div>
                   <div className="md:col-span-5">
@@ -228,7 +228,7 @@ export default function NewInvoicePage() {
                         })
                       }
                       placeholder="رقم"
-                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                     />
                   </div>
                   <div className="md:col-span-1 flex items-center">
@@ -255,15 +255,15 @@ export default function NewInvoicePage() {
 
           {/* Total */}
           {total > 0 && (
-            <div className="bg-purple-50 border-2 border-purple-200 rounded-xl shadow-md p-4">
+            <div className="bg-primary/10 border-2 border-primary/30 rounded-xl shadow-md p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <DollarSign className="w-5 h-5 text-purple-600" />
+                  <DollarSign className="w-5 h-5 text-primary" />
                   <span className="text-sm font-bold text-gray-800">
                     کل رقم:
                   </span>
                 </div>
-                <span className="text-2xl font-bold text-purple-600">
+                <span className="text-2xl font-bold text-primary">
                   ₨ {total.toLocaleString()}
                 </span>
               </div>
@@ -283,7 +283,7 @@ export default function NewInvoicePage() {
                 <select
                   value={form.status}
                   onChange={(e) => set({ status: e.target.value })}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   <option value="unpaid">غیر ادائیگی</option>
                   <option value="partial">جزوی ادائیگی</option>
@@ -298,7 +298,7 @@ export default function NewInvoicePage() {
                   value={form.notes || ""}
                   onChange={(e) => set({ notes: e.target.value })}
                   placeholder="اضافی معلومات..."
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
               </div>
             </div>
@@ -315,7 +315,7 @@ export default function NewInvoicePage() {
             </button>
             <button
               type="submit"
-              className="inline-flex items-center gap-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white px-5 py-2.5 text-sm font-semibold shadow-md transition-all"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-5 py-2.5 text-sm font-semibold shadow-md transition-all"
             >
               <Save className="w-4 h-4" />
               <span>محفوظ کریں</span>

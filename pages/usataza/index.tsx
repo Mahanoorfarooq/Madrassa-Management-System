@@ -57,14 +57,14 @@ export default function UsatazaDashboard() {
     <UsatazaLayout>
       <div className="space-y-5" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-indigo-600 to-blue-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
               <GraduationCap className="w-8 h-8" />
             </div>
             <div>
               <h1 className="text-xl font-bold">اساتذہ ڈیش بورڈ</h1>
-              <p className="text-blue-100 text-xs">
+              <p className="text-white/80 text-xs">
                 اساتذہ کی معلومات اور تفویضات کا خلاصہ
               </p>
             </div>
@@ -77,12 +77,12 @@ export default function UsatazaDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-gray-600 mb-1">کل اساتذہ</p>
-                <p className="text-3xl font-bold text-gray-800">
+                <p className="text-3xl font-bold text-primary">
                   {counts.teachers}
                 </p>
               </div>
-              <div className="bg-blue-100 rounded-lg p-3">
-                <Users className="w-8 h-8 text-blue-600" />
+              <div className="bg-primary/10 rounded-lg p-3">
+                <Users className="w-8 h-8 text-primary" />
               </div>
             </div>
           </div>
@@ -91,12 +91,12 @@ export default function UsatazaDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-gray-600 mb-1">کل تفویضات</p>
-                <p className="text-3xl font-bold text-gray-800">
+                <p className="text-3xl font-bold text-primary">
                   {counts.assignments}
                 </p>
               </div>
-              <div className="bg-purple-100 rounded-lg p-3">
-                <ClipboardList className="w-8 h-8 text-purple-600" />
+              <div className="bg-primary/10 rounded-lg p-3">
+                <ClipboardList className="w-8 h-8 text-primary" />
               </div>
             </div>
           </div>
@@ -105,7 +105,7 @@ export default function UsatazaDashboard() {
         {/* Quick Links */}
         <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4">
           <h2 className="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
-            <BookOpen className="w-4 h-4 text-indigo-600" />
+            <BookOpen className="w-4 h-4 text-secondary" />
             فوری رسائی
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -118,7 +118,7 @@ export default function UsatazaDashboard() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div
-                      className={`${link.color} ${link.hoverColor} rounded-lg p-2.5 transition-colors`}
+                      className={`bg-primary hover:bg-primary/90 rounded-lg p-2.5 transition-colors`}
                     >
                       <link.icon className="w-5 h-5 text-white" />
                     </div>

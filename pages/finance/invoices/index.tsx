@@ -75,7 +75,7 @@ export default function InvoicesListPage() {
     <FinanceLayout>
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
@@ -83,12 +83,12 @@ export default function InvoicesListPage() {
               </div>
               <div>
                 <h1 className="text-xl font-bold">انوائسز کی فہرست</h1>
-                <p className="text-purple-100 text-xs">تمام انوائسز دیکھیں</p>
+                <p className="text-white/80 text-xs">تمام انوائسز دیکھیں</p>
               </div>
             </div>
             <Link
               href="/finance/invoices/new"
-              className="inline-flex items-center gap-2 bg-white text-purple-600 hover:bg-purple-50 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
+              className="inline-flex items-center gap-2 bg-white text-primary hover:bg-gray-50 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
             >
               <Plus className="w-4 h-4" />
               نئی انوائس
@@ -101,7 +101,7 @@ export default function InvoicesListPage() {
               <div className="flex items-center gap-2">
                 <FileText className="w-4 h-4" />
                 <div>
-                  <p className="text-[10px] text-purple-100">کل</p>
+                  <p className="text-[10px] text-white/80">کل</p>
                   <p className="text-sm font-bold">{items.length}</p>
                 </div>
               </div>
@@ -110,7 +110,7 @@ export default function InvoicesListPage() {
               <div className="flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-red-300" />
                 <div>
-                  <p className="text-[10px] text-purple-100">غیر ادا</p>
+                  <p className="text-[10px] text-white/80">غیر ادا</p>
                   <p className="text-sm font-bold">{statusCounts.unpaid}</p>
                 </div>
               </div>
@@ -119,7 +119,7 @@ export default function InvoicesListPage() {
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-amber-300" />
                 <div>
-                  <p className="text-[10px] text-purple-100">جزوی</p>
+                  <p className="text-[10px] text-white/80">جزوی</p>
                   <p className="text-sm font-bold">{statusCounts.partial}</p>
                 </div>
               </div>
@@ -128,7 +128,7 @@ export default function InvoicesListPage() {
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-emerald-300" />
                 <div>
-                  <p className="text-[10px] text-purple-100">ادا شدہ</p>
+                  <p className="text-[10px] text-white/80">ادا شدہ</p>
                   <p className="text-sm font-bold">{statusCounts.paid}</p>
                 </div>
               </div>
@@ -150,7 +150,7 @@ export default function InvoicesListPage() {
               <select
                 value={departmentId}
                 onChange={(e) => setDepartmentId(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام شعبہ جات</option>
                 {departments.map((d: any) => (
@@ -167,7 +167,7 @@ export default function InvoicesListPage() {
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام</option>
                 {STATUS.map((s) => (
@@ -185,7 +185,7 @@ export default function InvoicesListPage() {
                 placeholder="YYYY-MM"
                 value={period}
                 onChange={(e) => setPeriod(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div className="md:col-span-2">
@@ -200,13 +200,13 @@ export default function InvoicesListPage() {
                 onChange={(e) => setQ(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && load()}
                 placeholder="تلاش کریں..."
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div className="flex items-end">
               <button
                 onClick={load}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
               >
                 <RefreshCw className="w-4 h-4" />
                 <span>تازہ کریں</span>
@@ -229,7 +229,7 @@ export default function InvoicesListPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
                     <th className="px-5 py-3 text-right font-bold text-gray-700">
                       انوائس نمبر
@@ -254,14 +254,14 @@ export default function InvoicesListPage() {
                     return (
                       <tr
                         key={t._id}
-                        className={`hover:bg-purple-50 transition-colors ${
+                        className={`hover:bg-gray-50 transition-colors ${
                           index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                         }`}
                       >
                         <td className="px-5 py-3">
                           <Link
                             href={`/finance/invoices/${t._id}`}
-                            className="text-purple-600 hover:text-purple-700 font-medium hover:underline"
+                            className="text-primary hover:text-primary/90 font-medium hover:underline"
                           >
                             {t.invoiceNo}
                           </Link>
@@ -292,7 +292,7 @@ export default function InvoicesListPage() {
                     );
                   })}
                 </tbody>
-                <tfoot className="bg-gradient-to-r from-gray-50 to-gray-100 border-t-2 border-gray-200">
+                <tfoot className="bg-gray-50 border-t border-gray-200">
                   <tr>
                     <td
                       className="px-5 py-3 font-bold text-gray-800"

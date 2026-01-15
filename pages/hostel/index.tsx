@@ -79,14 +79,14 @@ export default function HostelDashboard() {
     <HostelLayout title="ہاسٹل ڈیش بورڈ">
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
               <Building2 className="w-7 h-7" />
             </div>
             <div>
               <h1 className="text-xl font-bold">ہاسٹل ڈیش بورڈ</h1>
-              <p className="text-blue-100 text-xs">
+              <p className="text-white/80 text-xs">
                 ہاسٹل، کمروں اور بیڈ الوکیشن کی مجموعی صورتحال
               </p>
             </div>
@@ -156,7 +156,7 @@ export default function HostelDashboard() {
               <select
                 value={selectedHostelId}
                 onChange={(e) => setSelectedHostelId(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام ہاسٹلز</option>
                 {hostels.map((h: any) => (
@@ -175,7 +175,7 @@ export default function HostelDashboard() {
                   onClick={() => setStatusFilter("all")}
                   className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                     statusFilter === "all"
-                      ? "bg-blue-600 text-white shadow-md"
+                      ? "bg-primary text-white shadow-md"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
@@ -219,13 +219,13 @@ export default function HostelDashboard() {
               className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden"
             >
               {/* Hostel Header */}
-              <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200 px-5 py-3">
+              <div className="bg-gray-50 border-b-2 border-gray-200 px-5 py-3">
                 <div className="flex items-center justify-between">
                   <h2 className="text-base font-bold text-gray-800 flex items-center gap-2">
                     <Building2 className="w-4 h-4" />
                     {h.name}
                   </h2>
-                  <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium">
+                  <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">
                     {hostelRooms.length} کمرے
                   </span>
                 </div>

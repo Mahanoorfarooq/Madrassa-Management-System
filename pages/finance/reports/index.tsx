@@ -51,14 +51,14 @@ export default function FinanceReportsPage() {
     <FinanceLayout>
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-orange-600 to-red-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
               <BarChart3 className="w-7 h-7" />
             </div>
             <div>
               <h1 className="text-xl font-bold">مالیاتی رپورٹس</h1>
-              <p className="text-orange-100 text-xs">
+              <p className="text-white/80 text-xs">
                 انوائسز اور وصولیوں کا خلاصہ
               </p>
             </div>
@@ -66,10 +66,10 @@ export default function FinanceReportsPage() {
         </div>
 
         {/* Info Box */}
-        <div className="bg-blue-50 border-r-4 border-blue-400 rounded-lg p-4">
+        <div className="bg-secondary/10 border-r-4 border-secondary rounded-lg p-4">
           <div className="flex items-start gap-2">
-            <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-            <p className="text-sm text-blue-800">
+            <AlertCircle className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
+            <p className="text-sm text-secondary">
               اس صفحہ پر آپ منتخب تاریخوں کے درمیان بننے والی انوائسز اور موصول
               ہونے والی رقوم کا خلاصہ دیکھ سکتے ہیں، تاکہ فوری طور پر بِلڈ اور
               رِسیوڈ رقم کا فرق واضح ہو سکے۔
@@ -80,7 +80,7 @@ export default function FinanceReportsPage() {
         {/* Date Range Filter */}
         <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4">
           <h2 className="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-orange-600" />
+            <Calendar className="w-4 h-4 text-secondary" />
             تاریخ کی حد منتخب کریں
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -94,7 +94,7 @@ export default function FinanceReportsPage() {
                 onChange={(e) =>
                   setRange((r) => ({ ...r, from: e.target.value }))
                 }
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div>
@@ -107,13 +107,13 @@ export default function FinanceReportsPage() {
                 onChange={(e) =>
                   setRange((r) => ({ ...r, to: e.target.value }))
                 }
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div className="flex items-end">
               <button
                 onClick={load}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-orange-600 hover:bg-orange-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
               >
                 <RefreshCw className="w-4 h-4" />
                 <span>تازہ کریں</span>

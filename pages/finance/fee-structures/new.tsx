@@ -72,14 +72,14 @@ export default function NewFeeStructurePage() {
     <FinanceLayout>
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
               <Layers className="w-7 h-7" />
             </div>
             <div>
               <h1 className="text-xl font-bold">نیا فیس ڈھانچہ</h1>
-              <p className="text-indigo-100 text-xs">فیس کا ڈھانچہ بنائیں</p>
+              <p className="text-white/80 text-xs">فیس کا ڈھانچہ بنائیں</p>
             </div>
           </div>
         </div>
@@ -97,7 +97,7 @@ export default function NewFeeStructurePage() {
           {/* Basic Info */}
           <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4">
             <h2 className="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
-              <FileText className="w-4 h-4 text-indigo-600" />
+              <FileText className="w-4 h-4 text-primary" />
               بنیادی معلومات
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -108,7 +108,7 @@ export default function NewFeeStructurePage() {
                 <select
                   value={departmentId}
                   onChange={(e) => setDepartmentId(e.target.value)}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   <option value="">شعبہ منتخب کریں</option>
                   {departments.map((d) => (
@@ -125,7 +125,7 @@ export default function NewFeeStructurePage() {
                 <select
                   value={type}
                   onChange={(e) => setType(e.target.value)}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   <option value="student_fee">طلبہ فیس</option>
                   <option value="hostel_fee">ہاسٹل فیس</option>
@@ -146,7 +146,7 @@ export default function NewFeeStructurePage() {
                   type="date"
                   value={effectiveFrom}
                   onChange={(e) => setEffectiveFrom(e.target.value)}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
               </div>
               <div>
@@ -160,7 +160,7 @@ export default function NewFeeStructurePage() {
                   type="date"
                   value={effectiveTo}
                   onChange={(e) => setEffectiveTo(e.target.value)}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
               </div>
             </div>
@@ -170,13 +170,13 @@ export default function NewFeeStructurePage() {
           <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-sm font-bold text-gray-800 flex items-center gap-2">
-                <Layers className="w-4 h-4 text-indigo-600" />
+                <Layers className="w-4 h-4 text-primary" />
                 فیس کی آئیٹمز
               </h2>
               <button
                 type="button"
                 onClick={addItem}
-                className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 text-xs font-semibold transition-all"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-3 py-2 text-xs font-semibold transition-all"
               >
                 <Plus className="w-4 h-4" />
                 آئیٹم شامل کریں
@@ -195,7 +195,7 @@ export default function NewFeeStructurePage() {
                         updateItem(idx, { name: e.target.value })
                       }
                       placeholder="عنوان (مثلاً: ماہانہ فیس)"
-                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                     />
                   </div>
                   <div className="md:col-span-3">
@@ -209,7 +209,7 @@ export default function NewFeeStructurePage() {
                         })
                       }
                       placeholder="رقم"
-                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                     />
                   </div>
                   <div className="md:col-span-3">
@@ -218,7 +218,7 @@ export default function NewFeeStructurePage() {
                       onChange={(e) =>
                         updateItem(idx, { periodicity: e.target.value as any })
                       }
-                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                     >
                       <option value="monthly">ماہانہ</option>
                       <option value="once">ایک دفعہ</option>
@@ -255,7 +255,7 @@ export default function NewFeeStructurePage() {
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="اضافی معلومات..."
-              className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+              className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
             />
           </div>
 
@@ -270,7 +270,7 @@ export default function NewFeeStructurePage() {
             </button>
             <button
               type="submit"
-              className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 text-sm font-semibold shadow-md transition-all"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-5 py-2.5 text-sm font-semibold shadow-md transition-all"
             >
               <Save className="w-4 h-4" />
               <span>محفوظ کریں</span>

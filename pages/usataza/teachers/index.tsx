@@ -54,7 +54,7 @@ export default function UsatazaTeachersList() {
     <UsatazaLayout>
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
@@ -62,14 +62,14 @@ export default function UsatazaTeachersList() {
               </div>
               <div>
                 <h1 className="text-xl font-bold">اساتذہ کی فہرست</h1>
-                <p className="text-indigo-100 text-xs">
+                <p className="text-white/80 text-xs">
                   تمام اساتذہ کی تفصیلات دیکھیں
                 </p>
               </div>
             </div>
             <Link
               href="/usataza/teachers/new"
-              className="inline-flex items-center gap-2 bg-white text-indigo-600 hover:bg-indigo-50 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
+              className="inline-flex items-center gap-2 bg-primary text-white hover:bg-primary/90 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
             >
               <UserPlus className="w-4 h-4" />
               نیا استاد
@@ -104,7 +104,7 @@ export default function UsatazaTeachersList() {
               <select
                 value={departmentId}
                 onChange={(e) => setDepartmentId(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام شعبہ جات</option>
                 {departments.map((d) => (
@@ -125,7 +125,7 @@ export default function UsatazaTeachersList() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="استاد کا نام یا عہدہ تلاش کریں..."
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
           </div>
@@ -148,7 +148,7 @@ export default function UsatazaTeachersList() {
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <thead className="bg-gray-50 border-b-2 border-gray-200">
                   <tr>
                     <th className="px-5 py-3 text-right font-bold text-gray-700">
                       نام
@@ -168,14 +168,14 @@ export default function UsatazaTeachersList() {
                   {teachers.map((t, index) => (
                     <tr
                       key={t._id}
-                      className={`hover:bg-indigo-50 transition-colors ${
+                      className={`hover:bg-gray-50 transition-colors ${
                         index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                       }`}
                     >
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center">
-                            <span className="text-indigo-600 font-bold text-xs">
+                          <div className="w-9 h-9 rounded-full bg-secondary/10 flex items-center justify-center">
+                            <span className="text-secondary font-bold text-xs">
                               {t.fullName.charAt(0)}
                             </span>
                           </div>
@@ -211,7 +211,7 @@ export default function UsatazaTeachersList() {
                       <td className="px-5 py-3">
                         <Link
                           href={`/usataza/teachers/${t._id}`}
-                          className="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-700 font-medium hover:underline"
+                          className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium hover:underline"
                         >
                           <Eye className="w-4 h-4" />
                           تفصیل

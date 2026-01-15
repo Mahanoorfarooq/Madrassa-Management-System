@@ -71,14 +71,14 @@ export default function FinanceLedgersPage() {
     <FinanceLayout>
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
               <BookOpen className="w-7 h-7" />
             </div>
             <div>
               <h1 className="text-xl font-bold">لیجرز</h1>
-              <p className="text-blue-100 text-xs">
+              <p className="text-white/80 text-xs">
                 طالب علم اور شعبہ کی لیجر دیکھیں
               </p>
             </div>
@@ -86,8 +86,8 @@ export default function FinanceLedgersPage() {
         </div>
 
         {/* Info */}
-        <div className="bg-blue-50 border-r-4 border-blue-400 rounded-lg p-4">
-          <p className="text-sm text-blue-800">
+        <div className="bg-secondary/10 border-r-4 border-secondary rounded-lg p-4">
+          <p className="text-sm text-secondary">
             اس صفحہ سے آپ طالب علم یا شعبہ کی بنیاد پر فیس کی تفصیلی لیجر دیکھ
             سکتے ہیں، اور ساتھ ہی منتخب فلٹر کے حساب سے انوائس شدہ اور موصول شدہ
             رقم کا خلاصہ حاصل کر سکتے ہیں۔
@@ -105,7 +105,7 @@ export default function FinanceLedgersPage() {
               }}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                 tab === "student"
-                  ? "bg-blue-600 text-white shadow-md"
+                  ? "bg-primary text-white shadow-md"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
             >
@@ -120,7 +120,7 @@ export default function FinanceLedgersPage() {
               }}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                 tab === "department"
-                  ? "bg-blue-600 text-white shadow-md"
+                  ? "bg-primary text-white shadow-md"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
             >
@@ -138,7 +138,7 @@ export default function FinanceLedgersPage() {
                 <select
                   value={studentId}
                   onChange={(e) => setStudentId(e.target.value)}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   <option value="">طالب علم منتخب کریں</option>
                   {students.map((s: any) => (
@@ -153,7 +153,7 @@ export default function FinanceLedgersPage() {
                 <button
                   onClick={load}
                   disabled={loading || !studentId}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md disabled:opacity-60 disabled:cursor-not-allowed transition-all"
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-4 py-2.5 text-sm font-semibold shadow-md disabled:opacity-60 disabled:cursor-not-allowed transition-all"
                 >
                   {loading ? (
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -173,7 +173,7 @@ export default function FinanceLedgersPage() {
                 <select
                   value={departmentId}
                   onChange={(e) => setDepartmentId(e.target.value)}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   <option value="">شعبہ منتخب کریں</option>
                   {departments.map((d: any) => (
@@ -187,7 +187,7 @@ export default function FinanceLedgersPage() {
                 <button
                   onClick={load}
                   disabled={loading || !departmentId}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md disabled:opacity-60 disabled:cursor-not-allowed transition-all"
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-4 py-2.5 text-sm font-semibold shadow-md disabled:opacity-60 disabled:cursor-not-allowed transition-all"
                 >
                   {loading ? (
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -208,15 +208,15 @@ export default function FinanceLedgersPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs text-gray-600 mb-1">کل انوائس شدہ</p>
-                  <p className="text-2xl font-bold text-purple-600">
+                  <p className="text-2xl font-bold text-primary">
                     ₨ {billed.toLocaleString()}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
                     {invoices.length} انوائسز
                   </p>
                 </div>
-                <div className="bg-purple-100 rounded-lg p-3">
-                  <FileText className="w-7 h-7 text-purple-600" />
+                <div className="bg-primary/10 rounded-lg p-3">
+                  <FileText className="w-7 h-7 text-primary" />
                 </div>
               </div>
             </div>
@@ -225,15 +225,15 @@ export default function FinanceLedgersPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs text-gray-600 mb-1">کل موصول شدہ</p>
-                  <p className="text-2xl font-bold text-emerald-600">
+                  <p className="text-2xl font-bold text-primary">
                     ₨ {received.toLocaleString()}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
                     {receipts.length} وصولیاں
                   </p>
                 </div>
-                <div className="bg-emerald-100 rounded-lg p-3">
-                  <Receipt className="w-7 h-7 text-emerald-600" />
+                <div className="bg-primary/10 rounded-lg p-3">
+                  <Receipt className="w-7 h-7 text-primary" />
                 </div>
               </div>
             </div>

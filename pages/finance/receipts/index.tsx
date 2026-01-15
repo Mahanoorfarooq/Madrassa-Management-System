@@ -46,7 +46,7 @@ export default function ReceiptsListPage() {
     <FinanceLayout>
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
@@ -54,12 +54,12 @@ export default function ReceiptsListPage() {
               </div>
               <div>
                 <h1 className="text-xl font-bold">وصولیاں کی فہرست</h1>
-                <p className="text-emerald-100 text-xs">تمام وصولیاں دیکھیں</p>
+                <p className="text-white/80 text-xs">تمام وصولیاں دیکھیں</p>
               </div>
             </div>
             <Link
               href="/finance/receipts/new"
-              className="inline-flex items-center gap-2 bg-white text-emerald-600 hover:bg-emerald-50 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
+              className="inline-flex items-center gap-2 bg-white text-primary hover:bg-gray-50 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
             >
               <Plus className="w-4 h-4" />
               نئی رسید
@@ -72,7 +72,7 @@ export default function ReceiptsListPage() {
               <div className="flex items-center gap-2">
                 <Receipt className="w-4 h-4" />
                 <div>
-                  <p className="text-[10px] text-emerald-100">کل وصولیاں</p>
+                  <p className="text-[10px] text-white/80">کل وصولیاں</p>
                   <p className="text-sm font-bold">{items.length}</p>
                 </div>
               </div>
@@ -80,7 +80,7 @@ export default function ReceiptsListPage() {
             <div className="bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2">
               <div className="flex items-center gap-2">
                 <div>
-                  <p className="text-[10px] text-emerald-100">کل رقم</p>
+                  <p className="text-[10px] text-white/80">کل رقم</p>
                   <p className="text-sm font-bold">
                     ₨ {total.toLocaleString()}
                   </p>
@@ -104,7 +104,7 @@ export default function ReceiptsListPage() {
               <select
                 value={departmentId}
                 onChange={(e) => setDepartmentId(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام شعبہ جات</option>
                 {departments.map((d: any) => (
@@ -126,13 +126,13 @@ export default function ReceiptsListPage() {
                 onChange={(e) => setQ(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && load()}
                 placeholder="تلاش کریں..."
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div className="md:col-span-2 flex items-end gap-2">
               <button
                 onClick={load}
-                className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
+                className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
               >
                 <RefreshCw className="w-4 h-4" />
                 <span>تازہ کریں</span>
@@ -155,7 +155,7 @@ export default function ReceiptsListPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
                     <th className="px-5 py-3 text-right font-bold text-gray-700">
                       رسید نمبر
@@ -178,20 +178,20 @@ export default function ReceiptsListPage() {
                   {items.map((r: any, index) => (
                     <tr
                       key={r._id}
-                      className={`hover:bg-emerald-50 transition-colors ${
+                      className={`hover:bg-gray-50 transition-colors ${
                         index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                       }`}
                     >
                       <td className="px-5 py-3">
-                        <span className="font-mono bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold">
+                        <span className="font-mono bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold">
                           {r.receiptNo}
                         </span>
                       </td>
                       <td className="px-5 py-3">
                         {r.studentId?.fullName ? (
                           <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
-                              <User className="w-4 h-4 text-emerald-600" />
+                            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                              <User className="w-4 h-4 text-primary" />
                             </div>
                             <span className="text-gray-700">
                               {r.studentId?.fullName}
@@ -233,7 +233,7 @@ export default function ReceiptsListPage() {
                     </tr>
                   ))}
                 </tbody>
-                <tfoot className="bg-gradient-to-r from-gray-50 to-gray-100 border-t-2 border-gray-200">
+                <tfoot className="bg-gray-50 border-t border-gray-200">
                   <tr>
                     <td
                       className="px-5 py-3 font-bold text-gray-800"
@@ -255,7 +255,7 @@ export default function ReceiptsListPage() {
                     >
                       کل
                     </td>
-                    <td className="px-6 py-4 text-center text-sm font-bold text-emerald-600">
+                    <td className="px-6 py-4 text-center text-sm font-bold text-primary">
                       ₨ {total.toLocaleString()}
                     </td>
                   </tr>

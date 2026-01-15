@@ -30,16 +30,14 @@ export default function NewHostelPage() {
     <HostelLayout title="نیا ہاسٹل">
       <div className="p-6 max-w-4xl mx-auto" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-5 text-white shadow-md mb-6">
+        <div className="bg-secondary rounded-xl p-5 text-white shadow-md mb-6">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
               <Building2 className="w-5 h-5" />
             </div>
             <div>
               <h2 className="text-xl font-bold">نیا ہاسٹل</h2>
-              <p className="text-indigo-100 text-sm">
-                ہاسٹل کی تفصیلات درج کریں
-              </p>
+              <p className="text-white/80 text-sm">ہاسٹل کی تفصیلات درج کریں</p>
             </div>
           </div>
         </div>
@@ -60,7 +58,7 @@ export default function NewHostelPage() {
             {/* Name */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <Building2 className="w-4 h-4 text-indigo-600" />
+                <Building2 className="w-4 h-4 text-primary" />
                 نام <span className="text-red-500">*</span>
               </label>
               <input
@@ -68,7 +66,7 @@ export default function NewHostelPage() {
                 onChange={(e) => set({ name: e.target.value })}
                 required
                 placeholder="ہاسٹل کا نام"
-                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
+                className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
               />
             </div>
 
@@ -76,7 +74,7 @@ export default function NewHostelPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                  <Users className="w-4 h-4 text-blue-600" />
+                  <Users className="w-4 h-4 text-primary" />
                   گنجائش
                 </label>
                 <input
@@ -85,12 +83,12 @@ export default function NewHostelPage() {
                   value={form.capacity || 0}
                   onChange={(e) => set({ capacity: e.target.value })}
                   placeholder="کل طلبہ"
-                  className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                  className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
                 />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                  <DoorOpen className="w-4 h-4 text-purple-600" />
+                  <DoorOpen className="w-4 h-4 text-primary" />
                   کمرے
                 </label>
                 <input
@@ -99,19 +97,19 @@ export default function NewHostelPage() {
                   value={form.rooms || 0}
                   onChange={(e) => set({ rooms: e.target.value })}
                   placeholder="کل کمرے"
-                  className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all"
+                  className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
                 />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                  <UserCheck className="w-4 h-4 text-emerald-600" />
+                  <UserCheck className="w-4 h-4 text-primary" />
                   وارڈن
                 </label>
                 <input
                   value={form.wardenName || ""}
                   onChange={(e) => set({ wardenName: e.target.value })}
                   placeholder="وارڈن کا نام"
-                  className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all"
+                  className="w-full rounded-lg border-2 border-gray-300 px-3 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
                 />
               </div>
             </div>
@@ -129,7 +127,7 @@ export default function NewHostelPage() {
             </button>
             <button
               type="submit"
-              className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-5 py-2.5 text-sm font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-md"
+              className="flex items-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-5 py-2.5 text-sm font-semibold transition-all shadow-md"
             >
               <Save className="w-4 h-4" />
               محفوظ کریں

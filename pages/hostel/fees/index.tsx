@@ -53,7 +53,7 @@ export default function HostelFeesPage() {
     <HostelLayout title="ہاسٹل فیس">
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-sky-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
@@ -61,14 +61,14 @@ export default function HostelFeesPage() {
               </div>
               <div>
                 <h1 className="text-xl font-bold">ہاسٹل فیس کی فہرست</h1>
-                <p className="text-blue-100 text-xs">
+                <p className="text-white/80 text-xs">
                   تمام ہاسٹل فیس دیکھیں اور منظم کریں
                 </p>
               </div>
             </div>
             <Link
               href="/hostel/fees/new"
-              className="inline-flex items-center gap-2 bg-white text-blue-600 hover:bg-blue-50 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
+              className="inline-flex items-center gap-2 bg-white text-primary hover:bg-gray-50 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
             >
               <Plus className="w-4 h-4" />
               نئی فیس
@@ -78,16 +78,14 @@ export default function HostelFeesPage() {
 
         {/* Stats Card */}
         {totalMonthly > 0 && (
-          <div className="bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl shadow-md p-5 text-white">
+          <div className="bg-primary/10 rounded-xl shadow-md p-5 border border-primary/20">
             <div className="flex items-center gap-3">
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
-                <TrendingUp className="w-6 h-6" />
+              <div className="bg-primary/10 rounded-lg p-3">
+                <TrendingUp className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <div className="text-xs text-emerald-100 mb-1">
-                  کل ماہانہ فیس
-                </div>
-                <div className="text-2xl font-bold">
+                <div className="text-xs text-gray-600 mb-1">کل ماہانہ فیس</div>
+                <div className="text-2xl font-bold text-primary">
                   ₨ {totalMonthly.toLocaleString()}
                 </div>
               </div>
@@ -110,7 +108,7 @@ export default function HostelFeesPage() {
               <select
                 value={hostelId}
                 onChange={(e) => setHostelId(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام</option>
                 {hostels.map((h: any) => (
@@ -127,7 +125,7 @@ export default function HostelFeesPage() {
               <select
                 value={active}
                 onChange={(e) => setActive(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام</option>
                 <option value="true">فعال</option>
@@ -137,7 +135,7 @@ export default function HostelFeesPage() {
             <div className="md:col-span-3 flex items-end">
               <button
                 onClick={load}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
               >
                 <RefreshCw className="w-4 h-4" />
                 تازہ کریں
@@ -161,7 +159,7 @@ export default function HostelFeesPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <thead className="bg-gray-50 border-b-2 border-gray-200">
                   <tr>
                     <th className="px-5 py-3 text-right font-bold text-gray-700">
                       <div className="flex items-center gap-2 justify-end">
@@ -193,12 +191,12 @@ export default function HostelFeesPage() {
                   {items.map((f: any, index) => (
                     <tr
                       key={f._id}
-                      className={`hover:bg-blue-50 transition-colors ${
+                      className={`hover:bg-gray-50 transition-colors ${
                         index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                       }`}
                     >
                       <td className="px-5 py-4">
-                        <span className="inline-flex items-center gap-2 bg-purple-50 text-purple-700 px-3 py-1.5 rounded-lg text-xs font-medium">
+                        <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 rounded-lg text-xs font-medium">
                           <Building2 className="w-3.5 h-3.5" />
                           {hostels.find((h) => h._id === String(f.hostelId))
                             ?.name || "-"}
@@ -207,7 +205,7 @@ export default function HostelFeesPage() {
                       <td className="px-5 py-4">
                         <Link
                           href={`/hostel/fees/${f._id}`}
-                          className="text-blue-600 hover:text-blue-700 font-medium hover:underline"
+                          className="text-primary hover:text-primary/90 font-medium hover:underline"
                         >
                           {f.title}
                         </Link>

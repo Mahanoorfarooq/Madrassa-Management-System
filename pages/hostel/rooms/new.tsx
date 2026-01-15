@@ -50,14 +50,14 @@ export default function NewRoomPage() {
     <HostelLayout title="نیا کمرہ">
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-teal-600 to-cyan-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
               <DoorOpen className="w-7 h-7" />
             </div>
             <div>
               <h1 className="text-xl font-bold">نیا کمرہ شامل کریں</h1>
-              <p className="text-teal-100 text-xs">
+              <p className="text-white/80 text-xs">
                 نیا کمرہ بنائیں اور تفصیلات درج کریں
               </p>
             </div>
@@ -86,7 +86,7 @@ export default function NewRoomPage() {
                   value={form.hostelId || ""}
                   onChange={(e) => set({ hostelId: e.target.value })}
                   required
-                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 transition-all"
+                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                 >
                   <option value="">ہاسٹل منتخب کریں</option>
                   {hostels.map((h: any) => (
@@ -110,7 +110,7 @@ export default function NewRoomPage() {
                     onChange={(e) => set({ roomNo: e.target.value })}
                     placeholder="مثال: 101"
                     required
-                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 transition-all"
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                   />
                 </div>
 
@@ -127,7 +127,7 @@ export default function NewRoomPage() {
                     value={form.beds || 1}
                     onChange={(e) => set({ beds: e.target.value })}
                     required
-                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 transition-all"
+                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                   />
                 </div>
               </div>
@@ -146,7 +146,7 @@ export default function NewRoomPage() {
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center gap-2 rounded-lg bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 text-sm font-semibold shadow-md disabled:opacity-60 transition-all"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-6 py-3 text-sm font-semibold shadow-md disabled:opacity-60 transition-all"
             >
               {loading ? (
                 <>

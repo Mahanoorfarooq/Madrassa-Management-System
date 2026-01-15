@@ -101,7 +101,7 @@ export default function FinanceDuesPage() {
               <select
                 value={departmentId}
                 onChange={(e) => setDepartmentId(e.target.value)}
-                className="w-full rounded border px-3 py-2 text-sm bg-white"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام</option>
                 {departments.map((d: any) => (
@@ -116,20 +116,20 @@ export default function FinanceDuesPage() {
               <input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                className="w-full rounded border px-3 py-2 text-sm"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 placeholder="Invoice No / Student"
               />
             </div>
             <div className="flex justify-end gap-2">
               <button
                 onClick={downloadCsv}
-                className="rounded border border-gray-200 px-4 py-2 text-xs font-semibold hover:bg-gray-50"
+                className="rounded-lg border border-gray-200 px-4 py-2 text-xs font-semibold hover:bg-gray-50"
               >
                 CSV
               </button>
               <button
                 onClick={load}
-                className="rounded bg-primary text-white px-4 py-2 text-xs font-semibold"
+                className="rounded-lg bg-primary hover:bg-primary/90 text-white px-4 py-2 text-xs font-semibold shadow-md"
               >
                 لوڈ
               </button>

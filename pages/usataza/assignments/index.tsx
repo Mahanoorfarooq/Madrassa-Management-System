@@ -135,7 +135,7 @@ export default function TeachingAssignmentsPage() {
     <UsatazaLayout>
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
@@ -143,7 +143,7 @@ export default function TeachingAssignmentsPage() {
               </div>
               <div>
                 <h1 className="text-xl font-bold">تفویضِ تدریس</h1>
-                <p className="text-purple-100 text-xs">
+                <p className="text-white/80 text-xs">
                   اساتذہ کو کلاسز اور مضامین تفویض کریں
                 </p>
               </div>
@@ -153,7 +153,7 @@ export default function TeachingAssignmentsPage() {
                 <div className="flex items-center gap-2">
                   <ClipboardList className="w-5 h-5" />
                   <div>
-                    <p className="text-[10px] text-purple-100">کل تفویضات</p>
+                    <p className="text-[10px] text-white/80">کل تفویضات</p>
                     <p className="text-lg font-bold">{assignments.length}</p>
                   </div>
                 </div>
@@ -165,7 +165,7 @@ export default function TeachingAssignmentsPage() {
         {/* Add Assignment Form */}
         <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4">
           <div className="flex items-center gap-2 mb-3">
-            <Plus className="w-4 h-4 text-purple-600" />
+            <Plus className="w-4 h-4 text-secondary" />
             <h2 className="text-sm font-bold text-gray-800">
               نئی تفویض شامل کریں
             </h2>
@@ -184,7 +184,7 @@ export default function TeachingAssignmentsPage() {
                     setSectionId("");
                     setTeacherId("");
                   }}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   <option value="">شعبہ منتخب کریں</option>
                   {departments.map((d) => (
@@ -202,7 +202,7 @@ export default function TeachingAssignmentsPage() {
                   value={teacherId}
                   onChange={(e) => setTeacherId(e.target.value)}
                   disabled={!departmentId}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 disabled:bg-gray-100 disabled:cursor-not-allowed"
                 >
                   <option value="">استاد منتخب کریں</option>
                   {teachers.map((t) => (
@@ -224,7 +224,7 @@ export default function TeachingAssignmentsPage() {
                     setSectionId("");
                   }}
                   disabled={!departmentId}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 disabled:bg-gray-100 disabled:cursor-not-allowed"
                 >
                   <option value="">کلاس (اختیاری)</option>
                   {classes.map((c) => (
@@ -242,7 +242,7 @@ export default function TeachingAssignmentsPage() {
                   value={sectionId}
                   onChange={(e) => setSectionId(e.target.value)}
                   disabled={!classId}
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 disabled:bg-gray-100 disabled:cursor-not-allowed"
                 >
                   <option value="">سیکشن (اختیاری)</option>
                   {sections.map((s) => (
@@ -260,7 +260,7 @@ export default function TeachingAssignmentsPage() {
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                   placeholder="مثلاً: عربی"
-                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
               </div>
             </div>
@@ -268,7 +268,7 @@ export default function TeachingAssignmentsPage() {
               <button
                 type="submit"
                 disabled={!departmentId || !teacherId}
-                className="inline-flex items-center gap-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white px-5 py-2.5 text-sm font-semibold shadow-md hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-5 py-2.5 text-sm font-semibold shadow-md hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all"
               >
                 <Plus className="w-4 h-4" />
                 <span>تفویض کریں</span>
@@ -306,7 +306,7 @@ export default function TeachingAssignmentsPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <thead className="bg-gray-50 border-b-2 border-gray-200">
                   <tr>
                     <th className="px-5 py-3 text-right font-bold text-gray-700">
                       استاد
@@ -329,14 +329,14 @@ export default function TeachingAssignmentsPage() {
                   {assignments.map((a, index) => (
                     <tr
                       key={a._id}
-                      className={`hover:bg-purple-50 transition-colors ${
+                      className={`hover:bg-gray-50 transition-colors ${
                         index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                       }`}
                     >
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-full bg-purple-100 flex items-center justify-center">
-                            <User className="w-5 h-5 text-purple-600" />
+                          <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
+                            <User className="w-5 h-5 text-primary" />
                           </div>
                           <div>
                             <p className="font-medium text-gray-800">
@@ -376,7 +376,7 @@ export default function TeachingAssignmentsPage() {
                       </td>
                       <td className="px-5 py-3">
                         {a.subject ? (
-                          <span className="inline-block bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-medium">
+                          <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">
                             {a.subject}
                           </span>
                         ) : (

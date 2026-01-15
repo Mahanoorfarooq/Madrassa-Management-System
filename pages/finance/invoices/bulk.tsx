@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "@/utils/api";
 import { FinanceLayout } from "@/components/layout/FinanceLayout";
+import { Layers, Calendar as CalIcon } from "lucide-react";
 
 export default function BulkInvoicesPage() {
   const [departments, setDepartments] = useState<any[]>([]);
@@ -50,6 +51,22 @@ export default function BulkInvoicesPage() {
   return (
     <FinanceLayout title="بلک انوائس جنریشن">
       <div className="space-y-4" dir="rtl">
+        {/* Header */}
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
+          <div className="flex items-center gap-3 justify-between">
+            <div className="flex items-center gap-3">
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
+                <Layers className="w-7 h-7" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold">بلک انوائس جنریشن</h1>
+                <p className="text-white/80 text-xs">
+                  منتخب طلبہ کے لیے ایک ساتھ انوائسز بنائیں
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
         {error && (
           <div className="rounded bg-red-100 text-red-700 text-xs px-3 py-2 text-right">
             {error}
@@ -62,7 +79,7 @@ export default function BulkInvoicesPage() {
           </div>
         )}
 
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 max-w-3xl ml-auto">
+        <div className="bg-white rounded-xl border border-gray-100 shadow-md p-4 max-w-3xl ml-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="text-right">
               <label className="block text-xs text-gray-600 mb-1">
@@ -73,7 +90,7 @@ export default function BulkInvoicesPage() {
                 onChange={(e) =>
                   setForm((p: any) => ({ ...p, departmentId: e.target.value }))
                 }
-                className="w-full rounded border px-3 py-2 text-sm bg-white"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام</option>
                 {departments.map((d: any) => (
@@ -93,7 +110,7 @@ export default function BulkInvoicesPage() {
                 onChange={(e) =>
                   setForm((p: any) => ({ ...p, classId: e.target.value }))
                 }
-                className="w-full rounded border px-3 py-2 text-sm bg-white"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام</option>
                 {classes.map((c: any) => (
@@ -114,7 +131,7 @@ export default function BulkInvoicesPage() {
                 onChange={(e) =>
                   setForm((p: any) => ({ ...p, period: e.target.value }))
                 }
-                className="w-full rounded border px-3 py-2 text-sm"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
 
@@ -128,7 +145,7 @@ export default function BulkInvoicesPage() {
                 onChange={(e) =>
                   setForm((p: any) => ({ ...p, dueDate: e.target.value }))
                 }
-                className="w-full rounded border px-3 py-2 text-sm"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
 
@@ -136,7 +153,7 @@ export default function BulkInvoicesPage() {
               <button
                 disabled={loading || !form.period}
                 onClick={submit}
-                className="rounded bg-primary text-white px-6 py-2 text-sm font-semibold hover:bg-emerald-700 disabled:opacity-60"
+                className="rounded-lg bg-primary text-white px-6 py-2.5 text-sm font-semibold hover:bg-primary/90 disabled:opacity-60 shadow-md"
               >
                 {loading ? "بن رہی ہے..." : "Generate"}
               </button>

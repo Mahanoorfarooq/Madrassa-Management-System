@@ -17,17 +17,17 @@ const FEE_TYPES = [
   {
     value: "student_fee",
     label: "طلبہ فیس",
-    color: "bg-blue-100 text-blue-700",
+    color: "bg-primary/10 text-primary",
   },
   {
     value: "hostel_fee",
     label: "ہاسٹل فیس",
-    color: "bg-purple-100 text-purple-700",
+    color: "bg-primary/10 text-primary",
   },
   {
     value: "mess_fee",
     label: "میس فیس",
-    color: "bg-orange-100 text-orange-700",
+    color: "bg-primary/10 text-primary",
   },
 ];
 
@@ -69,7 +69,7 @@ export default function FeeStructuresList() {
     <FinanceLayout>
       <div className="space-y-4" dir="rtl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-md p-5 text-white">
+        <div className="bg-secondary rounded-xl shadow-md p-5 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
@@ -77,14 +77,14 @@ export default function FeeStructuresList() {
               </div>
               <div>
                 <h1 className="text-xl font-bold">فیس ڈھانچہ</h1>
-                <p className="text-indigo-100 text-xs">
+                <p className="text-white/80 text-xs">
                   فیس کی تفصیلات اور ڈھانچے
                 </p>
               </div>
             </div>
             <Link
               href="/finance/fee-structures/new"
-              className="inline-flex items-center gap-2 bg-white text-indigo-600 hover:bg-indigo-50 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
+              className="inline-flex items-center gap-2 bg-white text-primary hover:bg-gray-50 rounded-lg px-4 py-2.5 text-sm font-semibold shadow-md transition-all"
             >
               <Plus className="w-4 h-4" />
               نیا ڈھانچہ
@@ -97,7 +97,7 @@ export default function FeeStructuresList() {
               <div className="flex items-center gap-2">
                 <Layers className="w-4 h-4" />
                 <div>
-                  <p className="text-[10px] text-indigo-100">کل ڈھانچے</p>
+                  <p className="text-[10px] text-white/80">کل ڈھانچے</p>
                   <p className="text-sm font-bold">{items.length}</p>
                 </div>
               </div>
@@ -106,7 +106,7 @@ export default function FeeStructuresList() {
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-emerald-300" />
                 <div>
-                  <p className="text-[10px] text-indigo-100">فعال</p>
+                  <p className="text-[10px] text-white/80">فعال</p>
                   <p className="text-sm font-bold">{activeCount}</p>
                 </div>
               </div>
@@ -115,7 +115,7 @@ export default function FeeStructuresList() {
               <div className="flex items-center gap-2">
                 <XCircle className="w-4 h-4 text-red-300" />
                 <div>
-                  <p className="text-[10px] text-indigo-100">غیر فعال</p>
+                  <p className="text-[10px] text-white/80">غیر فعال</p>
                   <p className="text-sm font-bold">{inactiveCount}</p>
                 </div>
               </div>
@@ -137,7 +137,7 @@ export default function FeeStructuresList() {
               <select
                 value={departmentId}
                 onChange={(e) => setDepartmentId(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام شعبہ جات</option>
                 {departments.map((d: any) => (
@@ -154,7 +154,7 @@ export default function FeeStructuresList() {
               <select
                 value={type}
                 onChange={(e) => setType(e.target.value)}
-                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="">تمام اقسام</option>
                 {FEE_TYPES.map((t) => (
@@ -184,7 +184,7 @@ export default function FeeStructuresList() {
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
                     <th className="px-5 py-3 text-right font-bold text-gray-700">
                       قسم
@@ -209,7 +209,7 @@ export default function FeeStructuresList() {
                     return (
                       <tr
                         key={x._id}
-                        className={`hover:bg-indigo-50 transition-colors ${
+                        className={`hover:bg-gray-50 transition-colors ${
                           index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                         }`}
                       >
