@@ -68,40 +68,68 @@ export function Sidebar({ role }: SidebarProps) {
     if (stored) {
       try {
         setAllowedModules(JSON.parse(stored));
-      } catch (e) { }
+      } catch (e) {}
     }
   }, []);
 
-  const links = rawLinks.filter(link => {
+  const links = rawLinks.filter((link) => {
     if (allowedModules.includes("all")) return true;
 
     // Unified Mapping rules supporting both base names and portal suffixes
     const hasModule = (name: string) => {
-      return allowedModules.some(m =>
-        m === name ||
-        m === name + " پورٹل" ||
-        m.includes(name) ||
-        (name === "طلباء" && m.includes("طلبہ"))
+      return allowedModules.some(
+        (m) =>
+          m === name ||
+          m === name + " پورٹل" ||
+          m.includes(name) ||
+          (name === "طلباء" && m.includes("طلبہ")),
       );
     };
 
-    if (link.href.includes("student") || link.href.includes("talba")) return hasModule("طلباء");
-    if (link.href.includes("teacher") || link.href.includes("teachers") || link.href.includes("hazri")) return hasModule("اساتذہ");
-    if (link.href.includes("fee") || link.href.includes("finance") || link.href.includes("invoice")) return hasModule("فنانس");
+    if (link.href.includes("student") || link.href.includes("talba"))
+      return hasModule("طلباء");
+    if (
+      link.href.includes("teacher") ||
+      link.href.includes("teachers") ||
+      link.href.includes("hazri")
+    )
+      return hasModule("اساتذہ");
+    if (
+      link.href.includes("fee") ||
+      link.href.includes("finance") ||
+      link.href.includes("invoice")
+    )
+      return hasModule("فنانس");
     if (link.href.includes("hostel")) return hasModule("ہاسٹل");
-    if (link.href.includes("library") || link.href.includes("book")) return hasModule("لائبریری");
-    if (link.href.includes("nisab") || link.href.includes("syllabus") || link.href.includes("curriculum")) return hasModule("نصاب");
+    if (link.href.includes("library") || link.href.includes("book"))
+      return hasModule("لائبریری");
+    if (
+      link.href.includes("nisab") ||
+      link.href.includes("syllabus") ||
+      link.href.includes("curriculum")
+    )
+      return hasModule("نصاب");
     if (link.href.includes("exam")) return hasModule("امتحانات");
-    if (link.href.includes("attendance") || link.href.includes("hazri")) return hasModule("حاضری") || hasModule("اساتذہ");
+    if (link.href.includes("attendance") || link.href.includes("hazri"))
+      return hasModule("حاضری") || hasModule("اساتذہ");
     if (link.href.includes("mess")) return hasModule("میس");
     if (link.href.includes("ticket")) return hasModule("شکایات");
-    if (link.href.includes("notification")) return hasModule("اعلانات") || hasModule("نوٹیفیکیشنز");
-    if (link.href.includes("activity-log")) return hasModule("آڈٹ لاگز") || hasModule("لاگز");
-    if (link.href.includes("user")) return hasModule("یوزر مینجمنٹ") || hasModule("یوزر");
-    if (link.href.includes("madrassa") || link.href.includes("jamia")) return hasModule("مدارس");
+    if (link.href.includes("notification"))
+      return hasModule("اعلانات") || hasModule("نوٹیفیکیشنز");
+    if (link.href.includes("activity-log"))
+      return hasModule("آڈٹ لاگز") || hasModule("لاگز");
+    if (link.href.includes("user"))
+      return hasModule("یوزر مینجمنٹ") || hasModule("یوزر");
+    if (link.href.includes("madrassa") || link.href.includes("jamia"))
+      return hasModule("مدارس");
 
     // Allow core links like Dashboard
-    if (link.href === "/modules/madrassa" || link.href === "/mudeer" || link.href === "/teacher") return true;
+    if (
+      link.href === "/modules/madrassa" ||
+      link.href === "/mudeer" ||
+      link.href === "/teacher"
+    )
+      return true;
 
     return false;
   });
@@ -123,10 +151,11 @@ export function Sidebar({ role }: SidebarProps) {
             <Link
               key={link.href}
               href={link.href}
-              className={`block rounded-xl px-3 py-2.5 transition-colors duration-200 text-xs md:text-sm ${active
-                ? "bg-secondary text-white shadow-md font-medium"
-                : "hover:bg-white/10 text-slate-200"
-                }`}
+              className={`${
+                active
+                  ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+                  : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+              } flex items-center gap-3 px-4 py-2.5 transition-all duration-300 text-xs md:text-sm text-right selection:bg-secondary/30`}
             >
               {link.label}
             </Link>

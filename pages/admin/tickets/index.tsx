@@ -27,8 +27,8 @@ const statusLabel: Record<TicketStatus, string> = {
 
 const badgeClass: Record<TicketStatus, string> = {
   Open: "bg-amber-100 text-amber-800 border-amber-200",
-  InProgress: "bg-blue-100 text-blue-800 border-blue-200",
-  Resolved: "bg-emerald-100 text-emerald-800 border-emerald-200",
+  InProgress: "bg-secondary/10 text-secondary border-secondary/20",
+  Resolved: "bg-primary/10 text-primary border-primary/20",
 };
 
 export default function AdminTicketsPage() {
@@ -81,7 +81,7 @@ export default function AdminTicketsPage() {
       setUpdatingId(id);
       await api.put(`/api/admin/tickets/${id}`, { status: next });
       setTickets((prev) =>
-        prev.map((t) => (t._id === id ? { ...t, status: next } : t))
+        prev.map((t) => (t._id === id ? { ...t, status: next } : t)),
       );
       await loadSummary();
     } catch (e: any) {
@@ -120,7 +120,7 @@ export default function AdminTicketsPage() {
                   load();
                   loadSummary();
                 }}
-                className="inline-flex items-center rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-emerald-700"
+                className="inline-flex items-center rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-primary/90"
               >
                 ریفریش
               </button>
@@ -137,7 +137,7 @@ export default function AdminTicketsPage() {
                 <div className="text-xs text-gray-500 text-right">
                   InProgress
                 </div>
-                <div className="text-right text-2xl font-bold text-blue-700">
+                <div className="text-right text-2xl font-bold text-secondary">
                   {summary ? summary.inProgress : "—"}
                 </div>
               </div>
@@ -166,13 +166,13 @@ export default function AdminTicketsPage() {
                   onKeyDown={(e) => {
                     if (e.key === "Enter") load();
                   }}
-                  className="w-full rounded border px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full rounded-lg border-2 border-gray-200 px-3 py-1.5 text-xs focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
               </div>
               <div className="flex items-center gap-2 justify-end text-xs">
                 <span className="text-gray-600">سٹیٹس:</span>
                 <select
-                  className="rounded border px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="rounded-lg border-2 border-gray-200 px-2 py-1 text-xs focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 bg-white"
                   value={status}
                   onChange={(e) => setStatus(e.target.value as any)}
                 >
@@ -277,7 +277,7 @@ export default function AdminTicketsPage() {
                               updatingId === t._id || t.status === "InProgress"
                             }
                             onClick={() => updateStatus(t._id, "InProgress")}
-                            className="text-[11px] px-2 py-1 rounded border border-blue-200 text-blue-700 hover:bg-blue-50 disabled:opacity-50"
+                            className="text-[11px] px-2 py-1 rounded border border-secondary/30 text-secondary hover:bg-secondary/10 disabled:opacity-50"
                           >
                             InProgress
                           </button>
@@ -286,7 +286,7 @@ export default function AdminTicketsPage() {
                               updatingId === t._id || t.status === "Resolved"
                             }
                             onClick={() => updateStatus(t._id, "Resolved")}
-                            className="text-[11px] px-2 py-1 rounded border border-emerald-200 text-emerald-700 hover:bg-emerald-50 disabled:opacity-50"
+                            className="text-[11px] px-2 py-1 rounded border border-primary/30 text-primary hover:bg-primary/10 disabled:opacity-50"
                           >
                             Resolved
                           </button>

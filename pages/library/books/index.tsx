@@ -65,7 +65,7 @@ export default function LibraryBooksList() {
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && load()}
-                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all"
+                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
                 placeholder="عنوان / مصنف / کیٹیگری / ISBN"
               />
             </div>
@@ -74,7 +74,7 @@ export default function LibraryBooksList() {
               <button
                 onClick={load}
                 disabled={loading}
-                className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-orange-700 transition-all shadow-md hover:shadow-lg disabled:opacity-50"
+                className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary/90 transition-all shadow-md hover:shadow-lg disabled:opacity-50"
               >
                 <RefreshCw
                   className={`w-4 h-4 ${loading ? "animate-spin" : ""}`}
@@ -83,7 +83,7 @@ export default function LibraryBooksList() {
               </button>
               <Link
                 href="/library/books/new"
-                className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"
+                className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary/90 transition-all shadow-md hover:shadow-lg"
               >
                 <Plus className="w-4 h-4" />
                 نئی کتاب
@@ -97,7 +97,7 @@ export default function LibraryBooksList() {
           <div className="overflow-x-auto">
             <table className="min-w-full">
               <thead>
-                <tr className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <tr className="bg-gray-50 border-b border-gray-200">
                   <th className="px-6 py-4 text-right text-sm font-bold text-gray-700">
                     عنوان
                   </th>
@@ -122,11 +122,11 @@ export default function LibraryBooksList() {
                 {books.map((b) => (
                   <tr
                     key={b._id}
-                    className="border-b border-gray-100 hover:bg-orange-50/30 transition-colors"
+                    className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-red-500 rounded-lg flex items-center justify-center text-white font-semibold text-xs">
+                        <div className="w-8 h-8 bg-secondary/10 text-secondary rounded-lg flex items-center justify-center font-semibold text-xs">
                           {b.title?.charAt(0) || "B"}
                         </div>
                         <span className="text-sm font-medium text-gray-800">
@@ -158,7 +158,7 @@ export default function LibraryBooksList() {
                       <div className="flex gap-2 justify-center">
                         <Link
                           href={`/library/books/${b._id}`}
-                          className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition-all shadow-sm hover:shadow-md"
+                          className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary/90 transition-all shadow-sm hover:shadow-md"
                         >
                           <Edit2 className="w-3 h-3" />
                           ترمیم

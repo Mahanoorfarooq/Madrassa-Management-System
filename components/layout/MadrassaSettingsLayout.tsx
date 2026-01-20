@@ -2,7 +2,6 @@ import { ReactNode, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Topbar } from "@/components/layout/Topbar";
-import api from "@/utils/api";
 
 export function MadrassaSettingsLayout({
   title,
@@ -44,43 +43,36 @@ export function MadrassaSettingsLayout({
     return (
       <Link
         href={href}
-        className={`block rounded-xl px-3 py-2.5 text-sm text-right transition-colors duration-200 text-slate-200 ${
+        className={`${
           active
-            ? "bg-secondary text-white shadow-md font-medium"
-            : "hover:bg-white/10"
-        }`}
+            ? "bg-white/10 text-secondary border-r-4 border-secondary shadow-lg"
+            : "text-slate-300 hover:bg-white/5 border-r-4 border-transparent"
+        } flex items-center gap-3 px-4 py-2.5 transition-all duration-300 text-sm md:text-base text-right selection:bg-secondary/30`}
       >
         {label}
       </Link>
     );
   };
 
+  const links = [
+    { href: "/modules/madrassa", label: "ڈیش بورڈ" },
+    { href: "/modules/madrassa/settings/notifications", label: "اعلانات" },
+    { href: "/modules/madrassa/settings/activity-logs", label: "آڈٹ لاگز" },
+    { href: "/modules/madrassa/settings/users", label: "یوزر مینجمنٹ" },
+  ];
+
   return (
     <div className="min-h-screen bg-lightBg">
-      <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-darkBg text-white px-4 py-6 overflow-y-auto custom-scrollbar">
+      <div className="hidden md:block fixed inset-y-0 right-0 w-64 z-30 bg-[#073f3a] text-white px-4 py-6 overflow-y-auto custom-scrollbar border-l border-white/5 shadow-inner">
         <div className="mb-6 text-xl font-semibold text-secondary text-right">
           ایڈمن سیٹنگز
         </div>
         <nav className="space-y-1 text-right text-sm">
           {(() => {
-            const links = [
-              {
-                href: "/modules/madrassa/settings/notifications",
-                label: "اعلانات",
-              },
-              {
-                href: "/modules/madrassa/settings/activity-logs",
-                label: "آڈٹ لاگز",
-              },
-              {
-                href: "/modules/madrassa/settings/users",
-                label: "یوزر مینجمنٹ",
-              },
-            ];
             const current = links.find(
               (l) =>
                 router.pathname === l.href ||
-                router.pathname.startsWith(l.href + "/")
+                router.pathname.startsWith(l.href + "/"),
             );
             return current ? (
               <NavLink href={current.href} label={current.label} />
@@ -88,7 +80,7 @@ export function MadrassaSettingsLayout({
           })()}
           <button
             onClick={handleLogout}
-            className="w-full text-right mt-3 rounded px-3 py-2 text-sm text-red-500 hover:bg-red-50"
+            className="w-full text-right mt-3 rounded-xl px-4 py-2.5 text-sm text-red-400 hover:bg-white/5 border-r-4 border-transparent"
           >
             لاگ آؤٹ
           </button>
@@ -98,9 +90,9 @@ export function MadrassaSettingsLayout({
         <Topbar roleLabel="ایڈمن سیٹنگز" onLogout={handleLogout} />
         <main className="max-w-7xl mx-auto px-3 py-4">
           {title && (
-            <h1 className="text-xl font-semibold text-gray-800 text-right mb-3">
-              {title}
-            </h1>
+            <div className="bg-secondary rounded-2xl p-4 text-white shadow-md mb-4">
+              <h1 className="text-xl font-semibold text-right">{title}</h1>
+            </div>
           )}
           {children}
         </main>

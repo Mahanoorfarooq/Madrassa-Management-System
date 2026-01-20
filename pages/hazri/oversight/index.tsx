@@ -5,7 +5,7 @@ import { HazriLayout } from "@/components/layout/HazriLayout";
 export default function HazriOversightPage() {
   const [tab, setTab] = useState<"requests" | "policy">("requests");
   const [status, setStatus] = useState<"Pending" | "Approved" | "Rejected">(
-    "Pending"
+    "Pending",
   );
 
   const [policy, setPolicy] = useState<any>(null);
@@ -68,7 +68,7 @@ export default function HazriOversightPage() {
   const act = async (id: string, action: "approve" | "reject") => {
     const note =
       prompt(
-        action === "approve" ? "ریویو نوٹ (اختیاری)" : "ریجیکٹ نوٹ (اختیاری)"
+        action === "approve" ? "ریویو نوٹ (اختیاری)" : "ریجیکٹ نوٹ (اختیاری)",
       ) || "";
     await api.put(`/api/hazri/attendance-edit-requests/${id}`, {
       action,
@@ -177,7 +177,7 @@ export default function HazriOversightPage() {
                         cutoffTime: e.target.value,
                       }))
                     }
-                    className="w-full rounded border px-3 py-2 text-sm"
+                    className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                     placeholder="22:00"
                   />
                 </div>
@@ -194,7 +194,7 @@ export default function HazriOversightPage() {
                         isLockedEnabled: e.target.value === "true",
                       }))
                     }
-                    className="w-full rounded border px-3 py-2 text-sm bg-white"
+                    className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                   >
                     <option value="true">On</option>
                     <option value="false">Off</option>
@@ -205,7 +205,7 @@ export default function HazriOversightPage() {
                   <button
                     disabled={policySaving}
                     onClick={savePolicy}
-                    className="rounded bg-primary text-white px-6 py-2 text-sm font-semibold hover:bg-emerald-700 disabled:opacity-60"
+                    className="rounded bg-primary text-white px-6 py-2 text-sm font-semibold hover:bg-primary/90 disabled:opacity-60"
                   >
                     {policySaving ? "محفوظ ہو رہا ہے..." : "محفوظ کریں"}
                   </button>
@@ -230,7 +230,7 @@ export default function HazriOversightPage() {
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value as any)}
-                  className="rounded border px-3 py-2 text-sm bg-white"
+                  className="rounded-lg border-2 border-gray-200 px-3 py-2 text-sm bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   <option value="Pending">Pending</option>
                   <option value="Approved">Approved</option>

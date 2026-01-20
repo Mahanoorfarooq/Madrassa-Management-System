@@ -12,7 +12,7 @@ import {
 
 export default function StaffHazriPage() {
   const [date, setDate] = useState<string>(
-    new Date().toISOString().substring(0, 10)
+    new Date().toISOString().substring(0, 10),
   );
   const [staff, setStaff] = useState<any[]>([]);
   const [items, setItems] = useState<any[]>([]);
@@ -34,12 +34,12 @@ export default function StaffHazriPage() {
 
   const statusOf = (staffId: string) =>
     items.find(
-      (x: any) => String(x.staffId?._id || x.staffId) === String(staffId)
+      (x: any) => String(x.staffId?._id || x.staffId) === String(staffId),
     )?.status || "";
 
   const mark = async (
     staffId: string,
-    status: "Present" | "Absent" | "Leave"
+    status: "Present" | "Absent" | "Leave",
   ) => {
     await api.post("/api/hazri/staff", { staffId, date, status });
     await load();
@@ -53,7 +53,7 @@ export default function StaffHazriPage() {
     <HazriLayout title="عملہ حاضری">
       <div className="p-6 space-y-5 max-w-6xl mx-auto" dir="rtl">
         {/* Header Card */}
-        <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl p-6 text-white shadow-lg">
+        <div className="bg-secondary rounded-2xl p-6 text-white shadow-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
@@ -61,7 +61,7 @@ export default function StaffHazriPage() {
               </div>
               <div>
                 <h2 className="text-2xl font-bold">عملہ کی حاضری</h2>
-                <p className="text-purple-100 text-sm">
+                <p className="text-white/80 text-sm">
                   تاریخ منتخب کریں اور نیچے فہرست میں موجود عملہ کے لیے حاضری
                   محفوظ کریں
                 </p>
@@ -142,7 +142,7 @@ export default function StaffHazriPage() {
           <div className="overflow-x-auto">
             <table className="min-w-full">
               <thead>
-                <tr className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <tr className="bg-gray-50 border-b-2 border-gray-200">
                   <th className="px-6 py-4 text-right text-sm font-bold text-gray-700">
                     نام
                   </th>
@@ -158,11 +158,11 @@ export default function StaffHazriPage() {
                 {staff.map((t: any) => (
                   <tr
                     key={t._id}
-                    className="border-b border-gray-100 hover:bg-purple-50/50 transition-colors"
+                    className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
                   >
                     <td className="px-6 py-4 text-sm font-medium text-gray-800">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-indigo-500 rounded-lg flex items-center justify-center text-white font-semibold text-xs">
+                        <div className="w-8 h-8 bg-secondary/10 text-secondary rounded-lg flex items-center justify-center font-semibold text-xs">
                           {t.name?.charAt(0) || "S"}
                         </div>
                         {t.name}
@@ -175,8 +175,8 @@ export default function StaffHazriPage() {
                             statusOf(t._id) === "Present"
                               ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
                               : statusOf(t._id) === "Absent"
-                              ? "bg-red-100 text-red-700 border border-red-200"
-                              : "bg-amber-100 text-amber-700 border border-amber-200"
+                                ? "bg-red-100 text-red-700 border border-red-200"
+                                : "bg-amber-100 text-amber-700 border border-amber-200"
                           }`}
                         >
                           {statusOf(t._id)}

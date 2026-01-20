@@ -12,7 +12,7 @@ import {
 
 export default function TeacherHazriPage() {
   const [date, setDate] = useState<string>(
-    new Date().toISOString().substring(0, 10)
+    new Date().toISOString().substring(0, 10),
   );
   const [teachers, setTeachers] = useState<any[]>([]);
   const [items, setItems] = useState<any[]>([]);
@@ -34,12 +34,12 @@ export default function TeacherHazriPage() {
 
   const statusOf = (teacherId: string) =>
     items.find(
-      (x: any) => String(x.teacherId?._id || x.teacherId) === String(teacherId)
+      (x: any) => String(x.teacherId?._id || x.teacherId) === String(teacherId),
     )?.status || "";
 
   const mark = async (
     teacherId: string,
-    status: "Present" | "Absent" | "Leave"
+    status: "Present" | "Absent" | "Leave",
   ) => {
     await api.post("/api/hazri/teacher", { teacherId, date, status });
     await load();
@@ -53,7 +53,7 @@ export default function TeacherHazriPage() {
     <HazriLayout title="اساتذہ حاضری">
       <div className="p-6 space-y-5 max-w-6xl mx-auto" dir="rtl">
         {/* Header Card */}
-        <div className="bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-500 rounded-2xl p-6 text-white shadow-lg">
+        <div className="bg-secondary rounded-2xl p-6 text-white shadow-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
@@ -61,7 +61,7 @@ export default function TeacherHazriPage() {
               </div>
               <div>
                 <h2 className="text-2xl font-bold">اساتذہ کی حاضری</h2>
-                <p className="text-teal-100 text-sm">
+                <p className="text-white/80 text-sm">
                   تاریخ منتخب کریں اور سامنے موجود اساتذہ کے لیے حاضر/غائب/رخصت
                   محفوظ کریں
                 </p>
@@ -142,7 +142,7 @@ export default function TeacherHazriPage() {
           <div className="overflow-x-auto">
             <table className="min-w-full">
               <thead>
-                <tr className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <tr className="bg-gray-50 border-b-2 border-gray-200">
                   <th className="px-6 py-4 text-right text-sm font-bold text-gray-700">
                     استاد کا نام
                   </th>
@@ -158,11 +158,11 @@ export default function TeacherHazriPage() {
                 {teachers.map((t: any) => (
                   <tr
                     key={t._id}
-                    className="border-b border-gray-100 hover:bg-teal-50/30 transition-colors"
+                    className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
                   >
                     <td className="px-6 py-4 text-sm font-medium text-gray-800">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-lg flex items-center justify-center text-white font-semibold text-xs">
+                        <div className="w-8 h-8 bg-secondary/10 text-secondary rounded-lg flex items-center justify-center font-semibold text-xs">
                           {(t.fullName || t.name || "T").charAt(0)}
                         </div>
                         {t.fullName || t.name}
@@ -175,8 +175,8 @@ export default function TeacherHazriPage() {
                             statusOf(t._id) === "Present"
                               ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
                               : statusOf(t._id) === "Absent"
-                              ? "bg-red-100 text-red-700 border border-red-200"
-                              : "bg-amber-100 text-amber-700 border border-amber-200"
+                                ? "bg-red-100 text-red-700 border border-red-200"
+                                : "bg-amber-100 text-amber-700 border border-amber-200"
                           }`}
                         >
                           {statusOf(t._id)}

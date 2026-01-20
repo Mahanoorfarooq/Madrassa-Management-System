@@ -35,7 +35,7 @@ export default function LibraryLoansPage() {
   const [selectedBookId, setSelectedBookId] = useState<string>("");
 
   const [borrowerType, setBorrowerType] = useState<"Student" | "Teacher">(
-    "Student"
+    "Student",
   );
   const [borrowerQ, setBorrowerQ] = useState("");
   const [borrowers, setBorrowers] = useState<Borrower[]>([]);
@@ -45,7 +45,7 @@ export default function LibraryLoansPage() {
   const [issueError, setIssueError] = useState<string | null>(null);
 
   const [statusFilter, setStatusFilter] = useState<"Issued" | "Returned">(
-    "Issued"
+    "Issued",
   );
   const [loans, setLoans] = useState<any[]>([]);
   const [loadingLoans, setLoadingLoans] = useState(false);
@@ -54,11 +54,11 @@ export default function LibraryLoansPage() {
 
   const selectedBook = useMemo(
     () => books.find((b) => b._id === selectedBookId),
-    [books, selectedBookId]
+    [books, selectedBookId],
   );
   const selectedBorrower = useMemo(
     () => borrowers.find((b) => b._id === selectedBorrowerId),
-    [borrowers, selectedBorrowerId]
+    [borrowers, selectedBorrowerId],
   );
 
   const searchBooks = async () => {
@@ -162,14 +162,14 @@ export default function LibraryLoansPage() {
     <LibraryLayout>
       <div className="p-6 space-y-5" dir="rtl">
         {/* Header Card */}
-        <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-6 text-white shadow-lg">
+        <div className="bg-secondary rounded-2xl p-6 text-white shadow-lg">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
               <BookCheck className="w-6 h-6" />
             </div>
             <div>
               <h2 className="text-2xl font-bold">اجراء و واپسی</h2>
-              <p className="text-blue-100 text-sm">
+              <p className="text-white/80 text-sm">
                 طلبہ اور اساتذہ کو کتب جاری یا واپس کریں
               </p>
             </div>
@@ -179,7 +179,7 @@ export default function LibraryLoansPage() {
         {/* Issue Book Card */}
         <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
           <div className="flex items-center gap-2 mb-5">
-            <BookOpen className="w-5 h-5 text-blue-600" />
+            <BookOpen className="w-5 h-5 text-secondary" />
             <h3 className="text-lg font-semibold text-gray-800">
               کتاب جاری کریں
             </h3>
@@ -203,12 +203,12 @@ export default function LibraryLoansPage() {
                 value={bookQ}
                 onChange={(e) => setBookQ(e.target.value)}
                 placeholder="عنوان / مصنف / کیٹیگری / ISBN"
-                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all mb-2"
+                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all mb-2"
               />
               <select
                 value={selectedBookId}
                 onChange={(e) => setSelectedBookId(e.target.value)}
-                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all bg-white"
+                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all bg-white"
               >
                 <option value="">کتاب منتخب کریں</option>
                 {books.map((b) => (
@@ -237,7 +237,7 @@ export default function LibraryLoansPage() {
                     name="bt"
                     checked={borrowerType === "Student"}
                     onChange={() => setBorrowerType("Student")}
-                    className="w-4 h-4 text-blue-600"
+                    className="w-4 h-4 text-primary focus:ring-primary"
                   />
                   <span className="text-sm text-gray-700">طالب علم</span>
                 </label>
@@ -247,7 +247,7 @@ export default function LibraryLoansPage() {
                     name="bt"
                     checked={borrowerType === "Teacher"}
                     onChange={() => setBorrowerType("Teacher")}
-                    className="w-4 h-4 text-blue-600"
+                    className="w-4 h-4 text-primary focus:ring-primary"
                   />
                   <span className="text-sm text-gray-700">استاد</span>
                 </label>
@@ -258,12 +258,12 @@ export default function LibraryLoansPage() {
                 placeholder={
                   borrowerType === "Student" ? "نام / رول نمبر" : "نام / عہدہ"
                 }
-                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all mb-2"
+                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all mb-2"
               />
               <select
                 value={selectedBorrowerId}
                 onChange={(e) => setSelectedBorrowerId(e.target.value)}
-                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all bg-white"
+                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all bg-white"
               >
                 <option value="">صارف منتخب کریں</option>
                 {borrowers.map((p) => (
@@ -272,8 +272,8 @@ export default function LibraryLoansPage() {
                     {p.rollNumber
                       ? ` (${p.rollNumber})`
                       : p.designation
-                      ? ` (${p.designation})`
-                      : ""}
+                        ? ` (${p.designation})`
+                        : ""}
                   </option>
                 ))}
               </select>
@@ -290,7 +290,7 @@ export default function LibraryLoansPage() {
                   type="date"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
-                  className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                  className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
                 />
               </div>
               <button
@@ -300,7 +300,7 @@ export default function LibraryLoansPage() {
                   !selectedBorrowerId ||
                   (selectedBook && selectedBook.availableCopies <= 0)
                 }
-                className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-blue-600 text-white px-4 py-2.5 text-sm font-semibold hover:bg-blue-700 transition-all shadow-md hover:shadow-lg disabled:opacity-50"
+                className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-primary text-white px-4 py-2.5 text-sm font-semibold hover:bg-primary/90 transition-all shadow-md hover:shadow-lg disabled:opacity-50"
               >
                 <CheckCircle className="w-4 h-4" />
                 جاری کریں
@@ -318,7 +318,7 @@ export default function LibraryLoansPage() {
                 onClick={() => setStatusFilter("Issued")}
                 className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                   statusFilter === "Issued"
-                    ? "bg-amber-600 text-white shadow-md"
+                    ? "bg-secondary text-white shadow-md"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
@@ -328,7 +328,7 @@ export default function LibraryLoansPage() {
                 onClick={() => setStatusFilter("Returned")}
                 className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                   statusFilter === "Returned"
-                    ? "bg-emerald-600 text-white shadow-md"
+                    ? "bg-primary text-white shadow-md"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
@@ -340,7 +340,7 @@ export default function LibraryLoansPage() {
           <div className="overflow-x-auto">
             <table className="min-w-full">
               <thead>
-                <tr className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <tr className="bg-gray-50 border-b border-gray-200">
                   <th className="px-6 py-4 text-right text-sm font-bold text-gray-700">
                     کتاب
                   </th>
@@ -365,7 +365,7 @@ export default function LibraryLoansPage() {
                 {loans.map((x) => (
                   <tr
                     key={x._id}
-                    className="border-b border-gray-100 hover:bg-blue-50/30 transition-colors"
+                    className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
                   >
                     <td className="px-6 py-4 text-sm text-gray-800">
                       {x.bookId?.title}

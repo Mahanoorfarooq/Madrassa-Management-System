@@ -75,7 +75,7 @@ export default function AdminNotificationsPage() {
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                className="w-full rounded border px-3 py-2 text-sm bg-white"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="student">طلبہ</option>
                 <option value="teacher">اساتذہ</option>
@@ -89,7 +89,7 @@ export default function AdminNotificationsPage() {
               <select
                 value={channel}
                 onChange={(e) => setChannel(e.target.value)}
-                className="w-full rounded border px-3 py-2 text-sm bg-white"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="in_app">In-App</option>
                 <option value="sms">SMS (placeholder)</option>
@@ -101,7 +101,7 @@ export default function AdminNotificationsPage() {
               <input
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full rounded border px-3 py-2 text-sm"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 placeholder="عنوان درج کریں"
               />
             </div>
@@ -110,7 +110,7 @@ export default function AdminNotificationsPage() {
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="w-full rounded border px-3 py-2 text-sm min-h-[80px]"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm min-h-[80px] focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 placeholder="متن درج کریں"
               />
             </div>
@@ -118,7 +118,7 @@ export default function AdminNotificationsPage() {
               <button
                 onClick={submit}
                 disabled={!title.trim() || !message.trim() || loading}
-                className="rounded bg-primary text-white px-4 py-2 text-xs font-semibold disabled:opacity-50"
+                className="rounded bg-primary text-white px-4 py-2 text-xs font-semibold hover:bg-primary/90 disabled:opacity-50"
               >
                 {loading ? "بھیج رہا ہے..." : "بھیجیں"}
               </button>
@@ -162,11 +162,11 @@ export default function AdminNotificationsPage() {
                     </div>
                   </div>
                   <div className="mt-2 flex flex-wrap gap-2">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-secondary/10 text-secondary">
                       {item.channel}
                     </span>
                     {item.role && (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary">
                         {item.role}
                       </span>
                     )}

@@ -51,7 +51,7 @@ export default function ActivityLogsPage() {
               <input
                 value={entityType}
                 onChange={(e) => setEntityType(e.target.value)}
-                className="w-full rounded border px-3 py-2 text-sm"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 placeholder="مثال: AttendanceEditRequest"
               />
             </div>
@@ -60,7 +60,7 @@ export default function ActivityLogsPage() {
               <input
                 value={action}
                 onChange={(e) => setAction(e.target.value)}
-                className="w-full rounded border px-3 py-2 text-sm"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 placeholder="مثال: attendance_edit_request_approved"
               />
             </div>
@@ -70,7 +70,7 @@ export default function ActivityLogsPage() {
                 type="date"
                 value={from}
                 onChange={(e) => setFrom(e.target.value)}
-                className="w-full rounded border px-3 py-2 text-sm"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div className="text-right">
@@ -79,13 +79,13 @@ export default function ActivityLogsPage() {
                 type="date"
                 value={to}
                 onChange={(e) => setTo(e.target.value)}
-                className="w-full rounded border px-3 py-2 text-sm"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div className="flex justify-end">
               <button
                 onClick={load}
-                className="rounded bg-primary text-white px-4 py-2 text-xs font-semibold"
+                className="rounded bg-primary text-white px-4 py-2 text-xs font-semibold hover:bg-primary/90"
               >
                 لوڈ
               </button>

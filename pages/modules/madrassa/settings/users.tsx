@@ -43,7 +43,7 @@ export default function MadrassaUsersSettingsPage() {
   const [selectedId, setSelectedId] = useState<string>("");
   const selected = useMemo(
     () => items.find((u) => u._id === selectedId) || null,
-    [items, selectedId]
+    [items, selectedId],
   );
 
   const [saving, setSaving] = useState(false);
@@ -92,7 +92,7 @@ export default function MadrassaUsersSettingsPage() {
 
   const togglePerm = (key: string) => {
     setEditPerms((prev) =>
-      prev.includes(key) ? prev.filter((p) => p !== key) : [...prev, key]
+      prev.includes(key) ? prev.filter((p) => p !== key) : [...prev, key],
     );
   };
 
@@ -168,7 +168,7 @@ export default function MadrassaUsersSettingsPage() {
               <input
                 value={newFullName}
                 onChange={(e) => setNewFullName(e.target.value)}
-                className="w-full rounded border px-3 py-2 text-sm"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div>
@@ -178,7 +178,7 @@ export default function MadrassaUsersSettingsPage() {
               <input
                 value={newUsername}
                 onChange={(e) => setNewUsername(e.target.value)}
-                className="w-full rounded border px-3 py-2 text-sm"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div>
@@ -189,7 +189,7 @@ export default function MadrassaUsersSettingsPage() {
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full rounded border px-3 py-2 text-sm"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <div>
@@ -197,7 +197,7 @@ export default function MadrassaUsersSettingsPage() {
               <select
                 value={newRole}
                 onChange={(e) => setNewRole(e.target.value as Role)}
-                className="w-full rounded border px-3 py-2 text-sm bg-white"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="admin">ایڈمن (پرنسپل)</option>
                 <option value="mudeer">مدیر (Mudeer)</option>
@@ -212,7 +212,7 @@ export default function MadrassaUsersSettingsPage() {
               <select
                 value={newStatus}
                 onChange={(e) => setNewStatus(e.target.value as Status)}
-                className="w-full rounded border px-3 py-2 text-sm bg-white mb-2"
+                className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm bg-white mb-2 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
               >
                 <option value="active">فعال</option>
                 <option value="disabled">غیر فعال</option>
@@ -222,7 +222,7 @@ export default function MadrassaUsersSettingsPage() {
                 disabled={
                   creating || !newFullName || !newUsername || !newPassword
                 }
-                className="w-full rounded bg-primary text-white px-3 py-2 text-xs font-semibold disabled:opacity-50"
+                className="w-full rounded bg-primary text-white px-3 py-2 text-xs font-semibold hover:bg-primary/90 disabled:opacity-50"
               >
                 {creating ? "بنا رہا ہے..." : "نیا یوزر بنائیں"}
               </button>
@@ -239,12 +239,12 @@ export default function MadrassaUsersSettingsPage() {
                   value={q}
                   onChange={(e) => setQ(e.target.value)}
                   placeholder="نام / یوزر نام"
-                  className="rounded border px-3 py-2 text-sm"
+                  className="rounded-lg border-2 border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 />
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value as any)}
-                  className="rounded border px-3 py-2 text-sm bg-white"
+                  className="rounded-lg border-2 border-gray-200 px-3 py-2 text-sm bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   <option value="">تمام کردار</option>
                   <option value="admin">ایڈمن</option>
@@ -257,7 +257,7 @@ export default function MadrassaUsersSettingsPage() {
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value as any)}
-                  className="rounded border px-3 py-2 text-sm bg-white"
+                  className="rounded-lg border-2 border-gray-200 px-3 py-2 text-sm bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
                 >
                   <option value="">تمام حالت</option>
                   <option value="active">فعال</option>
@@ -265,7 +265,7 @@ export default function MadrassaUsersSettingsPage() {
                 </select>
                 <button
                   onClick={load}
-                  className="rounded border px-3 py-2 text-sm bg-white"
+                  className="rounded-lg border-2 border-gray-200 px-3 py-2 text-sm bg-white hover:border-primary"
                 >
                   تلاش
                 </button>
@@ -288,8 +288,9 @@ export default function MadrassaUsersSettingsPage() {
                   {items.map((u) => (
                     <tr
                       key={u._id}
-                      className={`border-b hover:bg-gray-50 ${selectedId === u._id ? "bg-emerald-50" : ""
-                        }`}
+                      className={`border-b hover:bg-gray-50 ${
+                        selectedId === u._id ? "bg-primary/5" : ""
+                      }`}
                     >
                       <td className="px-3 py-2 font-semibold">{u.fullName}</td>
                       <td className="px-3 py-2 font-mono">{u.username}</td>
@@ -370,7 +371,7 @@ export default function MadrassaUsersSettingsPage() {
                   <button
                     disabled={saving}
                     onClick={save}
-                    className="rounded bg-primary text-white px-5 py-2 text-sm font-semibold hover:bg-emerald-700 disabled:opacity-60"
+                    className="rounded bg-primary text-white px-5 py-2 text-sm font-semibold hover:bg-primary/90 disabled:opacity-60"
                   >
                     {saving ? "محفوظ ہو رہا ہے..." : "پرمیشنز محفوظ کریں"}
                   </button>

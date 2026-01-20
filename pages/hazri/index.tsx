@@ -12,7 +12,7 @@ import {
 
 export default function HazriDashboard() {
   const [today, setToday] = useState<string>(
-    new Date().toISOString().substring(0, 10)
+    new Date().toISOString().substring(0, 10),
   );
   const [studentCount, setStudentCount] = useState(0);
   const [teacherCount, setTeacherCount] = useState(0);
@@ -73,20 +73,17 @@ export default function HazriDashboard() {
 
   return (
     <HazriLayout title="حاضری ڈیش بورڈ">
-      <div
-        className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 p-8"
-        dir="rtl"
-      >
+      <div className="min-h-screen bg-gray-50 p-8" dir="rtl">
         <div className="mb-6">
           <div className="flex justify-end">
             <div className="flex items-center gap-3 bg-white px-4 py-2.5 rounded-xl border border-gray-200 shadow-sm">
-              <Calendar className="w-4 h-4 text-sky-600" />
+              <Calendar className="w-4 h-4 text-secondary" />
               <span className="text-sm font-medium text-gray-700">تاریخ:</span>
               <input
                 type="date"
                 value={today}
                 onChange={(e) => setToday(e.target.value)}
-                className="rounded-lg border border-gray-300 px-2.5 py-1.5 text-sm bg-gray-50 focus:ring-2 focus:ring-sky-200 focus:border-sky-500 outline-none transition"
+                className="rounded-lg border border-gray-300 px-2.5 py-1.5 text-sm bg-gray-50 focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition"
               />
             </div>
           </div>
@@ -106,7 +103,7 @@ export default function HazriDashboard() {
                   <p className="text-xs text-gray-500 mt-1">{card.subtitle}</p>
                 </div>
 
-                <div className="bg-sky-100 text-sky-600 rounded-lg p-3">
+                <div className="bg-secondary/10 text-secondary rounded-lg p-3">
                   {card.icon}
                 </div>
               </div>

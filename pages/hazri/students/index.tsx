@@ -14,7 +14,7 @@ import {
 
 export default function StudentsHazriPage() {
   const [date, setDate] = useState<string>(
-    new Date().toISOString().substring(0, 10)
+    new Date().toISOString().substring(0, 10),
   );
   const [departments, setDepartments] = useState<any[]>([]);
   const [classes, setClasses] = useState<any[]>([]);
@@ -68,7 +68,7 @@ export default function StudentsHazriPage() {
 
   const setStatus = (
     studentId: string,
-    status: "Present" | "Absent" | "Leave"
+    status: "Present" | "Absent" | "Leave",
   ) => setAttendance((m) => ({ ...m, [studentId]: status }));
 
   const markAllPresent = () => {
@@ -96,36 +96,36 @@ export default function StudentsHazriPage() {
 
   const doneCount = useMemo(
     () => Object.values(attendance).filter(Boolean).length,
-    [attendance]
+    [attendance],
   );
 
   const presentCount = useMemo(
     () => Object.values(attendance).filter((s) => s === "Present").length,
-    [attendance]
+    [attendance],
   );
 
   const absentCount = useMemo(
     () => Object.values(attendance).filter((s) => s === "Absent").length,
-    [attendance]
+    [attendance],
   );
 
   const leaveCount = useMemo(
     () => Object.values(attendance).filter((s) => s === "Leave").length,
-    [attendance]
+    [attendance],
   );
 
   return (
     <HazriLayout title="طلبہ حاضری">
       <div className="p-6 space-y-5" dir="rtl">
         {/* Header Card */}
-        <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-6 text-white shadow-lg">
+        <div className="bg-secondary rounded-2xl p-6 text-white shadow-lg">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
               <Users className="w-6 h-6" />
             </div>
             <div>
               <h2 className="text-2xl font-bold">طلبہ کی حاضری</h2>
-              <p className="text-blue-100 text-sm">
+              <p className="text-white/80 text-sm">
                 تاریخ منتخب کریں اور طلبہ کی حاضری نشان زد کریں
               </p>
             </div>
@@ -151,7 +151,7 @@ export default function StudentsHazriPage() {
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
               />
             </div>
 
@@ -162,7 +162,7 @@ export default function StudentsHazriPage() {
               <select
                 value={departmentId}
                 onChange={(e) => setDepartmentId(e.target.value)}
-                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all bg-white"
+                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all bg-white"
               >
                 <option value="">تمام شعبہ جات</option>
                 {departments.map((d: any) => (
@@ -180,7 +180,7 @@ export default function StudentsHazriPage() {
               <select
                 value={classId}
                 onChange={(e) => setClassId(e.target.value)}
-                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all bg-white"
+                className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all bg-white"
               >
                 <option value="">تمام کلاسیں</option>
                 {classes.map((c: any) => (
@@ -195,7 +195,7 @@ export default function StudentsHazriPage() {
               <button
                 onClick={load}
                 disabled={loading}
-                className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition-all shadow-md hover:shadow-lg disabled:opacity-50"
+                className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary/90 transition-all shadow-md hover:shadow-lg disabled:opacity-50"
               >
                 <RefreshCw
                   className={`w-4 h-4 ${loading ? "animate-spin" : ""}`}
@@ -287,7 +287,7 @@ export default function StudentsHazriPage() {
           <div className="overflow-x-auto">
             <table className="min-w-full">
               <thead>
-                <tr className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                <tr className="bg-gray-50 border-b-2 border-gray-200">
                   <th className="px-6 py-4 text-right text-sm font-bold text-gray-700">
                     طالب علم
                   </th>
@@ -306,7 +306,7 @@ export default function StudentsHazriPage() {
                 {students.map((s: any) => (
                   <tr
                     key={s._id}
-                    className="border-b border-gray-100 hover:bg-blue-50/50 transition-colors"
+                    className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
                   >
                     <td className="px-6 py-4 text-sm font-medium text-gray-800">
                       {s.fullName || s.name}
@@ -321,8 +321,8 @@ export default function StudentsHazriPage() {
                             attendance[s._id] === "Present"
                               ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
                               : attendance[s._id] === "Absent"
-                              ? "bg-red-100 text-red-700 border border-red-200"
-                              : "bg-amber-100 text-amber-700 border border-amber-200"
+                                ? "bg-red-100 text-red-700 border border-red-200"
+                                : "bg-amber-100 text-amber-700 border border-amber-200"
                           }`}
                         >
                           {attendance[s._id]}

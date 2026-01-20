@@ -33,7 +33,7 @@ export default function LibraryDashboard() {
     const totalCopies = books.reduce((s, x) => s + (x.totalCopies || 0), 0);
     const availableCopies = books.reduce(
       (s, x) => s + (x.availableCopies || 0),
-      0
+      0,
     );
     const issuedCount = issued.length;
     return { totalBooks, totalCopies, availableCopies, issuedCount };
@@ -44,33 +44,37 @@ export default function LibraryDashboard() {
       title: "کتب",
       value: counts.totalBooks,
       icon: <BookOpen className="w-6 h-6" />,
-      gradient: "from-orange-500 to-red-500",
-      bg: "bg-orange-50",
-      iconBg: "bg-gradient-to-br from-orange-500 to-red-500",
+      gradient: "",
+      bg: "bg-white",
+      iconBg: "bg-secondary/10 text-secondary",
+      tone: "secondary" as const,
     },
     {
       title: "کل کاپیاں",
       value: counts.totalCopies,
       icon: <ClipboardCheck className="w-6 h-6" />,
-      gradient: "from-blue-500 to-indigo-500",
-      bg: "bg-blue-50",
-      iconBg: "bg-gradient-to-br from-blue-500 to-indigo-500",
+      gradient: "",
+      bg: "bg-white",
+      iconBg: "bg-primary/10 text-primary",
+      tone: "primary" as const,
     },
     {
       title: "دستیاب",
       value: counts.availableCopies,
       icon: <LibraryIcon className="w-6 h-6" />,
-      gradient: "from-emerald-500 to-teal-500",
-      bg: "bg-emerald-50",
-      iconBg: "bg-gradient-to-br from-emerald-500 to-teal-500",
+      gradient: "",
+      bg: "bg-white",
+      iconBg: "bg-primary/10 text-primary",
+      tone: "primary" as const,
     },
     {
       title: "جاری شدہ",
       value: counts.issuedCount,
       icon: <Users className="w-6 h-6" />,
-      gradient: "from-purple-500 to-pink-500",
-      bg: "bg-purple-50",
-      iconBg: "bg-gradient-to-br from-purple-500 to-pink-500",
+      gradient: "",
+      bg: "bg-white",
+      iconBg: "bg-secondary/10 text-secondary",
+      tone: "secondary" as const,
     },
   ];
 
@@ -80,31 +84,35 @@ export default function LibraryDashboard() {
       label: "کتب کی فہرست",
       description: "تمام کتب دیکھیں اور منظم کریں",
       icon: <BookOpen className="w-5 h-5" />,
-      color: "from-orange-500 to-red-500",
+      color: "secondary",
     },
     {
       href: "/library/loans",
       label: "اجراء و واپسی",
       description: "کتب جاری کریں اور واپسی کا ریکارڈ",
       icon: <TrendingUp className="w-5 h-5" />,
-      color: "from-blue-500 to-indigo-500",
+      color: "primary",
     },
   ];
 
   return (
     <LibraryLayout>
-      <div className="min-h-screen  p-8" dir="rtl">
+      <div className="min-h-screen bg-gray-50 p-8" dir="rtl">
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
           {cards.map((card, index) => (
             <div
               key={index}
-              className={`${card.bg} rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-white/50 backdrop-blur-sm`}
+              className={`rounded-2xl p-5 border border-gray-200 shadow-sm hover:shadow-md transition border-t-4 ${
+                card.tone === "secondary"
+                  ? "bg-secondary/5 border-t-secondary"
+                  : "bg-primary/5 border-t-primary"
+              }`}
             >
               <div className="flex flex-col">
                 {/* Icon */}
                 <div
-                  className={`${card.iconBg} w-14 h-14 rounded-xl flex items-center justify-center text-white shadow-lg mb-3`}
+                  className={`${card.iconBg} w-14 h-14 rounded-xl flex items-center justify-center shadow mb-3`}
                 >
                   {card.icon}
                 </div>
@@ -118,7 +126,9 @@ export default function LibraryDashboard() {
                 </h3>
 
                 {/* Value */}
-                <div className="text-3xl font-extrabold text-gray-800">
+                <div
+                  className={`text-3xl font-extrabold ${card.tone === "secondary" ? "text-secondary" : "text-primary"}`}
+                >
                   {card.value}
                 </div>
               </div>
@@ -138,7 +148,7 @@ export default function LibraryDashboard() {
         )}
 
         {/* Quick Links Section */}
-        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6">
+        <div className="bg-white rounded-3xl shadow-md border border-gray-200 p-6">
           <h2
             className="text-2xl font-bold text-gray-800 mb-5"
             style={{ fontFamily: "Noto Nastaliq Urdu, serif" }}
@@ -150,13 +160,21 @@ export default function LibraryDashboard() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="group bg-gradient-to-br from-gray-50 to-white rounded-2xl border-2 border-gray-200 hover:border-orange-300 transition-all duration-300 p-6 shadow-md hover:shadow-xl transform hover:-translate-y-1"
+                className={`group bg-white rounded-2xl border-2 border-gray-200 transition p-6 shadow-sm hover:shadow-md group-hover:ring-2 ${
+                  link.color === "secondary"
+                    ? "hover:border-secondary group-hover:ring-secondary"
+                    : "hover:border-primary group-hover:ring-primary"
+                }`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <div
-                        className={`w-10 h-10 bg-gradient-to-br ${link.color} rounded-xl flex items-center justify-center text-white shadow-md`}
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center shadow ${
+                          link.color === "secondary"
+                            ? "bg-secondary/10 text-secondary"
+                            : "bg-primary/10 text-primary"
+                        }`}
                       >
                         {link.icon}
                       </div>
@@ -168,7 +186,13 @@ export default function LibraryDashboard() {
                       {link.description}
                     </p>
                   </div>
-                  <ChevronLeft className="w-5 h-5 text-gray-400 group-hover:text-orange-500 group-hover:translate-x-[-4px] transition-all duration-300" />
+                  <ChevronLeft
+                    className={`w-5 h-5 text-gray-400 group-hover:translate-x-[-4px] transition ${
+                      link.color === "secondary"
+                        ? "group-hover:text-secondary"
+                        : "group-hover:text-primary"
+                    }`}
+                  />
                 </div>
               </Link>
             ))}
