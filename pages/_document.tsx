@@ -6,6 +6,10 @@ class MyDocument extends Document {
       <Html lang="ur" dir="rtl">
         <Head>
           <meta charSet="utf-8" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, viewport-fit=cover"
+          />
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600&display=swap"
@@ -20,7 +24,7 @@ class MyDocument extends Document {
             content="black-translucent"
           />
           <meta name="apple-mobile-web-app-title" content="جامعہ" />
-          <link rel="apple-touch-icon" href="/logo.png" />
+          <link rel="apple-touch-icon" sizes="180x180" href="/logo.png" />
           <link rel="icon" href="/logo.png" />
         </Head>
         <body className="font-urdu bg-lightBg">

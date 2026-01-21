@@ -3,10 +3,11 @@ import { serialize } from "cookie";
 import { connectDB } from "@/lib/db";
 import { User } from "@/schemas/User";
 import { comparePassword, signToken } from "@/lib/auth";
+import { FeatureLicense } from "@/schemas/FeatureLicense";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "صرف POST میتھڈ کی اجازت ہے۔" });
@@ -59,6 +60,22 @@ export default async function handler(
   // Fetch license info
   const { License } = require("@/schemas/License");
   const license = await License.findOne({ status: "active" });
+  const needsActivation = !license && user.role !== "super_admin";
+
+  let allowedModules: string[] = license?.allowedModules || ["all"];
+  if (user.role === "admin" || user.role === "mudeer") {
+    const now = new Date();
+    const feature = (await FeatureLicense.findOne({
+      assignedToUserId: user._id,
+      status: "active",
+      expiresAt: { $gt: now },
+    })
+      .select("allowedModules")
+      .lean()) as { allowedModules?: string[] } | null;
+    if (feature?.allowedModules?.length) {
+      allowedModules = feature.allowedModules;
+    }
+  }
 
   res.setHeader("Set-Cookie", [
     serialize("auth_token", token, {
@@ -72,6 +89,9 @@ export default async function handler(
     ...(license
       ? [
           serialize("software_activated", "true", {
+            httpOnly: false,
+            secure: useSecureCookie,
+            sameSite: "lax",
             path: "/",
             maxAge: 60 * 60 * 24 * 365,
           }),
@@ -82,7 +102,8 @@ export default async function handler(
   return res.status(200).json({
     message: "کامیابی سے لاگ اِن ہو گئے۔",
     token,
-    allowedModules: license?.allowedModules || ["all"],
+    allowedModules,
+    needsActivation,
     user: {
       id: user._id,
       fullName: user.fullName,
@@ -91,20 +112,22 @@ export default async function handler(
       // optional helper for client-side redirects
       redirect:
         user.role === "super_admin"
-          ? "/super-admin"
-          : user.role === "admin"
-          ? "/modules/madrassa"
-          : user.role === "mudeer"
-          ? "/mudeer"
-          : user.role === "nazim"
-          ? "/talba"
-          : user.role === "teacher"
-          ? "/teacher"
-          : user.role === "student"
-          ? "/student"
-          : user.role === "staff"
-          ? "/staff/dashboard"
-          : "/",
+          ? "/super-admin-unlock"
+          : needsActivation
+            ? "/activate"
+            : user.role === "admin"
+              ? "/modules/madrassa"
+              : user.role === "mudeer"
+                ? "/mudeer"
+                : user.role === "nazim"
+                  ? "/talba"
+                  : user.role === "teacher"
+                    ? "/teacher"
+                    : user.role === "student"
+                      ? "/student"
+                      : user.role === "staff"
+                        ? "/staff/dashboard"
+                        : "/",
     },
   });
 }

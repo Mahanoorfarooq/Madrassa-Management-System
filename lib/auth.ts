@@ -5,16 +5,48 @@ import { connectDB } from "@/lib/db";
 import { User } from "@/schemas/User";
 
 const JWT_SECRET = process.env.JWT_SECRET || "change_this_secret";
+const SUPER_ADMIN_UNLOCK_EXPIRES_IN =
+  process.env.SUPER_ADMIN_UNLOCK_EXPIRES_IN || "7d";
 
 export interface JwtUserPayload {
   id: string;
-  role: "admin" | "teacher" | "staff" | "student" | "super_admin" | "mudeer" | "nazim";
+  role:
+    | "admin"
+    | "teacher"
+    | "staff"
+    | "student"
+    | "super_admin"
+    | "mudeer"
+    | "nazim";
   linkedId?: string;
   jamiaId?: string;
+  superAdminUnlocked?: boolean;
 }
 
 export function signToken(user: JwtUserPayload) {
   return jwt.sign(user, JWT_SECRET, { expiresIn: "7d" });
+}
+
+export function signSuperAdminUnlockedToken(user: JwtUserPayload) {
+  const {
+    // jsonwebtoken adds these when verifying, but they must NOT be present when signing with expiresIn
+    exp: _exp,
+    iat: _iat,
+    nbf: _nbf,
+    jti: _jti,
+    iss: _iss,
+    aud: _aud,
+    ...safeUser
+  } = user as any;
+
+  return jwt.sign(
+    {
+      ...safeUser,
+      superAdminUnlocked: true,
+    },
+    JWT_SECRET,
+    { expiresIn: SUPER_ADMIN_UNLOCK_EXPIRES_IN },
+  );
 }
 
 export function verifyToken(token: string): JwtUserPayload | null {
@@ -54,7 +86,7 @@ export function getUserFromRequest(req: NextApiRequest): JwtUserPayload | null {
 export function requireAuth(
   req: NextApiRequest,
   res: NextApiResponse,
-  allowedRoles?: JwtUserPayload["role"][]
+  allowedRoles?: JwtUserPayload["role"][],
 ): JwtUserPayload | null {
   const tokenUser = getUserFromRequest(req);
   if (!tokenUser) {
@@ -75,11 +107,26 @@ export function requireAuth(
   return tokenUser;
 }
 
+export function requireSuperAdminUnlocked(
+  req: NextApiRequest,
+  res: NextApiResponse,
+): JwtUserPayload | null {
+  const me = requireAuth(req, res, ["super_admin"]);
+  if (!me) return null;
+
+  if (!me.superAdminUnlocked) {
+    res.status(403).json({ message: "Super Admin is locked" });
+    return null;
+  }
+
+  return me;
+}
+
 export async function requirePermission(
   req: NextApiRequest,
   res: NextApiResponse,
   tokenUser: JwtUserPayload,
-  permission: string
+  permission: string,
 ): Promise<boolean> {
   if (!permission) return true;
   if (tokenUser.role === "admin" || tokenUser.role === "mudeer") return true;
@@ -110,7 +157,7 @@ export async function requirePermission(
 export function requireStrictAuth(
   req: NextApiRequest,
   res: NextApiResponse,
-  allowedRoles?: JwtUserPayload["role"][]
+  allowedRoles?: JwtUserPayload["role"][],
 ): JwtUserPayload | null {
   const tokenUser = getUserFromRequest(req);
   if (!tokenUser) {

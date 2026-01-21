@@ -139,7 +139,7 @@ export default function MadrassaModules() {
           setAllowedModules(serverModules);
           localStorage.setItem(
             "allowed_modules",
-            JSON.stringify(serverModules)
+            JSON.stringify(serverModules),
           );
         }
 
@@ -148,7 +148,7 @@ export default function MadrassaModules() {
           if (r === "teacher" || r === "nazim") {
             window.location.href = "/teacher";
           } else if (r === "super_admin") {
-            window.location.href = "/super-admin";
+            window.location.href = "/super-admin-unlock";
           } else if (r === "student") {
             window.location.href = "/dashboard/student";
           } else if (r === "staff") {
@@ -175,7 +175,7 @@ export default function MadrassaModules() {
         m === name ||
         m === name + " پورٹل" ||
         m.includes(name) ||
-        (name === "طلباء" && m.includes("طلبہ"))
+        (name === "طلباء" && m.includes("طلبہ")),
     );
   };
 
@@ -188,8 +188,7 @@ export default function MadrassaModules() {
     if (m.key === "hostel") return hasModule("ہاسٹل");
     if (m.key === "mess") return hasModule("میس");
     if (m.key === "nisab") return hasModule("نصاب");
-    if (m.key === "hazri")
-      return hasModule("حاضری") || hasModule("اساتذہ") || hasModule("طلباء");
+    if (m.key === "hazri") return hasModule("حاضری");
     if (m.key === "library") return hasModule("لائبریری");
     if (m.key === "tickets") return hasModule("شکایات");
     if (m.key === "notifications")

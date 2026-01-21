@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -44,33 +44,33 @@ ChartJS.register(
   Legend,
   ArcElement,
   PointElement,
-  LineElement
+  LineElement,
 );
 
 const portals = [
-  { title: "طلبہ", href: "/talba", icon: Users, color: "bg-blue-500" },
+  { title: "طلبہ", href: "/talba", icon: Users, color: "bg-secondary" },
   {
     title: "اساتذہ",
     href: "/usataza",
     icon: GraduationCap,
-    color: "bg-purple-500",
+    color: "bg-primary",
   },
   {
     title: "فنانس",
     href: "/finance",
     icon: DollarSign,
-    color: "bg-emerald-500",
+    color: "bg-primary",
   },
-  { title: "ہاسٹل", href: "/hostel", icon: Home, color: "bg-orange-500" },
-  { title: "میس", href: "/mess", icon: UtensilsCrossed, color: "bg-amber-500" },
-  { title: "نصاب", href: "/nisab", icon: BookOpen, color: "bg-indigo-500" },
+  { title: "ہاسٹل", href: "/hostel", icon: Home, color: "bg-secondary" },
+  { title: "میس", href: "/mess", icon: UtensilsCrossed, color: "bg-secondary" },
+  { title: "نصاب", href: "/nisab", icon: BookOpen, color: "bg-primary" },
   {
     title: "حاضری",
     href: "/hazri",
     icon: ClipboardCheck,
-    color: "bg-green-500",
+    color: "bg-primary",
   },
-  { title: "لائبریری", href: "/library", icon: Library, color: "bg-pink-500" },
+  { title: "لائبریری", href: "/library", icon: Library, color: "bg-secondary" },
 ];
 
 export default function MudeerDashboard() {
@@ -79,6 +79,17 @@ export default function MudeerDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [notifError, setNotifError] = useState<string | null>(null);
+  const [notifLastSeen, setNotifLastSeen] = useState<number>(0);
+  const notifRef = useRef<HTMLDivElement | null>(null);
+
+  const unreadCount = notifications.filter((n) => {
+    const t = new Date(n?.createdAt || 0).getTime();
+    return Number.isFinite(t) && t > (notifLastSeen || 0);
+  }).length;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -86,9 +97,7 @@ export default function MudeerDashboard() {
         const res = await api.get("/api/admin/overview");
         setData(res.data);
       } catch (err: any) {
-        setError(
-          err.response?.data?.message || "ڈیٹا لوڈ کرنے میں مسئلہ پیش آیا"
-        );
+        setError(err?.message || "ڈیٹا لوڈ کرنے میں مسئلہ پیش آیا");
       } finally {
         setLoading(false);
       }
@@ -107,6 +116,58 @@ export default function MudeerDashboard() {
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const stored = localStorage.getItem("mudeer_notif_last_seen");
+    const parsed = stored ? Number(stored) : 0;
+    setNotifLastSeen(Number.isFinite(parsed) ? parsed : 0);
+  }, []);
+
+  const loadNotifications = async () => {
+    try {
+      setNotifError(null);
+      const res = await api.get("/api/admin/notifications", {
+        params: { role: "admin", channel: "in_app" },
+      });
+      setNotifications(res.data?.notifications || []);
+    } catch (e: any) {
+      setNotifError(e?.message || "نوٹیفکیشن لوڈ نہیں ہو سکے");
+    }
+  };
+
+  useEffect(() => {
+    loadNotifications();
+    const interval = setInterval(() => {
+      loadNotifications();
+    }, 5000);
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!notifOpen) return;
+    const now = Date.now();
+    setNotifLastSeen(now);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("mudeer_notif_last_seen", String(now));
+    }
+  }, [notifOpen]);
+
+  useEffect(() => {
+    if (!notifOpen) return;
+
+    const onMouseDown = (e: MouseEvent) => {
+      const el = notifRef.current;
+      if (!el) return;
+      if (!el.contains(e.target as Node)) {
+        setNotifOpen(false);
+      }
+    };
+
+    window.addEventListener("mousedown", onMouseDown);
+    return () => window.removeEventListener("mousedown", onMouseDown);
+  }, [notifOpen]);
 
   const handleLogout = async () => {
     try {
@@ -174,58 +235,119 @@ export default function MudeerDashboard() {
     datasets: [
       {
         data: [data.fees.collectedThisMonth, data.fees.outstandingDue],
-        backgroundColor: ["rgba(16, 185, 129, 0.8)", "rgba(245, 158, 11, 0.8)"],
+        backgroundColor: ["rgba(7, 63, 58, 0.85)", "rgba(249, 115, 22, 0.85)"],
         borderWidth: 0,
       },
     ],
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] font-urdu" dir="rtl">
+    <div className="min-h-screen bg-lightBg font-urdu" dir="rtl">
       <Head>
         <title>مدیر ڈیش بورڈ - جامعہ مینجمنٹ سسٹم</title>
       </Head>
 
       {/* Top Navbar */}
-      <nav className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200">
+      <nav className="sticky top-0 z-40 bg-[#073f3a] border-b border-white/10">
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-emerald-600 rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
+              <div className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center shadow-lg shadow-black/10">
                 <LayoutDashboard className="text-white w-6 h-6" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-800">
-                  مدیر ڈیش بورڈ
-                </h1>
-                <p className="text-[10px] text-gray-500">
+                <h1 className="text-xl font-bold text-white">مدیر ڈیش بورڈ</h1>
+                <p className="text-[10px] text-white/70">
                   مرکزی انتظامی کنٹرول پینل
                 </p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
-              <button className="p-2 text-gray-400 hover:text-primary transition-colors relative">
-                <Bell className="w-5 h-5" />
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-              </button>
-              <div className="h-8 w-[1px] bg-gray-200 mx-2"></div>
-              <div className="flex items-center gap-3 bg-gray-50 px-3 py-1.5 rounded-full border border-gray-100">
+              <div className="relative" ref={notifRef}>
+                <button
+                  onClick={() => setNotifOpen((s) => !s)}
+                  className="p-2 text-white/70 hover:text-white transition-colors relative"
+                  type="button"
+                >
+                  <Bell className="w-5 h-5" />
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-secondary text-white text-[10px] font-bold flex items-center justify-center border-2 border-[#073f3a]">
+                      {unreadCount > 99 ? "99+" : unreadCount}
+                    </span>
+                  )}
+                </button>
+
+                {notifOpen && (
+                  <div className="absolute left-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+                    <div className="px-4 py-3 bg-gray-50 border-b flex items-center justify-between">
+                      <div className="text-right">
+                        <div className="text-sm font-bold text-gray-800">
+                          نوٹیفیکیشنز
+                        </div>
+                        <div className="text-[10px] text-gray-500">
+                          ہر 5 سیکنڈ میں اپڈیٹ
+                        </div>
+                      </div>
+                      <Link
+                        href="/modules/madrassa/settings/notifications"
+                        className="text-[10px] font-bold text-primary hover:underline"
+                      >
+                        سب دیکھیں
+                      </Link>
+                    </div>
+
+                    {notifError ? (
+                      <div className="p-4 text-xs text-red-600 text-right">
+                        {notifError}
+                      </div>
+                    ) : notifications.length === 0 ? (
+                      <div className="p-4 text-xs text-gray-500 text-right">
+                        کوئی نوٹیفیکیشن نہیں
+                      </div>
+                    ) : (
+                      <div className="max-h-80 overflow-auto divide-y">
+                        {notifications.slice(0, 10).map((n: any) => (
+                          <div key={n._id} className="p-3 hover:bg-gray-50">
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="text-[10px] text-gray-500 whitespace-nowrap">
+                                {n?.createdAt
+                                  ? new Date(n.createdAt).toLocaleString()
+                                  : ""}
+                              </div>
+                              <div className="text-right">
+                                <div className="text-sm font-bold text-gray-800">
+                                  {n?.title}
+                                </div>
+                                <div className="text-xs text-gray-600 mt-1 line-clamp-2">
+                                  {n?.message}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+              <div className="h-8 w-[1px] bg-white/10 mx-2"></div>
+              <div className="flex items-center gap-3 bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
                 <div className="text-left hidden sm:block">
-                  <p className="text-xs font-bold text-gray-800 text-right">
+                  <p className="text-xs font-bold text-white text-right">
                     محترم مدیر صاحب
                   </p>
-                  <p className="text-[10px] text-gray-500 text-right">
+                  <p className="text-[10px] text-white/70 text-right">
                     اوور آل ہیڈ
                   </p>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center text-white font-bold">
                   م
                 </div>
               </div>
               <button
                 onClick={handleLogout}
-                className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+                className="p-2 text-white/70 hover:text-red-300 transition-colors"
               >
                 <LogOut className="w-5 h-5" />
               </button>
@@ -234,7 +356,7 @@ export default function MudeerDashboard() {
         </div>
       </nav>
 
-      <main className="px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {[
@@ -242,32 +364,32 @@ export default function MudeerDashboard() {
               label: "کل طلبہ",
               value: data.totals.students,
               icon: Users,
-              color: "text-blue-600",
-              bg: "bg-blue-50",
+              color: "text-secondary",
+              bg: "bg-secondary/10",
               trend: "+12%",
             },
             {
               label: "کل اساتذہ",
               value: data.totals.teachers,
               icon: GraduationCap,
-              color: "text-purple-600",
-              bg: "bg-purple-50",
+              color: "text-primary",
+              bg: "bg-primary/10",
               trend: "مستقل",
             },
             {
               label: "آج کی وصولی",
               value: `Rs. ${data.fees.collectedToday.toLocaleString()}`,
               icon: DollarSign,
-              color: "text-emerald-600",
-              bg: "bg-emerald-50",
+              color: "text-primary",
+              bg: "bg-primary/10",
               trend: "آج",
             },
             {
               label: "کل داخلے",
               value: data.totals.admissions,
               icon: TrendingUp,
-              color: "text-orange-600",
-              bg: "bg-orange-50",
+              color: "text-secondary",
+              bg: "bg-secondary/10",
               trend: "اس سال",
             },
           ].map((stat, i) => (
@@ -281,7 +403,7 @@ export default function MudeerDashboard() {
                 >
                   <stat.icon className="w-6 h-6" />
                 </div>
-                <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-gray-50 text-gray-500 border border-gray-100">
+                <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20">
                   {stat.trend}
                 </span>
               </div>
@@ -359,15 +481,15 @@ export default function MudeerDashboard() {
               />
             </div>
             <div className="w-full space-y-3">
-              <div className="flex justify-between items-center text-sm p-3 bg-emerald-50 rounded-2xl border border-emerald-100">
+              <div className="flex justify-between items-center text-sm p-3 bg-primary/10 rounded-2xl border border-primary/20">
                 <span className="text-gray-600">وصول شدہ (مہینہ)</span>
-                <span className="font-bold text-emerald-700">
+                <span className="font-bold text-primary">
                   Rs. {data.fees.collectedThisMonth.toLocaleString()}
                 </span>
               </div>
-              <div className="flex justify-between items-center text-sm p-3 bg-amber-50 rounded-2xl border border-amber-100">
+              <div className="flex justify-between items-center text-sm p-3 bg-secondary/10 rounded-2xl border border-secondary/20">
                 <span className="text-gray-600">بقیہ رقم</span>
-                <span className="font-bold text-amber-700">
+                <span className="font-bold text-secondary">
                   Rs. {data.fees.outstandingDue.toLocaleString()}
                 </span>
               </div>
@@ -401,9 +523,7 @@ export default function MudeerDashboard() {
                 <div
                   className={`${
                     portal.color
-                  } p-3 rounded-2xl mb-3 text-white shadow-lg shadow-${
-                    portal.color.split("-")[1]
-                  }-500/20 group-hover:scale-110 transition-transform`}
+                  } p-3 rounded-2xl mb-3 text-white shadow-lg shadow-black/10 group-hover:scale-110 transition-transform`}
                 >
                   <portal.icon className="w-5 h-5" />
                 </div>
@@ -434,7 +554,7 @@ export default function MudeerDashboard() {
               >
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center">
-                    <LogOut className="w-5 h-5 text-blue-500" />
+                    <LogOut className="w-5 h-5 text-secondary" />
                   </div>
                   <div>
                     <h4 className="text-sm font-bold text-gray-800">
@@ -458,7 +578,7 @@ export default function MudeerDashboard() {
               >
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center">
-                    <Users className="w-5 h-5 text-emerald-500" />
+                    <Users className="w-5 h-5 text-primary" />
                   </div>
                   <div>
                     <h4 className="text-sm font-bold text-gray-800">
@@ -495,11 +615,11 @@ export default function MudeerDashboard() {
             </div>
             <div className="space-y-4">
               <div className="flex gap-4">
-                <div className="flex-1 bg-blue-50 p-4 rounded-2xl border border-blue-100">
-                  <p className="text-[10px] text-blue-600 font-bold mb-1">
+                <div className="flex-1 bg-secondary/10 p-4 rounded-2xl border border-secondary/20">
+                  <p className="text-[10px] text-secondary font-bold mb-1">
                     اوپن (Open)
                   </p>
-                  <h4 className="text-2xl font-black text-blue-800">
+                  <h4 className="text-2xl font-black text-secondary">
                     {data.tickets.open}
                   </h4>
                 </div>
@@ -511,11 +631,11 @@ export default function MudeerDashboard() {
                     {data.tickets.inProgress}
                   </h4>
                 </div>
-                <div className="flex-1 bg-emerald-50 p-4 rounded-2xl border border-emerald-100">
-                  <p className="text-[10px] text-emerald-600 font-bold mb-1">
+                <div className="flex-1 bg-primary/10 p-4 rounded-2xl border border-primary/20">
+                  <p className="text-[10px] text-primary font-bold mb-1">
                     حل شدہ (Resolved)
                   </p>
-                  <h4 className="text-2xl font-black text-emerald-800">
+                  <h4 className="text-2xl font-black text-primary">
                     {data.tickets.resolved}
                   </h4>
                 </div>
@@ -533,8 +653,8 @@ export default function MudeerDashboard() {
 
       <style jsx global>{`
         @font-face {
-          font-family: 'Urdu';
-          src: url('/fonts/alqalam-taj-nastaleeq/AlQalam Regular.ttf');
+          font-family: "Urdu";
+          src: url("/fonts/alqalam-taj-nastaleeq/AlQalam Regular.ttf");
         }
         .font-urdu {
           font-family: "Urdu", "Inter", sans-serif;

@@ -2,13 +2,13 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { connectDB } from "@/lib/db";
 import { User } from "@/schemas/User";
 import { Jamia, IJamia } from "@/schemas/Jamia";
-import { requireAuth, hashPassword } from "@/lib/auth";
+import { requireSuperAdminUnlocked, hashPassword } from "@/lib/auth";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
-  const me = requireAuth(req, res, ["super_admin"]);
+  const me = requireSuperAdminUnlocked(req, res);
   if (!me) return;
 
   await connectDB();

@@ -51,7 +51,7 @@ export default function LoginPage() {
         if (data.allowedModules) {
           localStorage.setItem(
             "allowed_modules",
-            JSON.stringify(data.allowedModules)
+            JSON.stringify(data.allowedModules),
           );
         }
       }
@@ -95,8 +95,8 @@ export default function LoginPage() {
               <Image
                 src="/logo-new.png"
                 alt="Madrassa Logo"
-                layout="fill"
-                objectFit="contain"
+                fill
+                style={{ objectFit: "contain" }}
                 className="drop-shadow-sm invert brightness-0"
               />
             </div>

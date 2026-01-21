@@ -25,6 +25,7 @@ import {
   UserCog,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import api from "@/utils/api";
 
 interface ILicense {
@@ -123,6 +124,7 @@ const PORTALS = [
 ];
 
 export default function LicenseManagement() {
+  const router = useRouter();
   const [licenses, setLicenses] = useState<ILicense[]>([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -422,7 +424,7 @@ export default function LicenseManagement() {
                       setAllowedModules(
                         allowedModules.length === PORTALS.length
                           ? []
-                          : PORTALS.map((m) => m.label)
+                          : PORTALS.map((m) => m.label),
                       )
                     }
                     className="text-[9px] text-secondary font-black hover:scale-105 transition-transform bg-white px-2 py-0.5 rounded-full shadow-sm border border-slate-100"
@@ -510,6 +512,20 @@ export default function LicenseManagement() {
                   className="flex-1 bg-secondary hover:bg-orange-700 text-white font-black py-2.5 rounded-lg shadow-lg transition-all text-sm active:scale-95 ml-2"
                 >
                   ٹھیک ہے
+                </button>
+                <button
+                  onClick={() => {
+                    try {
+                      localStorage.setItem(
+                        "pending_activation_license_key",
+                        copiedKey,
+                      );
+                    } catch {}
+                    router.push("/activate");
+                  }}
+                  className="px-4 bg-emerald-50 text-emerald-700 font-black rounded-lg text-sm hover:bg-emerald-100 border border-emerald-100"
+                >
+                  Activate Now
                 </button>
                 <button
                   onClick={() => {

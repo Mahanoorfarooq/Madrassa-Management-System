@@ -1,13 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connectDB } from "@/lib/db";
 import { Jamia, IJamia } from "@/schemas/Jamia";
-import { requireAuth } from "@/lib/auth";
+import { requireSuperAdminUnlocked } from "@/lib/auth";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
-  const me = requireAuth(req, res, ["super_admin"]);
+  const me = requireSuperAdminUnlocked(req, res);
   if (!me) return;
 
   await connectDB();
@@ -53,7 +53,7 @@ export default async function handler(
         ...(settings !== undefined ? { settings } : {}),
         ...(typeof isActive === "boolean" ? { isActive } : {}),
       },
-      { new: true }
+      { new: true },
     ).lean()) as IJamia | null;
 
     if (!jamia) {

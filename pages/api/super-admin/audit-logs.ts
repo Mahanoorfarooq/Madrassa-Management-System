@@ -1,13 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connectDB } from "@/lib/db";
-import { requireAuth } from "@/lib/auth";
+import { requireSuperAdminUnlocked } from "@/lib/auth";
 import { ActivityLog } from "@/schemas/ActivityLog";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
-  const me = requireAuth(req, res, ["super_admin"]);
+  const me = requireSuperAdminUnlocked(req, res);
   if (!me) return;
 
   await connectDB();

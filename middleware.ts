@@ -20,25 +20,49 @@ export function middleware(req: NextRequest) {
     pathname.startsWith("/_next") ||
     pathname.includes("favicon.ico") ||
     pathname.startsWith("/fonts") ||
-    pathname.startsWith("/api/license")
+    pathname.startsWith("/api/license") ||
+    pathname === "/manifest.webmanifest" ||
+    pathname === "/sw.js" ||
+    pathname.startsWith("/workbox-") ||
+    /\.(png|jpg|jpeg|svg|webp|ico|json|webmanifest)$/i.test(pathname)
   ) {
     return NextResponse.next();
   }
 
-  // 2. Global License & SA Check
+  // 2. Global License & Super Admin Unlock Check
   const isActivated = req.cookies.get("software_activated")?.value === "true";
-  const isSAVerified = req.cookies.get("sa_verified")?.value === "true";
+  const token = req.cookies.get("auth_token")?.value;
+  const payload = token ? decodeJwt(token) : null;
 
-  // Protection for Super Admin Dashboard
-  if (pathname.startsWith("/super-admin") && pathname !== "/super-admin/auth" && !pathname.includes("/api/")) {
-    if (!isSAVerified) {
-      return NextResponse.redirect(new URL("/super-admin/auth", req.url));
+  // Super Admin unlock route must be accessible only to logged-in super_admin
+  if (pathname === "/super-admin-unlock") {
+    if (!payload || payload?.role !== "super_admin") {
+      return NextResponse.redirect(new URL("/login", req.url));
+    }
+    return NextResponse.next();
+  }
+
+  // Protection for Super Admin Dashboard pages
+  if (pathname.startsWith("/super-admin") && !pathname.includes("/api/")) {
+    if (!payload) {
+      return NextResponse.redirect(new URL("/login", req.url));
+    }
+    if (payload?.role !== "super_admin") {
+      return NextResponse.redirect(new URL("/login", req.url));
+    }
+    if (!payload?.superAdminUnlocked) {
+      return NextResponse.redirect(new URL("/super-admin-unlock", req.url));
     }
   }
 
   // If NOT activated, ONLY allow /activate and /super-admin/auth
   if (!isActivated) {
-    if (!pathname.startsWith("/activate") && !pathname.startsWith("/super-admin") && !pathname.includes("/api/")) {
+    if (
+      !pathname.startsWith("/activate") &&
+      !pathname.startsWith("/super-admin") &&
+      pathname !== "/super-admin-unlock" &&
+      !pathname.includes("/api/")
+    ) {
       const url = req.nextUrl.clone();
       url.pathname = "/activate";
       return NextResponse.redirect(url);
@@ -72,16 +96,30 @@ export function middleware(req: NextRequest) {
     const payload = decodeJwt(token);
 
     // Basic role protection
-    if (pathname.startsWith("/mudeer") && !["admin", "mudeer"].includes(payload?.role)) {
+    if (
+      pathname.startsWith("/mudeer") &&
+      !["admin", "mudeer"].includes(payload?.role)
+    ) {
       return NextResponse.redirect(new URL("/login", req.url));
     }
-    if (pathname.startsWith("/talba") && !["nazim", "admin", "mudeer"].includes(payload?.role)) {
+    if (
+      pathname.startsWith("/talba") &&
+      !["nazim", "admin", "mudeer"].includes(payload?.role)
+    ) {
       return NextResponse.redirect(new URL("/login", req.url));
     }
-    if ((pathname.startsWith("/teacher") || pathname.startsWith("/modules/teacher")) && payload?.role !== "teacher") {
+    if (
+      (pathname.startsWith("/teacher") ||
+        pathname.startsWith("/modules/teacher")) &&
+      payload?.role !== "teacher"
+    ) {
       return NextResponse.redirect(new URL("/modules/madrassa", req.url));
     }
-    if ((pathname.startsWith("/admin") || pathname.startsWith("/modules/madrassa")) && !["admin", "mudeer"].includes(payload?.role)) {
+    if (
+      (pathname.startsWith("/admin") ||
+        pathname.startsWith("/modules/madrassa")) &&
+      !["admin", "mudeer"].includes(payload?.role)
+    ) {
       return NextResponse.redirect(new URL("/teacher", req.url));
     }
   }
@@ -90,7 +128,9 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|manifest.webmanifest|sw.js|workbox-).*)",
+  ],
 };
 
 function decodeJwt(token: string): any | null {
@@ -98,7 +138,10 @@ function decodeJwt(token: string): any | null {
     const part = token.split(".")[1];
     if (!part) return null;
     const base64 = part.replace(/-/g, "+").replace(/_/g, "/");
-    const json = typeof atob !== "undefined" ? atob(base64) : Buffer.from(base64, "base64").toString("utf-8");
+    const json =
+      typeof atob !== "undefined"
+        ? atob(base64)
+        : Buffer.from(base64, "base64").toString("utf-8");
     return JSON.parse(json);
   } catch {
     return null;
